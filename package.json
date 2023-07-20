@@ -19,7 +19,7 @@
     "react-router-dom": "^6.14.2"
   },
   "lint-staged": {
-    "**/*.{js,jsx,html,css}": [
+    "**/*.{js,jsx,html}": [
       "eslint --fix ."
     ]
   },
