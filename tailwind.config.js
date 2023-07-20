@@ -1,16 +1,17 @@
+/* eslint-disable prettier/prettier */
 /** @type {import("tailwindcss").Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     colors: {
-      white: "#FFFFFF",
+      "white": "#FFFFFF",
       "black-bg": "#393939",
       "black-text": "#000000",
       "light-grey": "#F5F5F5",
-      grey: "#D9D9D9",
+      "grey": "#D9D9D9",
       "dark-grey": "#B1B1B1",
-      yellow: "#F4F0CD",
-      blue: "#5AA6FF",
+      "yellow": "#F4F0CD",
+      "blue": "#5AA6FF",
     },
   },
   plugins: [],
