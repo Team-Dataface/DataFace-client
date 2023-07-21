@@ -1,32 +1,15 @@
-import PropTypes from "prop-types";
 import Button from "../shared/Button";
 
-function ModifyDocBtns({ disabled }) {
+function ModifyDocBtns() {
   return (
     <div className="flex">
-      <Button className="left" disabled={disabled || false}>
-        Left
-      </Button>
+      <Button className="left mx-4">Left</Button>
       <h1>index</h1>
-      <Button className="right" disabled={disabled || false}>
-        Right
-      </Button>
-      <Button className="+" disabled={disabled || false}>
-        +
-      </Button>
-      <Button className="-" disabled={disabled || false}>
-        -
-      </Button>
+      <Button className="right mx-4">Right</Button>
+      <Button className="+ mx-4">+</Button>
+      <Button className="- mx-4">-</Button>
     </div>
   );
 }
-
-ModifyDocBtns.propTypes = {
-  disabled: PropTypes.bool,
-};
-
-ModifyDocBtns.defaultProps = {
-  disabled: false,
-};
 
 export default ModifyDocBtns;
