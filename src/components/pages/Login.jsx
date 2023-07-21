@@ -1,12 +1,12 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import fetchData from "../utils/axios";
-import { firebaseAuth } from "./app/firebaseAuth";
+import fetchData from "../../utils/axios";
+import { firebaseAuth } from "../app/firebaseAuth";
 
-import googleLogo from "../assets/google_logo.png";
-import logo from "../assets/dataface_logo.png";
+import googleLogo from "../../assets/google_logo.png";
+import logo from "../../assets/dataface_logo.png";
 
 function Login() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function Login() {
   const { mutate, isError, isSuccess } = useMutation(handleGoogleLogin);
 
   if (isSuccess) {
-    console.log("sending user to dashboard");
+    navigate("/dashboard");
   }
 
   if (isError) {
