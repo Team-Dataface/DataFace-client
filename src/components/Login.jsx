@@ -14,12 +14,13 @@ function Login() {
 
   async function handleGoogleLogin() {
     const result = await signInWithPopup(firebaseAuth, googleProvider);
-    const { user } = result;
 
     const userInfoObject = {
-      email: user.email,
-      username: user.displayName,
+      email: result.user.email,
+      username: result.user.displayName,
     };
+
+    console.log(userInfoObject);
 
     const response = await fetchData("POST", "/login", userInfoObject);
   }
