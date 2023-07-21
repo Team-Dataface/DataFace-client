@@ -1,9 +1,10 @@
-import Button from "../shared/Button";
-import RelationButton from "./RelationButton";
-import DocHandlerButtons from "./DocHandlerButtons";
-import SwitchViewButtons from "./SwitchViewButtons";
+import Button from "./shared/Button";
+import RelationButton from "./HeaderItems/RelationButton";
+import DocHandlerButtons from "./HeaderItems/DocHandlerButtons";
+import SwitchViewButtons from "./HeaderItems/SwitchViewButtons";
+import LogoutButton from "./HeaderItems/LogoutButton";
 
-import logo from "../../assets/dataface_logo.png";
+import logo from "../assets/dataface_logo.png";
 
 function Header() {
   return (
@@ -15,9 +16,7 @@ function Header() {
         <div>
           <h1>Page Name</h1>
         </div>
-        <div className="mx-36">
-          <Button>logout</Button>
-        </div>
+        <LogoutButton />
       </div>
 
       <div className="flex flex-row justify-between">

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import fetchData from "../../utils/axios";
-import { firebaseAuth } from "../app/firebaseAuth";
+import { firebaseAuth } from "../../app/firebaseAuth";
 
 import googleLogo from "../../assets/google_logo.png";
 import logo from "../../assets/dataface_logo.png";
