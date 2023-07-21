@@ -1,9 +1,12 @@
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "../pages/Login";
+
 function App() {
   return (
-    <>
-      <div></div>
-      <h1 className="text-cyan-300">DATA FACE</h1>
-    </>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Navigate replace to="/login" />} />
+    </Routes>
   );
 }
 
