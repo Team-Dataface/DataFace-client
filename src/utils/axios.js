@@ -3,21 +3,15 @@ import CONSTANT from "../constants/constant";
 
 const { baseURL } = CONSTANT;
 
-async function fetchData(method, url, data) {
-  try {
-    const response = await axios({
-      method,
-      url,
-      data,
-      baseURL,
-    });
+function fetchData(method, url, data) {
+  const response = axios({
+    method,
+    url,
+    data,
+    baseURL,
+  });
 
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-
-  return null;
+  return response;
 }
 
 export default fetchData;

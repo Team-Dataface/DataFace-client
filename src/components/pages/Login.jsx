@@ -20,7 +20,7 @@ function Login() {
       username: result.user.displayName,
     };
 
-    const response = await fetchData("POST", "/login", userInfoObject);
+    await fetchData("POST", "/auth/login", userInfoObject);
   }
 
   const { mutate, isError, isSuccess } = useMutation(handleGoogleLogin);
@@ -35,7 +35,7 @@ function Login() {
 
   return (
     <div className="flex flex-col justify-center items-center p-20">
-      <img src={logo} alt="logo" className="w-[30rem]" />
+      <img src={logo} alt="dataface logo" className="w-[30rem]" />
       <h1 className="flex justify-center items-center w-full mb-20 text-[3rem]">
         Your Data, Your Way
       </h1>
@@ -47,7 +47,7 @@ function Login() {
           <img
             className="w-[18px] h-[18px]"
             src={googleLogo}
-            alt="google-login"
+            alt="google logo"
           />
         </div>
         <span className="ml-5 font-roboto text-white">Sign in with Google</span>
