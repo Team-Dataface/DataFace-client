@@ -20,8 +20,6 @@ function Login() {
       username: result.user.displayName,
     };
 
-    console.log(userInfoObject);
-
     const response = await fetchData("POST", "/login", userInfoObject);
   }
 
@@ -45,7 +43,7 @@ function Login() {
         className="flex items-center w-[250px] h-[55px] p-1 rounded-[5px] bg-google-blue drop-shadow-md hover:bg-google-blue-hover"
         onClick={mutate}
       >
-        <div className="flex justify-center items-center w-[48px] h-[48px] p-15 rounded-[5px] bg-white ">
+        <div className="flex justify-center items-center w-[48px] h-[48px] p-15 rounded-[5px] bg-white">
           <img
             className="w-[18px] h-[18px]"
             src={googleLogo}
