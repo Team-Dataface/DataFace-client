@@ -3,6 +3,11 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
+    extend: {
+      fontFamily: {
+        "roboto": ["Roboto", "sans-serif"],
+      },
+    },
     colors: {
       "white": "#FFFFFF",
       "black-bg": "#393939",
@@ -12,7 +17,8 @@ module.exports = {
       "dark-grey": "#B1B1B1",
       "yellow": "#F4F0CD",
       "blue": "#5AA6FF",
-      "google-blue": "#4285F4"
+      "google-blue": "#4285F4",
+      "google-blue-hover": "#679df5",
     },
   },
   plugins: [],
