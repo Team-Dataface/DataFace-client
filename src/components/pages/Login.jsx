@@ -20,15 +20,14 @@ function Login() {
     await fetchData("POST", "/auth/login", userInfoObject);
   }
 
-  const { mutate, isError, isSuccess } = useMutation(handleGoogleLogin);
-
-  if (isSuccess) {
-    navigate("/dashboard");
-  }
-
-  if (isError) {
-    console.log("sending user to errorpage");
-  }
+  const { mutate } = useMutation(handleGoogleLogin, {
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
 
   return (
     <div className="flex flex-col justify-center items-center p-20">

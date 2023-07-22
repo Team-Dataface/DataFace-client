@@ -2,6 +2,7 @@ import Button from "./shared/Button";
 import RelationButton from "./HeaderItems/RelationButton";
 import DocHandlerButtons from "./HeaderItems/DocHandlerButtons";
 import SwitchViewButtons from "./HeaderItems/SwitchViewButtons";
+import LogoutButton from "./HeaderItems/LogoutButton";
 
 function Header() {
   return (
@@ -17,6 +18,7 @@ function Header() {
         <div>
           <h1>Page Name</h1>
         </div>
+        <LogoutButton />
       </div>
 
       <div className="flex flex-row justify-between">
