@@ -17,7 +17,7 @@ function Dashboard() {
         No Database yet.
       </h1>
       <Button
-        className="w-[250px] h-[30px] rounded-[5px] bg-black-bg text-white drop-shadow-md hover:bg-dark-grey"
+        className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
         onClick={() => {
           setShowModal(!showModal);
         }}
@@ -26,7 +26,7 @@ function Dashboard() {
       </Button>
       {showModal &&
         createPortal(
-          <div className="fixed w-[150px] h-[150px] left-1/2 top-1/2 bg-opacity-50">
+          <div className="fixed w-[150px] h-[150px] border-2 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-opacity-50">
             hi, I am modal.
           </div>,
           document.body,
