@@ -13,10 +13,10 @@ function DocHandlerButtons() {
         <img src="/assets/right_icon.svg" alt="right icon" />
       </Button>
       <Button className="flex justify-center items-center w-8 h-8 mr-1 rounded-md bg-white hover:bg-yellow">
-        <img src="/assets/plus.svg" alt="plus icon" />
+        <img src="/assets/plus_icon.svg" alt="plus icon" />
       </Button>
       <Button className="flex justify-center items-center w-8 h-8 rounded-md bg-white hover:bg-yellow">
-        <img src="/assets/minus.svg" alt="minus icon" />
+        <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
     </div>
   );
