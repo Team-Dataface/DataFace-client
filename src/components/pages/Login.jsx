@@ -5,9 +5,6 @@ import { useNavigate } from "react-router-dom";
 import fetchData from "../../utils/axios";
 import { firebaseAuth } from "../../app/firebaseAuth";
 
-import googleLogo from "../../assets/google_logo.png";
-import logo from "../../assets/dataface_logo.png";
-
 function Login() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
@@ -35,7 +32,11 @@ function Login() {
 
   return (
     <div className="flex flex-col justify-center items-center p-20">
-      <img src={logo} alt="dataface logo" className="w-[30rem]" />
+      <img
+        src="/assets/dataface_logo.png"
+        alt="dataface logo"
+        className="w-[30rem]"
+      />
       <h1 className="flex justify-center items-center w-full mb-20 text-[3rem]">
         Your Data, Your Way
       </h1>
@@ -46,7 +47,7 @@ function Login() {
         <div className="flex justify-center items-center w-[48px] h-[48px] p-15 rounded-[5px] bg-white">
           <img
             className="w-[18px] h-[18px]"
-            src={googleLogo}
+            src="/assets/google_logo.png"
             alt="google logo"
           />
         </div>
