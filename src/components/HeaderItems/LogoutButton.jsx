@@ -22,8 +22,13 @@ function LogoutButton() {
   });
 
   return (
-    <div className="flex w-20 justify-center">
-      <Button onClick={mutate}>logout</Button>
+    <div className="flex justify-center w-20">
+      <Button
+        className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
+        onClick={mutate}
+      >
+        Logout
+      </Button>
     </div>
   );
 }
