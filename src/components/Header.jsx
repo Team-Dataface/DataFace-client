@@ -4,7 +4,7 @@ import SaveButton from "./HeaderItems/SaveButton";
 
 function Header() {
   return (
-    <div className="flex flex-col w-full h-auto bg-black-bg">
+    <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
       <div className="flex flex-row justify-between items-center h-[50px] p-3 bg-black-bg">
         <img
           className="w-10"

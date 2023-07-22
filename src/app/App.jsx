@@ -6,9 +6,9 @@ import Sidebar from "../components/Sidebar";
 
 function App() {
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Header />
-      <div className="flex flex-row h-screen">
+      <div className="flex flex-1">
         <Sidebar />
         <div className="flex grow justify-center">
           <Routes>
@@ -17,7 +17,7 @@ function App() {
           </Routes>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

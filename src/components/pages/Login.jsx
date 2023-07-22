@@ -32,17 +32,17 @@ function Login() {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center p-20">
+    <div className="flex flex-col justify-center items-center h-full p-10">
       <img
         src="/assets/dataface_logo.png"
         alt="dataface logo"
-        className="w-[30rem]"
+        className="w-[300px]"
       />
-      <h1 className="flex justify-center items-center w-full mb-20 text-[3rem]">
+      <h1 className="flex justify-center items-center w-full mb-5 text-[2rem]">
         Your Data, Your Way
       </h1>
       <Button
-        className="flex items-center w-[250px] h-[55px] p-1 rounded-[5px] bg-google-blue drop-shadow-md hover:bg-google-blue-hover"
+        className="flex items-center w-[230px] h-[55px] p-1 rounded-[5px] bg-google-blue drop-shadow-md hover:bg-google-blue-hover"
         onClick={mutate}
       >
         <>
