@@ -12,7 +12,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    async function checkLoginStatus() {
       try {
         const response = await authUser();
         const { success, userId } = response.data;
@@ -25,7 +25,7 @@ function App() {
       } catch (error) {
         console.log("send user to Error page");
       }
-    };
+    }
 
     checkLoginStatus();
   }, [isLoggedIn]);
