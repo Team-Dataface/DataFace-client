@@ -7,7 +7,7 @@ import { firebaseAuth } from "../../app/firebaseAuth";
 
 import Button from "../shared/Button";
 
-function Login() {
+function Login({ onSuccess, setIsLoggedIn }) {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
@@ -19,11 +19,16 @@ function Login() {
       username: result.user.displayName,
     };
 
-    await fetchData("POST", "/auth/login", userInfoObject);
+    const response = await fetchData("POST", "/auth/login", userInfoObject);
+    return response;
   }
 
   const { mutate } = useMutation(handleGoogleLogin, {
-    onSuccess: () => {
+    onSuccess: result => {
+      const { data } = result;
+
+      onSuccess(data.userId);
+      setIsLoggedIn(true);
       navigate("/dashboard");
     },
     onFailure: () => {
