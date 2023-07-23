@@ -62,8 +62,14 @@ function CreateDB({ user }) {
 
   async function handleClickSave() {
     if (!dbName) {
-      alert("Please insert database name");
+      alert("Database's name cannot be empty");
     }
+
+    fields.forEach(element => {
+      if (!element.name) {
+        alert("Field's name cannot be empty");
+      }
+    });
 
     const createDatabaseObj = {
       dbName,
