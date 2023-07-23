@@ -9,6 +9,7 @@ function fetchData(method, url, data) {
     url,
     data,
     baseURL,
+    withCredentials: true,
   });
 
   return response;
