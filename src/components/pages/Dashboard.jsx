@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPortal } from "react-dom";
 
 import Button from "../shared/Button";
 
-function Dashboard() {
-  const [showModal, setShowModal] = useState(false);
+function Dashboard({ toggleModal }) {
   const navigate = useNavigate();
   const database = [];
 
@@ -19,18 +16,11 @@ function Dashboard() {
       <Button
         className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
         onClick={() => {
-          setShowModal(!showModal);
+          toggleModal();
         }}
       >
         Click here to get Started!
       </Button>
-      {showModal &&
-        createPortal(
-          <div className="fixed w-[150px] h-[150px] border-2 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-opacity-50">
-            hi, I am modal.
-          </div>,
-          document.body,
-        )}
     </div>
   );
 }
