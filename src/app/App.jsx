@@ -6,10 +6,13 @@ import Login from "../components/pages/Login";
 import Header from "../components/Header";
 import Dashboard from "../components/pages/Dashboard";
 import Sidebar from "../components/Sidebar";
+import CreateDBModal from "../components/Modals/CreateDBModal";
+import Modal from "../components/shared/Modal";
 
 function App() {
   const [user, setUser] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     async function checkLoginStatus() {
@@ -30,11 +33,15 @@ function App() {
     checkLoginStatus();
   }, [isLoggedIn]);
 
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <Header />
       <div className="flex flex-1">
-        <Sidebar />
+        <Sidebar toggleModal={toggleModal} />
         <div className="flex grow justify-center">
           <Routes>
             <Route
@@ -43,9 +50,17 @@ function App() {
                 <Login onSuccess={setUser} setIsLoggedIn={setIsLoggedIn} />
               }
             />
-            <Route path="/dashboard" element={<Dashboard user={user} />} />
+            <Route
+              path="/dashboard"
+              element={<Dashboard user={user} toggleModal={toggleModal} />}
+            />
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
+          {showModal && (
+            <Modal onClick={toggleModal}>
+              <CreateDBModal user={user} toggleModal={toggleModal} />
+            </Modal>
+          )}
         </div>
       </div>
     </div>

@@ -34,6 +34,7 @@ module.exports = {
     "react/prop-types": "off",
     "react/button-has-type": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
     "react/self-closing-comp": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": ["warn", { extensions: [".js", ".jsx"] }],
