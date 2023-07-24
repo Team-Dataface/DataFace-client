@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { v4 as uuidv4 } from "uuid";
+import PropTypes from "prop-types";
 
 import { useMutation } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
@@ -13,12 +12,12 @@ import CONSTANT from "../../constants/constant";
 
 const { maxDatabaseNameLength } = CONSTANT;
 
-function CreateDB({ user }) {
+function CreateDB({ user, toggleModal }) {
   const navigate = useNavigate();
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useState([
     {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       name: "",
       type: "Text",
     },
@@ -42,7 +41,7 @@ function CreateDB({ user }) {
     setFields([
       ...fields,
       {
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         name: "",
         type: "Text",
       },
@@ -50,7 +49,7 @@ function CreateDB({ user }) {
   }
 
   function handleClickDeleteField(index) {
-    if ([...fields].length === 1) {
+    if (fields.length === 1) {
       return;
     }
 
@@ -71,16 +70,17 @@ function CreateDB({ user }) {
       }
     });
 
-    const createDatabaseObj = {
+    const newDatabase = {
       dbName,
       fields,
     };
 
-    await fetchData("POST", `/users/${user}/databases`, createDatabaseObj);
+    await fetchData("POST", `/users/${user}/databases`, newDatabase);
   }
 
   const { mutate } = useMutation(handleClickSave, {
     onSuccess: () => {
+      toggleModal();
       navigate("/dashboard/listview");
     },
     onFailure: () => {
@@ -140,5 +140,10 @@ function CreateDB({ user }) {
     </div>
   );
 }
+
+CreateDB.propTypes = {
+  user: PropTypes.string.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+};
 
 export default CreateDB;
