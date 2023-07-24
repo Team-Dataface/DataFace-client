@@ -6,13 +6,14 @@ import { useMutation } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
-import CreateFields from "./CreateFields";
+import Modal from "../shared/Modal";
+import CreateDBListSection from "./CreateDBListSection";
 
 import CONSTANT from "../../constants/constant";
 
 const { maxDatabaseNameLength } = CONSTANT;
 
-function CreateDB({ user, toggleModal }) {
+function CreateDBModal({ user, closeModal }) {
   const navigate = useNavigate();
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useState([
@@ -75,12 +76,12 @@ function CreateDB({ user, toggleModal }) {
       fields,
     };
 
+    closeModal();
     await fetchData("POST", `/users/${user}/databases`, newDatabase);
   }
 
   const { mutate } = useMutation(handleClickSave, {
     onSuccess: () => {
-      toggleModal();
       navigate("/dashboard/listview");
     },
     onFailure: () => {
@@ -89,61 +90,63 @@ function CreateDB({ user, toggleModal }) {
   });
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="flex text-xl font-bold mb-5">Create New Database</h1>
-      <div className="flex justify-center">
-        <div className="flex flex-col items-end w-auto h-auto mr-3">
-          <div className="flex items-center h-16">
-            <span className="flex items-center">Database Name</span>
-          </div>
-          <div className="flex items-center h-16">
-            <span className="h-7">Fields Name</span>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center items-center h-auto">
-          <div className="flex justify-center items-center w-full h-16 p-3">
-            <div className="flex justify-center items-center w-full p-1 px-3 rounded-lg ring-2 ring-grey">
-              <input
-                className="flex w-full h-7 rounded-lg text-center"
-                maxLength={maxDatabaseNameLength}
-                onChange={event => setdbName(event.target.value)}
-              />
+    <Modal onClick={closeModal}>
+      <div className="flex flex-col items-center">
+        <h1 className="flex text-xl font-bold mb-5">Create New Database</h1>
+        <div className="flex justify-center">
+          <div className="flex flex-col items-end w-auto h-auto mr-3">
+            <div className="flex items-center h-16">
+              <span className="flex items-center">Database Name</span>
+            </div>
+            <div className="flex items-center h-16">
+              <span className="h-7">Fields Name</span>
             </div>
           </div>
-          <div className="flex">
-            <div className="flex flex-col items-center p-3">
-              <CreateFields
-                fields={fields}
-                updateFieldName={updateFieldName}
-                updateFieldType={updateFieldType}
-                handleClickDeleteField={handleClickDeleteField}
-              />
-              <Button
-                className="flex justify-center items-center w-full mb-5 p-1 px-3 rounded-lg ring-2 ring-grey"
-                onClick={handleClickAddField}
-              >
-                <div className="h-7"></div>
-                <img src="/assets/add_icon.svg" alt="add icon" />
-              </Button>
+          <div className="flex flex-col justify-center items-center h-auto">
+            <div className="flex justify-center items-center w-full h-16 p-3">
+              <div className="flex justify-center items-center w-full p-1 px-3 rounded-lg ring-2 ring-grey">
+                <input
+                  className="flex w-full h-7 rounded-lg text-center"
+                  maxLength={maxDatabaseNameLength}
+                  onChange={event => setdbName(event.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex flex-col items-center p-3">
+                <CreateDBListSection
+                  fields={fields}
+                  updateFieldName={updateFieldName}
+                  updateFieldType={updateFieldType}
+                  handleClickDeleteField={handleClickDeleteField}
+                />
+                <Button
+                  className="flex justify-center items-center w-full mb-5 p-1 px-3 rounded-lg ring-2 ring-grey"
+                  onClick={handleClickAddField}
+                >
+                  <div className="h-7"></div>
+                  <img src="assets/add_icon.svg" alt="add button" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+        <div>
+          <Button
+            className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
+            onClick={mutate}
+          >
+            Submit
+          </Button>
+        </div>
       </div>
-      <div>
-        <Button
-          className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-          onClick={mutate}
-        >
-          Submit
-        </Button>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
-CreateDB.propTypes = {
+CreateDBModal.propTypes = {
   user: PropTypes.string.isRequired,
-  toggleModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
-export default CreateDB;
+export default CreateDBModal;

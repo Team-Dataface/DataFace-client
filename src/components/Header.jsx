@@ -16,7 +16,7 @@ function Header({ clickHandleLogout }) {
       </div>
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
-        <Toolbar />
+        <Toolbar user={user} />
         <SaveButton />
       </div>
     </div>

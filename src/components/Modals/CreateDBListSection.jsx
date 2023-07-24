@@ -7,7 +7,7 @@ import CONSTANT from "../../constants/constant";
 
 const { maxFieldNameLength, fieldTypes } = CONSTANT;
 
-function CreateFields({
+function CreateDBListSection({
   fields,
   updateFieldName,
   updateFieldType,
@@ -42,7 +42,7 @@ function CreateFields({
   });
 }
 
-CreateFields.propTypes = {
+CreateDBListSection.propTypes = {
   fields: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -54,4 +54,4 @@ CreateFields.propTypes = {
   handleClickDeleteField: PropTypes.func,
 };
 
-export default CreateFields;
+export default CreateDBListSection;
