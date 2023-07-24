@@ -1,11 +1,9 @@
-import CONSTANT from "../../constants/constant";
+import PropTypes from "prop-types";
 
-const { fieldTypes } = CONSTANT;
-
-function Select() {
+function Select({ options }) {
   return (
     <select className="flex items-center w-[140px] h-7 mr-2 p-1 px-2 bg-light-grey text-center">
-      {fieldTypes.map(option => (
+      {options.map(option => (
         <option key={option} value={option}>
           {option}
         </option>
@@ -13,5 +11,9 @@ function Select() {
     </select>
   );
 }
+
+Select.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default Select;

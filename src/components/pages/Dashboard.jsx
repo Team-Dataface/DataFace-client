@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import { useNavigate } from "react-router-dom";
 
 import Button from "../shared/Button";
@@ -24,5 +26,9 @@ function Dashboard({ toggleModal }) {
     </div>
   );
 }
+
+Dashboard.propTypes = {
+  toggleModal: PropTypes.func.isRequired,
+};
 
 export default Dashboard;

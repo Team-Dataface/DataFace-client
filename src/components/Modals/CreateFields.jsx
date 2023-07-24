@@ -1,9 +1,11 @@
+import PropTypes from "prop-types";
+
 import Select from "../shared/Select";
 import Button from "../shared/Button";
 
 import CONSTANT from "../../constants/constant";
 
-const { maxFieldNameLength } = CONSTANT;
+const { maxFieldNameLength, fieldTypes } = CONSTANT;
 
 function CreateFields({
   fields,
@@ -24,7 +26,10 @@ function CreateFields({
             value={element.name}
             onChange={event => updateFieldName(index, event)}
           />
-          <Select onChange={event => updateFieldType(index, event)} />
+          <Select
+            options={fieldTypes}
+            onChange={event => updateFieldType(index, event)}
+          />
           <Button
             className="flex justify-center items-center"
             onClick={() => handleClickDeleteField(index)}
@@ -36,5 +41,17 @@ function CreateFields({
     );
   });
 }
+
+CreateFields.propTypes = {
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  updateFieldName: PropTypes.func,
+  updateFieldType: PropTypes.func,
+  handleClickDeleteField: PropTypes.func,
+};
 
 export default CreateFields;
