@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { createPortal } from "react-dom";
 import { useState, useEffect } from "react";
 
 import authUser from "../utils/authUser";
@@ -57,13 +56,11 @@ function App() {
             />
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
-          {showModal &&
-            createPortal(
-              <Modal onClick={toggleModal}>
-                <CreateDBModal user={user} />
-              </Modal>,
-              document.body,
-            )}
+          {showModal && (
+            <Modal onClick={toggleModal}>
+              <CreateDBModal user={user} toggleModal={toggleModal} />
+            </Modal>
+          )}
         </div>
       </div>
     </div>
