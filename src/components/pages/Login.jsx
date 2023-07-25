@@ -7,7 +7,7 @@ import { firebaseAuth } from "../../app/firebaseAuth";
 
 import Button from "../shared/Button";
 
-function Login({ onSuccess, setIsLoggedIn }) {
+function Login({ onSuccess }) {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
@@ -23,12 +23,11 @@ function Login({ onSuccess, setIsLoggedIn }) {
     return response;
   }
 
-  const { mutate } = useMutation(handleGoogleLogin, {
+  const { mutate: fetchLogin } = useMutation(handleGoogleLogin, {
     onSuccess: result => {
       const { data } = result;
 
       onSuccess(data.userId);
-      setIsLoggedIn(true);
       navigate("/dashboard");
     },
     onFailure: () => {
@@ -48,7 +47,7 @@ function Login({ onSuccess, setIsLoggedIn }) {
       </h1>
       <Button
         className="flex items-center w-[230px] h-[55px] p-1 rounded-[5px] bg-google-blue drop-shadow-md hover:bg-google-blue-hover"
-        onClick={mutate}
+        onClick={fetchLogin}
       >
         <>
           <div className="flex justify-center items-center w-[48px] h-[48px] p-15 rounded-[5px] bg-white">
