@@ -10,6 +10,7 @@ import Sidebar from "../components/Sidebar";
 
 function App() {
   const [user, setUser] = useState("");
+  const [currentDBId, setCurrentDBId] = useState("");
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -35,9 +36,21 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen">
-      {user ? <Header user={user} clickHandleLogout={setUser} /> : null}
+      {user ? (
+        <Header
+          user={user}
+          clickHandleLogout={setUser}
+          currentDBId={currentDBId}
+        />
+      ) : null}
       <div className="flex flex-1">
-        {user ? <Sidebar user={user} /> : null}
+        {user ? (
+          <Sidebar
+            user={user}
+            currentDBId={currentDBId}
+            setCurrentDBId={setCurrentDBId}
+          />
+        ) : null}
         <div className="flex grow justify-center">
           <Routes>
             <Route path="/login" element={<Login setUser={setUser} />} />

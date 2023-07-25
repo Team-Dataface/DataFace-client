@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
@@ -17,6 +17,7 @@ import CONSTANT from "../../constants/constant";
 const { maxDatabaseNameLength } = CONSTANT;
 
 function CreateDBModal({ user, closeModal }) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useState([
@@ -84,6 +85,7 @@ function CreateDBModal({ user, closeModal }) {
 
   const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
     onSuccess: () => {
+      queryClient.refetchQueries(["userDbList"]);
       navigate("/dashboard/listview");
       closeModal();
     },
