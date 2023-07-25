@@ -1,20 +1,21 @@
+import PropTypes from "prop-types";
+
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
 
 function LogoutButton({ clickHandleLogout }) {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   async function handleGoogleLogout() {
     await fetchData("POST", "/auth/logout");
   }
 
-  const { mutate } = useMutation(handleGoogleLogout, {
+  const { mutate: fetchLogout } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
       clickHandleLogout("");
       queryClient.clear();
@@ -29,7 +30,7 @@ function LogoutButton({ clickHandleLogout }) {
     <div className="flex justify-center w-20">
       <Button
         className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-        onClick={mutate}
+        onClick={fetchLogout}
       >
         Logout
       </Button>

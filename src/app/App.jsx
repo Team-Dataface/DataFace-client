@@ -7,6 +7,7 @@ import Login from "../components/pages/Login";
 import Header from "../components/Header";
 import Dashboard from "../components/pages/Dashboard";
 import Sidebar from "../components/Sidebar";
+import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
@@ -28,6 +29,7 @@ function App() {
       setUser("");
       return navigate("/login");
     },
+    staleTime: CONSTANT.oneHourInMillisecond,
   });
 
   if (isLoading) {
