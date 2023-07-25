@@ -5,7 +5,7 @@ import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
 
-function LogoutButton() {
+function LogoutButton({ clickHandleLogout }) {
   const navigate = useNavigate();
 
   async function handleGoogleLogout() {
@@ -14,6 +14,7 @@ function LogoutButton() {
 
   const { mutate } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
+      clickHandleLogout(false);
       navigate("/login");
     },
     onFailure: () => {

@@ -123,7 +123,7 @@ function CreateDB({ user, toggleModal }) {
                 onClick={handleClickAddField}
               >
                 <div className="h-7"></div>
-                <img src="assets/add_icon.svg" alt="add button" />
+                <img src="/assets/add_icon.svg" alt="add icon" />
               </Button>
             </div>
           </div>
