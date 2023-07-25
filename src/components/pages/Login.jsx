@@ -1,13 +1,14 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 import { firebaseAuth } from "../../app/firebaseAuth";
 
 import Button from "../shared/Button";
 
-function Login({ onSuccess }) {
+function Login({ setUser }) {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
@@ -20,6 +21,7 @@ function Login({ onSuccess }) {
     };
 
     const response = await fetchData("POST", "/auth/login", userInfoObject);
+
     return response;
   }
 
@@ -27,7 +29,7 @@ function Login({ onSuccess }) {
     onSuccess: result => {
       const { data } = result;
 
-      onSuccess(data.userId);
+      setUser(data.userId);
       navigate("/dashboard");
     },
     onFailure: () => {
@@ -65,5 +67,9 @@ function Login({ onSuccess }) {
     </div>
   );
 }
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
 
 export default Login;
