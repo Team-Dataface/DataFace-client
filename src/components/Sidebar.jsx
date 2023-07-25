@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 
 import Button from "./shared/Button";
+import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ user, toggleModal }) {
+function Sidebar({ user }) {
+  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${user}/databases`);
 
@@ -59,7 +63,7 @@ function Sidebar({ user, toggleModal }) {
       <div className="flex justify-center">
         <Button
           className="flex justify-center w-48 text-sm items-center rounded-full text-white bg-black-bg hover:bg-dark-grey"
-          onClick={toggleModal}
+          onClick={() => setShowCreateDBModal(true)}
         >
           <img
             className="flex justify-between items-center mr-2 w-4"
@@ -69,6 +73,12 @@ function Sidebar({ user, toggleModal }) {
           New Database
         </Button>
       </div>
+      {showCreateDBModal && (
+        <CreateDBModal
+          user={user}
+          closeModal={() => setShowCreateDBModal(false)}
+        />
+      )}
     </div>
   );
 }
