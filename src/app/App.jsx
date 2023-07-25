@@ -7,12 +7,9 @@ import Login from "../components/pages/Login";
 import Header from "../components/Header";
 import Dashboard from "../components/pages/Dashboard";
 import Sidebar from "../components/Sidebar";
-import CreateDBModal from "../components/Modals/CreateDBModal";
-import Modal from "../components/shared/Modal";
 
 function App() {
   const [user, setUser] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -36,29 +33,17 @@ function App() {
     return <h1>Loading...</h1>;
   }
 
-  function toggleModal() {
-    setShowModal(!showModal);
-  }
-
   return (
     <div className="flex flex-col h-screen">
-      {user ? <Header /> : null}
+      {user ? <Header user={user} clickHandleLogout={setUser} /> : null}
       <div className="flex flex-1">
-        {user ? <Sidebar user={user} toggleModal={toggleModal} /> : null}
+        {user ? <Sidebar user={user} /> : null}
         <div className="flex grow justify-center">
           <Routes>
             <Route path="/login" element={<Login setUser={setUser} />} />
-            <Route
-              path="/dashboard"
-              element={<Dashboard user={user} toggleModal={toggleModal} />}
-            />
+            <Route path="/dashboard" element={<Dashboard user={user} />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
-          {showModal && (
-            <Modal onClick={toggleModal}>
-              <CreateDBModal user={user} toggleModal={toggleModal} />
-            </Modal>
-          )}
         </div>
       </div>
     </div>

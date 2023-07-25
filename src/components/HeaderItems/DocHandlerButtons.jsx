@@ -1,6 +1,12 @@
-import Button from "../shared/Button";
+import { useState } from "react";
+import PropTypes from "prop-types";
 
-function DocHandlerButtons() {
+import Button from "../shared/Button";
+import AddDocumentModal from "../Modals/AddDocumentModal";
+
+function DocHandlerButtons({ user }) {
+  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
+
   return (
     <div className="flex items-center">
       <Button className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey">
@@ -12,14 +18,29 @@ function DocHandlerButtons() {
       <Button className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey">
         <img src="/assets/right_icon.svg" alt="right icon" />
       </Button>
-      <Button className="flex justify-center items-center w-8 h-8 mr-1 rounded-md bg-white hover:bg-yellow">
+      <Button
+        className="flex justify-center items-center w-8 h-8 mr-1 rounded-md bg-white hover:bg-yellow"
+        onClick={() => {
+          setShowAddDocumentModal(true);
+        }}
+      >
         <img src="/assets/plus_icon.svg" alt="plus icon" />
       </Button>
       <Button className="flex justify-center items-center w-8 h-8 rounded-md bg-white hover:bg-yellow">
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
+      {showAddDocumentModal && (
+        <AddDocumentModal
+          user={user}
+          closeModal={() => setShowAddDocumentModal(false)}
+        />
+      )}
     </div>
   );
 }
+
+DocHandlerButtons.propTypes = {
+  user: PropTypes.string.isRequired,
+};
 
 export default DocHandlerButtons;

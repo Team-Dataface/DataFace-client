@@ -1,12 +1,15 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 import { useNavigate } from "react-router-dom";
 
 import Button from "../shared/Button";
+import CreateDBModal from "../Modals/CreateDBModal";
 
-function Dashboard({ toggleModal }) {
+function Dashboard({ user }) {
   const navigate = useNavigate();
   const database = [];
+  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return database.length ? (
     navigate("/dashboard/listView")
@@ -16,19 +19,25 @@ function Dashboard({ toggleModal }) {
         No Database yet.
       </h1>
       <Button
-        className="w-[250px] h-[30px] rounded-full bg-black-bg text-white hover:bg-dark-grey"
+        className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
         onClick={() => {
-          toggleModal();
+          setShowCreateDBModal(true);
         }}
       >
         Click here to get Started!
       </Button>
+      {showCreateDBModal && (
+        <CreateDBModal
+          user={user}
+          closeModal={() => setShowCreateDBModal(false)}
+        />
+      )}
     </div>
   );
 }
 
 Dashboard.propTypes = {
-  toggleModal: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 export default Dashboard;

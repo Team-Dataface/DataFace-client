@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
@@ -33,5 +35,9 @@ function LogoutButton({ clickHandleLogout }) {
     </div>
   );
 }
+
+LogoutButton.propTypes = {
+  clickHandleLogout: PropTypes.func.isRequired,
+};
 
 export default LogoutButton;

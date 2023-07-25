@@ -1,8 +1,10 @@
+import PropTypes from "prop-types";
+
 import LogoutButton from "./HeaderItems/LogoutButton";
 import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
-function Header({ clickHandleLogout }) {
+function Header({ user, clickHandleLogout }) {
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
       <div className="flex flex-row justify-between items-center h-[50px] p-3 bg-black-bg">
@@ -16,11 +18,16 @@ function Header({ clickHandleLogout }) {
       </div>
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
-        <Toolbar />
+        <Toolbar user={user} />
         <SaveButton />
       </div>
     </div>
   );
 }
+
+Header.propTypes = {
+  user: PropTypes.string.isRequired,
+  clickHandleLogout: PropTypes.func.isRequired,
+};
 
 export default Header;
