@@ -35,6 +35,9 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
     onSuccess: result => {
       setCurrentDBId(result.data.databases[0]._id);
     },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
     refetchOnWindowFocus: false,
   });
 
