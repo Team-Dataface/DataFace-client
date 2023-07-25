@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import Proptypes from "prop-types";
+import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 
@@ -22,17 +22,12 @@ function Sidebar({ user, toggleModal }) {
     return <h1>Loading</h1>;
   }
 
-  function test(id) {
-    console.log(`database id: ${id}`);
-  }
-
   function renderDatabaseList() {
     return data.data.databases.map(element => {
       return (
         <Button
           key={element._id}
-          className="flex justify-between items-center w-full  hover:bg-grey active:bg-yellow"
-          onClick={() => test(element._id)}
+          className="flex justify-between items-center w-full hover:bg-grey active:bg-yellow"
         >
           <div className="flex">
             <img
@@ -78,8 +73,8 @@ function Sidebar({ user, toggleModal }) {
   );
 }
 
-Sidebar.proptTypes = {
-  user: Proptypes.string.isRequired,
+Sidebar.propTypes = {
+  user: PropTypes.string.isRequired,
 };
 
 export default Sidebar;

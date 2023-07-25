@@ -47,7 +47,7 @@ function App() {
         {user ? <Sidebar user={user} toggleModal={toggleModal} /> : null}
         <div className="flex grow justify-center">
           <Routes>
-            <Route path="/login" element={<Login onSuccess={setUser} />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
             <Route
               path="/dashboard"
               element={<Dashboard user={user} toggleModal={toggleModal} />}

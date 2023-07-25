@@ -8,7 +8,7 @@ import { firebaseAuth } from "../../app/firebaseAuth";
 
 import Button from "../shared/Button";
 
-function Login({ onSuccess }) {
+function Login({ setUser }) {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
@@ -29,7 +29,7 @@ function Login({ onSuccess }) {
     onSuccess: result => {
       const { data } = result;
 
-      onSuccess(data.userId);
+      setUser(data.userId);
       navigate("/dashboard");
     },
     onFailure: () => {
@@ -70,7 +70,6 @@ function Login({ onSuccess }) {
 
 Login.propTypes = {
   setUser: PropTypes.func.isRequired,
-  clickHandleLogin: PropTypes.func.isRequired,
 };
 
 export default Login;

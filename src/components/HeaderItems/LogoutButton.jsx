@@ -14,7 +14,7 @@ function LogoutButton({ clickHandleLogout }) {
 
   const { mutate } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
-      clickHandleLogout(false);
+      clickHandleLogout("");
       navigate("/login");
     },
     onFailure: () => {
