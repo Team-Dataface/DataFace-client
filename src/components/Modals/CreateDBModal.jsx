@@ -82,7 +82,7 @@ function CreateDBModal({ user, closeModal }) {
     await fetchData("POST", `/users/${user}/databases`, newDatabase);
   }
 
-  const { mutate } = useMutation(handleClickSave, {
+  const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
     onSuccess: () => {
       navigate("/dashboard/listview");
       closeModal();
@@ -135,7 +135,7 @@ function CreateDBModal({ user, closeModal }) {
         </div>
         <Button
           className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-          onClick={mutate}
+          onClick={fetchDatabaseSave}
         >
           Submit
         </Button>

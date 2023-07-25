@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
-import { useMutation } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
@@ -39,7 +39,7 @@ function AddDocumentModal({ user, closeModal }) {
     );
   }
 
-  const { mutate } = useMutation(handleClickSave, {
+  const { mutate: fetchDocumentSave } = useMutation(handleClickSave, {
     onSuccess: () => {
       navigate("/dashboard/listview");
       closeModal();
@@ -66,7 +66,7 @@ function AddDocumentModal({ user, closeModal }) {
         <div>
           <Button
             className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-            onClick={mutate}
+            onClick={fetchDocumentSave}
           >
             Submit
           </Button>
