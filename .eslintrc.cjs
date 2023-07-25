@@ -39,6 +39,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": ["warn", { extensions: [".js", ".jsx"] }],
     "no-param-reassign": 0,
+    "no-underscore-dangle": "off",
   },
   settings: {
     react: {
