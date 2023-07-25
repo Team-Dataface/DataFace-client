@@ -5,6 +5,7 @@ import CreateDBModal from "../Modals/CreateDBModal";
 
 function NoDatabase({ user }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+
   return (
     <>
       <h1 className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[3rem]">
