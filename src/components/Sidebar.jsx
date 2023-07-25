@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import PropTypes from "prop-types";
@@ -9,12 +9,7 @@ import CreateDBModal from "./Modals/CreateDBModal";
 
 function Sidebar({ user, currentDBId, setCurrentDBId }) {
   const queryClient = useQueryClient();
-  const [firstDatabaseId, setFirstDatabaseId] = useState("");
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
-
-  useEffect(() => {
-    setCurrentDBId(firstDatabaseId);
-  }, [firstDatabaseId]);
 
   async function deleteDatabase(databaseId) {
     await fetchData("DELETE", `/users/${user}/databases/${databaseId}`);
@@ -37,12 +32,10 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
 
   const { data, isLoading } = useQuery(["userDbList"], getDatabaseList, {
     enabled: !!user,
-    onSuccess: () => {
-      setFirstDatabaseId(data.data.databases[0]._id);
+    onSuccess: result => {
+      setCurrentDBId(result.data.databases[0]._id);
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
