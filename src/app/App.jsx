@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import authUser from "../utils/authUser";
 import Login from "../components/pages/Login";
@@ -11,27 +12,29 @@ import Modal from "../components/shared/Modal";
 
 function App() {
   const [user, setUser] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    async function checkLoginStatus() {
-      try {
-        const response = await authUser();
-        const { success, userId } = response.data;
+  const { isLoading } = useQuery(["authStatus"], authUser, {
+    retry: 1,
+    onSuccess: response => {
+      const { success, userId } = response.data;
 
-        if (success) {
-          setUser(userId);
-        } else {
-          setUser("");
-        }
-      } catch (error) {
-        console.log("send user to Error page");
+      if (success) {
+        setUser(userId);
+      } else {
+        setUser("");
       }
-    }
+    },
+    onError: () => {
+      setUser("");
+      return navigate("/login");
+    },
+  });
 
-    checkLoginStatus();
-  }, [isLoggedIn]);
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   function toggleModal() {
     setShowModal(!showModal);
@@ -39,17 +42,12 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      {user ? <Header /> : null}
       <div className="flex flex-1">
-        <Sidebar toggleModal={toggleModal} />
+        {user ? <Sidebar user={user} toggleModal={toggleModal} /> : null}
         <div className="flex grow justify-center">
           <Routes>
-            <Route
-              path="/login"
-              element={
-                <Login onSuccess={setUser} setIsLoggedIn={setIsLoggedIn} />
-              }
-            />
+            <Route path="/login" element={<Login onSuccess={setUser} />} />
             <Route
               path="/dashboard"
               element={<Dashboard user={user} toggleModal={toggleModal} />}
