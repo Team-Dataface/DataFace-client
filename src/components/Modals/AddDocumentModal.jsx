@@ -7,13 +7,14 @@ import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
+import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
 function AddDocumentModal({ user, closeModal }) {
   const navigate = useNavigate();
   const [fields, setFields] = useState([
     { field_id: "asdfb1jg", name: "악기 이름", value: "" },
-    { field_id: "asdfb2cd", name: "연습한 횟수", value: "" },
+    { field_id: "asdfb2cd", name: "연습 횟수", value: "" },
     { field_id: "asdfb2ad", name: "시작 시간", value: "" },
   ]);
 
@@ -31,7 +32,6 @@ function AddDocumentModal({ user, closeModal }) {
       fields,
     };
 
-    closeModal();
     await fetchData(
       "POST",
       `/users/${user}/databases/${databaseId}/documents`,
@@ -42,6 +42,7 @@ function AddDocumentModal({ user, closeModal }) {
   const { mutate } = useMutation(handleClickSave, {
     onSuccess: () => {
       navigate("/dashboard/listview");
+      closeModal();
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -51,7 +52,7 @@ function AddDocumentModal({ user, closeModal }) {
   return (
     <Modal onClick={closeModal}>
       <div className="flex flex-col items-center">
-        <h1 className="flex text-xl font-bold mb-5">Add New Document</h1>
+        <ModalTitle value="Add New Document" />
         <div className="flex flex-col justify-center items-center h-auto">
           <div className="flex">
             <div className="flex flex-col items-center p-3">

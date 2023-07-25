@@ -8,6 +8,9 @@ import fetchData from "../../utils/axios";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 import CreateDBListSection from "./CreateDBListSection";
+import ModalTitle from "./ModalTitle";
+import ModalLabel from "./ModalLabel";
+import ModalInputArea from "./ModalInputArea";
 
 import CONSTANT from "../../constants/constant";
 
@@ -76,13 +79,13 @@ function CreateDBModal({ user, closeModal }) {
       fields,
     };
 
-    closeModal();
     await fetchData("POST", `/users/${user}/databases`, newDatabase);
   }
 
   const { mutate } = useMutation(handleClickSave, {
     onSuccess: () => {
       navigate("/dashboard/listview");
+      closeModal();
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -92,53 +95,50 @@ function CreateDBModal({ user, closeModal }) {
   return (
     <Modal onClick={closeModal}>
       <div className="flex flex-col items-center">
-        <h1 className="flex text-xl font-bold mb-5">Create New Database</h1>
+        <ModalTitle value="Create New Database" />
         <div className="flex justify-center">
-          <div className="flex flex-col items-end w-auto h-auto mr-3">
-            <div className="flex items-center h-16">
-              <span className="flex items-center">Database Name</span>
-            </div>
-            <div className="flex items-center h-16">
-              <span className="h-7">Fields Name</span>
-            </div>
+          <div className="flex flex-col w-auto h-auto">
+            <ModalLabel value="Database Name" />
+            <ModalLabel value="Fields Name" />
           </div>
           <div className="flex flex-col justify-center items-center h-auto">
-            <div className="flex justify-center items-center w-full h-16 p-3">
-              <div className="flex justify-center items-center w-full p-1 px-3 rounded-lg ring-2 ring-grey">
+            <div className="flex justify-center items-center w-full p-2">
+              <ModalInputArea>
                 <input
                   className="flex w-full h-7 rounded-lg text-center"
                   maxLength={maxDatabaseNameLength}
                   onChange={event => setdbName(event.target.value)}
                 />
-              </div>
+              </ModalInputArea>
             </div>
             <div className="flex">
-              <div className="flex flex-col items-center p-3">
-                <CreateDBListSection
-                  fields={fields}
-                  updateFieldName={updateFieldName}
-                  updateFieldType={updateFieldType}
-                  handleClickDeleteField={handleClickDeleteField}
-                />
-                <Button
-                  className="flex justify-center items-center w-full mb-5 p-1 px-3 rounded-lg ring-2 ring-grey"
-                  onClick={handleClickAddField}
-                >
-                  <div className="h-7"></div>
-                  <img src="assets/add_icon.svg" alt="add button" />
-                </Button>
+              <div className="flex flex-col items-center">
+                <div className="mb-5 p-2">
+                  <CreateDBListSection
+                    fields={fields}
+                    updateFieldName={updateFieldName}
+                    updateFieldType={updateFieldType}
+                    handleClickDeleteField={handleClickDeleteField}
+                  />
+                  <ModalInputArea>
+                    <Button
+                      className="flex justify-center items-center h-7 p-2"
+                      onClick={handleClickAddField}
+                    >
+                      <img src="assets/add_icon.svg" alt="add button" />
+                    </Button>
+                  </ModalInputArea>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div>
-          <Button
-            className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-            onClick={mutate}
-          >
-            Submit
-          </Button>
-        </div>
+        <Button
+          className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
+          onClick={mutate}
+        >
+          Submit
+        </Button>
       </div>
     </Modal>
   );

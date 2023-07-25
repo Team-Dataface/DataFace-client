@@ -1,24 +1,24 @@
 import PropTypes from "prop-types";
 
+import ModalLabel from "./ModalLabel";
+import ModalInputArea from "./ModalInputArea";
+
 function AddDocumentListSection({ fields, updateFieldValue }) {
   return fields.map((element, index) => {
     return (
-      <div key={element.fields_id} className="flex">
-        <div className="w-[150px]">
-          <div className="flex justify-end items-center mb-5 p-1 px-3">
-            <span className="h-7"></span>
-            {element.name}
-          </div>
+      <div key={element.field_id} className="flex">
+        <div className="w-[130px]">
+          <ModalLabel value={element.name} />
         </div>
-        <div className="flex justify-center items-center">
-          <div className="mb-5 p-1 px-3 rounded-md ring-2 ring-grey">
+        <div className="flex justify-center items-center px-3">
+          <ModalInputArea>
             <div className="flex flex-row justify-center items-center">
-              <input
-                className="flex h-7 w-[200px] rounded-md text-center"
+              <textarea
+                className="flex h-7 w-[300px] rounded-md text-center"
                 onChange={event => updateFieldValue(index, event)}
               />
             </div>
-          </div>
+          </ModalInputArea>
         </div>
       </div>
     );
@@ -28,7 +28,7 @@ function AddDocumentListSection({ fields, updateFieldValue }) {
 AddDocumentListSection.propTypes = {
   fields: PropTypes.arrayOf(
     PropTypes.shape({
-      fields_id: PropTypes.string.isRequired,
+      field_id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
