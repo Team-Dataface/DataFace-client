@@ -61,7 +61,9 @@ function App() {
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route
               path="/dashboard"
-              element={<ContentsContainer user={user} />}
+              element={
+                <ContentsContainer user={user} currentDBId={currentDBId} />
+              }
             >
               <Route path="listview" element={<ListView user={user} />} />
               <Route path="nodatabase" element={<NoDatabase user={user} />} />
