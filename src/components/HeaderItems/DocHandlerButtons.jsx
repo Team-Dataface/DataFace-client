@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Button from "../shared/Button";
 import AddDocumentModal from "../Modals/AddDocumentModal";
 
-function DocHandlerButtons({ user }) {
+function DocHandlerButtons({ user, currentDBId }) {
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
 
   return (
@@ -33,6 +33,7 @@ function DocHandlerButtons({ user }) {
         <AddDocumentModal
           user={user}
           closeModal={() => setShowAddDocumentModal(false)}
+          currentDBId={currentDBId}
         />
       )}
     </div>

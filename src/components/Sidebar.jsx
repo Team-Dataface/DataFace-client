@@ -54,6 +54,11 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
       return false;
     }
 
+    function switchDatabase(clickedDatabaseId) {
+      setCurrentDBId(clickedDatabaseId);
+      queryClient.refetchQueries(["userDb"]);
+    }
+
     return data.data.databases.map(element => {
       return (
         <div
@@ -65,7 +70,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
         >
           <Button
             className="w-full"
-            onClick={() => setCurrentDBId(element._id)}
+            onClick={() => switchDatabase(element._id)}
           >
             <div className="flex">
               <img

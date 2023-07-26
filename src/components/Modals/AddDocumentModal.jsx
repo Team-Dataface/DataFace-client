@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
@@ -10,15 +10,9 @@ import Modal from "../shared/Modal";
 import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
-function AddDocumentModal({ user, closeModal }) {
+function AddDocumentModal({ user, closeModal, currentDBId }) {
   const navigate = useNavigate();
-  const [fields, setFields] = useState([
-    { field_id: "asdfb1jg", name: "악기 이름", value: "" },
-    { field_id: "asdfb2cd", name: "연습 횟수", value: "" },
-    { field_id: "asdfb2ad", name: "시작 시간", value: "" },
-  ]);
-
-  const databaseId = "abc";
+  const [fields, setFields] = useState([]);
 
   function updateFieldValue(index, event) {
     const newArr = [...fields];
@@ -28,14 +22,10 @@ function AddDocumentModal({ user, closeModal }) {
   }
 
   async function handleClickSave() {
-    const newDatabase = {
-      fields,
-    };
-
     await fetchData(
       "POST",
-      `/users/${user}/databases/${databaseId}/documents`,
-      newDatabase,
+      `/users/${user}/databases/${currentDBId}/documents`,
+      fields,
     );
   }
 
@@ -48,6 +38,40 @@ function AddDocumentModal({ user, closeModal }) {
       console.log("sending user to errorpage");
     },
   });
+
+  async function getDatabase() {
+    const response = await fetchData(
+      "GET",
+      `users/${user}/databases/${currentDBId}`,
+    );
+
+    return response;
+  }
+
+  const { isLoading } = useQuery(["userDb"], getDatabase, {
+    enabled: !!user,
+    onSuccess: result => {
+      const newArr = [];
+
+      result.data.database.fields.map(element => {
+        return newArr.push({
+          field_id: element._id,
+          name: element.name,
+          value: "",
+        });
+      });
+
+      setFields(newArr);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return <h1>LOADING</h1>;
+  }
 
   return (
     <Modal onClick={closeModal}>
@@ -79,6 +103,7 @@ function AddDocumentModal({ user, closeModal }) {
 AddDocumentModal.propTypes = {
   user: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
+  currentDBId: PropTypes.string.isRequired,
 };
 
 export default AddDocumentModal;
