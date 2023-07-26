@@ -4,11 +4,11 @@ import RelationButton from "./RelationButton";
 import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 
-function Toolbar({ user }) {
+function Toolbar({ user, currentDBId }) {
   return (
     <div className="flex justify-between items-center w-full h-full mr-3 bg-black-bg">
       <RelationButton />
-      <DocHandlerButtons user={user} />
+      <DocHandlerButtons user={user} currentDBId={currentDBId} />
       <SwitchViewButtons />
     </div>
   );
@@ -16,6 +16,7 @@ function Toolbar({ user }) {
 
 Toolbar.propTypes = {
   user: PropTypes.string.isRequired,
+  currentDBId: PropTypes.string.isRequired,
 };
 
 export default Toolbar;
