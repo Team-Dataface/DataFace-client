@@ -34,11 +34,7 @@ function Dashboard({ user }) {
     return <h1>Loading</h1>;
   }
 
-  return (
-    <div className="flex flex-col justify-center items-center h-full">
-      <Outlet />
-    </div>
-  );
+  return <Outlet />;
 }
 
 Dashboard.propTypes = {
