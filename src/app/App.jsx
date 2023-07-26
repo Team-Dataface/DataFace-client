@@ -24,6 +24,7 @@ function App() {
 
       if (success) {
         setUser(userId);
+        navigate("/dashboard");
       } else {
         setUser("");
       }
@@ -61,12 +62,18 @@ function App() {
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route
               path="/dashboard"
-              element={
-                <ContentsContainer user={user} currentDBId={currentDBId} />
-              }
+              element={<ContentsContainer user={user} />}
             >
-              <Route path="listview" element={<ListView user={user} />} />
-              <Route path="nodatabase" element={<NoDatabase user={user} />} />
+              <Route
+                path="listview"
+                element={<ListView user={user} currentDBId={currentDBId} />}
+              />
+              <Route
+                path="nodatabase"
+                element={
+                  <NoDatabase user={user} setCurrentDBId={setCurrentDBId} />
+                }
+              />
             </Route>
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>

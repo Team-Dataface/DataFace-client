@@ -16,7 +16,7 @@ import CONSTANT from "../../constants/constant";
 
 const { maxDatabaseNameLength } = CONSTANT;
 
-function CreateDBModal({ user, closeModal }) {
+function CreateDBModal({ user, closeModal, setCurrentDBId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [dbName, setdbName] = useState(null);
@@ -80,11 +80,18 @@ function CreateDBModal({ user, closeModal }) {
       fields,
     };
 
-    await fetchData("POST", `/users/${user}/databases`, newDatabase);
+    const response = await fetchData(
+      "POST",
+      `/users/${user}/databases`,
+      newDatabase,
+    );
+
+    return response;
   }
 
   const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
-    onSuccess: () => {
+    onSuccess: result => {
+      setCurrentDBId(result.data.newDatabase._id);
       queryClient.refetchQueries(["userDbList"]);
       navigate("/dashboard/listview");
       closeModal();
@@ -127,7 +134,7 @@ function CreateDBModal({ user, closeModal }) {
                       className="flex justify-center items-center h-7 p-2"
                       onClick={handleClickAddField}
                     >
-                      <img src="assets/add_icon.svg" alt="add button" />
+                      <img src="/assets/add_icon.svg" alt="add button" />
                     </Button>
                   </ModalInputArea>
                 </div>

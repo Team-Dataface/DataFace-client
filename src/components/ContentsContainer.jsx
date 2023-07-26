@@ -4,14 +4,11 @@ import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 
-function ContentsContainer({ user, currentDBId }) {
+function ContentsContainer({ user }) {
   const navigate = useNavigate();
 
   async function getDatabaseList() {
-    const response = await fetchData(
-      "GET",
-      `users/${user}/databases/${currentDBId}`,
-    );
+    const response = await fetchData("GET", `users/${user}/databases`);
 
     return response;
   }
@@ -42,7 +39,6 @@ function ContentsContainer({ user, currentDBId }) {
 
 ContentsContainer.propTypes = {
   user: PropTypes.string.isRequired,
-  currentDBId: PropTypes.string.isRequired,
 };
 
 export default ContentsContainer;
