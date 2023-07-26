@@ -33,7 +33,11 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
   const { data, isLoading } = useQuery(["userDbList"], getDatabaseList, {
     enabled: !!user,
     onSuccess: result => {
-      setCurrentDBId(result.data.databases[0]._id);
+      if (result.data.databases.length) {
+        setCurrentDBId(result.data.databases[0]._id);
+      } else {
+        setCurrentDBId("");
+      }
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -96,7 +100,9 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
           <img className="mr-2" src="/assets/DB_icon.svg" alt="DB icon" />
           <p className="font-bold">{data.data.user.username}</p>
         </div>
-        <ul className="mb-3">{renderDatabaseList()}</ul>
+        {data.data.databases ? (
+          <ul className="mb-3">{renderDatabaseList()}</ul>
+        ) : null}
       </div>
       <div className="flex justify-center">
         <Button
@@ -115,6 +121,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId }) {
         <CreateDBModal
           user={user}
           closeModal={() => setShowCreateDBModal(false)}
+          setCurrentDBId={setCurrentDBId}
         />
       )}
     </div>

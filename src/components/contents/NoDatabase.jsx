@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateDBModal";
 
-function NoDatabase({ user }) {
+function NoDatabase({ user, setCurrentDBId }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return (
@@ -26,6 +26,7 @@ function NoDatabase({ user }) {
         <CreateDBModal
           user={user}
           closeModal={() => setShowCreateDBModal(false)}
+          setCurrentDBId={setCurrentDBId}
         />
       )}
     </div>

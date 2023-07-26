@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
-function ListView({ user }) {
+function ListView({ user, currentDBId }) {
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user}/databases/64bffed070febc17880c87eb`,
+      `users/${user}/databases/${currentDBId}`,
     );
 
     return response;
@@ -40,22 +41,29 @@ function ListView({ user }) {
               ))}
             </tr>
           </thead>
-          <tbody>
-            {documents.map((document, index) => (
-              <tr key={document._id} className="border h-16">
-                <td className="border p-2 text-center">{index + 1}</td>
-                {document.elements.map(element => (
-                  <td key={element._id} className="border p-4">
-                    {element.value}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
+          {document ? (
+            <tbody>
+              {documents.map((document, index) => (
+                <tr key={document._id} className="border h-16">
+                  <td className="border p-2 text-center">{index + 1}</td>
+                  {document.elements.map(element => (
+                    <td key={element._id} className="border p-4">
+                      {element.value}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ) : null}
         </table>
       </div>
     </div>
   );
 }
+
+ListView.propTypes = {
+  user: PropTypes.string.isRequired,
+  currentDBId: PropTypes.string.isRequired,
+};
 
 export default ListView;

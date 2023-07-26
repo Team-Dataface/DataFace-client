@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
@@ -11,6 +11,7 @@ import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
 function AddDocumentModal({ user, closeModal, currentDBId }) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [fields, setFields] = useState([]);
 
@@ -31,6 +32,7 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
 
   const { mutate: fetchDocumentSave } = useMutation(handleClickSave, {
     onSuccess: () => {
+      queryClient.refetchQueries(["dbDocumentList"]);
       navigate("/dashboard/listview");
       closeModal();
     },
