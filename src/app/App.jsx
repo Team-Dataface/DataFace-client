@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
-import Dashboard from "../components/ContentsContainer";
+import ContentsContainer from "../components/ContentsContainer";
 import Sidebar from "../components/Sidebar";
-import CONSTANT from "../constants/constant";
 import ListView from "../components/contents/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
+
+import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
@@ -58,7 +59,10 @@ function App() {
         <div className="flex grow justify-center">
           <Routes>
             <Route path="/login" element={<Login setUser={setUser} />} />
-            <Route path="/dashboard" element={<Dashboard user={user} />}>
+            <Route
+              path="/dashboard"
+              element={<ContentsContainer user={user} />}
+            >
               <Route path="listview" element={<ListView user={user} />} />
               <Route path="nodatabase" element={<NoDatabase user={user} />} />
             </Route>

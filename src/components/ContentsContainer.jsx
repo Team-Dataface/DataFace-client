@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 
-function Dashboard({ user }) {
+function ContentsContainer({ user }) {
   const navigate = useNavigate();
 
   async function getDatabaseList() {
@@ -37,8 +37,8 @@ function Dashboard({ user }) {
   return <Outlet />;
 }
 
-Dashboard.propTypes = {
+ContentsContainer.propTypes = {
   user: PropTypes.string.isRequired,
 };
 
-export default Dashboard;
+export default ContentsContainer;

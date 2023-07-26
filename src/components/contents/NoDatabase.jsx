@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateDBModal";
@@ -30,5 +31,9 @@ function NoDatabase({ user }) {
     </div>
   );
 }
+
+NoDatabase.propTypes = {
+  user: PropTypes.string.isRequired,
+};
 
 export default NoDatabase;
