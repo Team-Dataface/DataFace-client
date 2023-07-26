@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import PropTypes from "prop-types";
 import fetchData from "../utils/axios";
@@ -7,7 +7,8 @@ import fetchData from "../utils/axios";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ user }) {
+function Sidebar({ user, currentDBId, setCurrentDBId }) {
+  const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   async function deleteDatabase(databaseId) {
@@ -15,6 +16,9 @@ function Sidebar({ user }) {
   }
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
+    onSuccess: () => {
+      queryClient.refetchQueries(["userDbList"]);
+    },
     onFailure: () => {
       console.log("sending user to errorpage");
     },
@@ -28,9 +32,13 @@ function Sidebar({ user }) {
 
   const { data, isLoading } = useQuery(["userDbList"], getDatabaseList, {
     enabled: !!user,
+    onSuccess: result => {
+      setCurrentDBId(result.data.databases[0]._id);
+    },
     onFailure: () => {
       console.log("sending user to errorpage");
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -38,13 +46,27 @@ function Sidebar({ user }) {
   }
 
   function renderDatabaseList() {
+    function isActive(id) {
+      if (currentDBId === id) {
+        return true;
+      }
+
+      return false;
+    }
+
     return data.data.databases.map(element => {
       return (
         <div
           key={element._id}
-          className="flex justify-between items-center w-full hover:bg-grey active:bg-yellow"
+          className={`
+            flex justify-between items-center w-full hover:bg-grey
+            ${isActive(element._id) ? "bg-yellow" : ""}
+            `}
         >
-          <Button className="w-full">
+          <Button
+            className="w-full"
+            onClick={() => setCurrentDBId(element._id)}
+          >
             <div className="flex">
               <img
                 className="ml-6 mr-2"
@@ -96,6 +118,7 @@ function Sidebar({ user }) {
 
 Sidebar.propTypes = {
   user: PropTypes.string.isRequired,
+  setCurrentDBId: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
