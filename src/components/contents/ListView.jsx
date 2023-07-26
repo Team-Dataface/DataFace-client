@@ -41,20 +41,18 @@ function ListView({ user, currentDBId }) {
               ))}
             </tr>
           </thead>
-          {document ? (
-            <tbody>
-              {documents.map((document, index) => (
-                <tr key={document._id} className="border h-16">
-                  <td className="border p-2 text-center">{index + 1}</td>
-                  {document.elements.map(element => (
-                    <td key={element._id} className="border p-4">
-                      {element.value}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          ) : null}
+          <tbody>
+            {documents.map((document, index) => (
+              <tr key={document._id} className="border h-16">
+                <td className="border p-2 text-center">{index + 1}</td>
+                {document.elements.map(element => (
+                  <td key={element._id} className="border p-4">
+                    {element.value}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
