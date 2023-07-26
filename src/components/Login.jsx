@@ -3,10 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import fetchData from "../../utils/axios";
-import { firebaseAuth } from "../../app/firebaseAuth";
+import fetchData from "../utils/axios";
+import { firebaseAuth } from "../app/firebaseAuth";
 
-import Button from "../shared/Button";
+import Button from "./shared/Button";
 
 function Login({ setUser }) {
   const navigate = useNavigate();
