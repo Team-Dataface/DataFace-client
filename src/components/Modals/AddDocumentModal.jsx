@@ -48,17 +48,19 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
     return response;
   }
 
-  const { data, isLoading } = useQuery(["userDb"], getDatabase, {
+  const { isLoading } = useQuery(["userDb"], getDatabase, {
     enabled: !!user,
-    onSuccess: () => {
+    onSuccess: result => {
       const newArr = [];
-      data.data.database.fields.map(element => {
+
+      result.data.database.fields.map(element => {
         return newArr.push({
           field_id: element._id,
           name: element.name,
           value: "",
         });
       });
+
       setFields(newArr);
     },
     onFailure: () => {
@@ -68,7 +70,7 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
   });
 
   if (isLoading) {
-    return <h1>querying userDb... LOADING</h1>;
+    return <h1>LOADING</h1>;
   }
 
   return (

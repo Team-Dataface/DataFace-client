@@ -1,13 +1,13 @@
-import PropTypes from "prop-types";
-
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
 
 function LogoutButton({ clickHandleLogout }) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   async function handleGoogleLogout() {
@@ -17,6 +17,7 @@ function LogoutButton({ clickHandleLogout }) {
   const { mutate } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
       clickHandleLogout("");
+      queryClient.clear();
       navigate("/login");
     },
     onFailure: () => {
