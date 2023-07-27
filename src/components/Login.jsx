@@ -29,7 +29,7 @@ function Login({ setUser }) {
     onSuccess: result => {
       const { data } = result;
 
-      setUser(data.userId);
+      setUser(data.userInfo);
       navigate("/dashboard");
     },
     onFailure: () => {

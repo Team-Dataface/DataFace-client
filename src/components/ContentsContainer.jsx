@@ -8,7 +8,7 @@ function ContentsContainer({ user }) {
   const navigate = useNavigate();
 
   async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${user}/databases`);
+    const response = await fetchData("GET", `users/${user.userId}/databases`);
 
     return response;
   }
@@ -16,9 +16,7 @@ function ContentsContainer({ user }) {
   const { isLoading } = useQuery(["userDbList"], getDatabaseList, {
     enabled: !!user,
     onSuccess: result => {
-      const { data } = result;
-
-      if (!data.databases.length) {
+      if (!result.length) {
         navigate("/dashboard/nodatabase");
         return;
       }

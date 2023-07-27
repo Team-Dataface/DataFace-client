@@ -12,7 +12,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${user}/databases/${databaseId}`);
+    await fetchData("DELETE", `/users/${user.userId}/databases/${databaseId}`);
   }
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
@@ -25,25 +25,29 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
   });
 
   async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${user}/databases`);
+    const response = await fetchData("GET", `users/${user.userId}/databases`);
 
-    return response;
+    return response.data.databases;
   }
 
-  const { data, isLoading } = useQuery(["userDbList"], getDatabaseList, {
-    enabled: !!user,
-    onSuccess: result => {
-      if (result.data.databases.length) {
-        setCurrentDBId(result.data.databases[0]._id);
-      } else {
-        setCurrentDBId("");
-      }
+  const { data: databases, isLoading } = useQuery(
+    ["userDbList"],
+    getDatabaseList,
+    {
+      enabled: !!user,
+      onSuccess: result => {
+        if (result.length) {
+          setCurrentDBId(result[0]._id);
+        } else {
+          setCurrentDBId("");
+        }
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
+      refetchOnWindowFocus: false,
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
+  );
 
   if (isLoading) {
     return <h1>Loading</h1>;
@@ -63,7 +67,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
       queryClient.refetchQueries(["userDb"]);
     }
 
-    return data.data.databases.map(element => {
+    return databases.map(element => {
       return (
         <div
           key={element._id}
@@ -98,11 +102,9 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
       <div className="flex flex-col w-full">
         <div className="flex h-10 ml-2 items-center">
           <img className="mr-2" src="/assets/DB_icon.svg" alt="DB icon" />
-          <p className="font-bold">{data.data.user.username}</p>
+          <p className="font-bold">{user.username}</p>
         </div>
-        {data.data.databases ? (
-          <ul className="mb-3">{renderDatabaseList()}</ul>
-        ) : null}
+        {databases && <ul className="mb-3">{renderDatabaseList()}</ul>}
       </div>
       <div className="flex justify-center">
         <Button

@@ -7,35 +7,36 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user}/databases/${currentDBId}`,
+      `users/${user.userId}/databases/${currentDBId}`,
     );
 
-    return response;
+    return response.data.database.documents;
   }
 
-  const { data, isLoading } = useQuery(["dbDocumentList"], getDocumentsList, {
-    enabled: !!user,
-    onSuccess: result => {
-      const newArr = [];
+  const { data: documents, isLoading } = useQuery(
+    ["dbDocumentList", currentDBId],
+    getDocumentsList,
+    {
+      enabled: !!user,
+      onSuccess: result => {
+        const newArr = [];
 
-      result.data.database.documents.forEach(element => {
-        newArr.push(element._id);
-      });
+        result.forEach(element => {
+          newArr.push(element._id);
+        });
 
-      setDocumentsIds(newArr);
+        setDocumentsIds(newArr);
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
+      refetchOnWindowFocus: false,
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
+  );
 
   if (isLoading) {
     return <h1>Loading</h1>;
   }
-
-  const { documents } = data.data.database;
-  const { fields } = data.data.database;
 
   return (
     <div className="flex bg-grey w-full h-full">
@@ -44,9 +45,9 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
           <thead className="border">
             <tr className="border">
               <th className="border p-2 w-4">Index</th>
-              {fields.map(field => (
+              {documents[0].fields.map(field => (
                 <th key={field._id} className="border p-2">
-                  {field.name}
+                  {field.fieldName}
                 </th>
               ))}
             </tr>
@@ -55,9 +56,9 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
             {documents.map((document, index) => (
               <tr key={document._id} className="border h-16">
                 <td className="border p-2 text-center">{index + 1}</td>
-                {document.elements.map(element => (
+                {document.fields.map(element => (
                   <td key={element._id} className="border p-4">
-                    {element.value}
+                    {element.fieldValue}
                   </td>
                 ))}
               </tr>

@@ -21,21 +21,21 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
   const [fields, setFields] = useState([
     {
       id: crypto.randomUUID(),
-      name: "",
-      type: "Text",
+      fieldName: "",
+      fieldType: "Text",
     },
   ]);
 
   function updateFieldName(index, event) {
     const newArr = [...fields];
-    newArr[index].name = event.target.value;
+    newArr[index].fieldName = event.target.value;
 
     setFields(newArr);
   }
 
   function updateFieldType(index, event) {
     const newArr = [...fields];
-    newArr[index].type = event.target.value;
+    newArr[index].fieldType = event.target.value;
 
     setFields(newArr);
   }
@@ -45,8 +45,8 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
       ...fields,
       {
         id: crypto.randomUUID(),
-        name: "",
-        type: "Text",
+        fieldName: "",
+        fieldType: "Text",
       },
     ]);
   }
@@ -68,7 +68,7 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
     }
 
     fields.forEach(element => {
-      if (!element.name) {
+      if (!element.fieldName) {
         alert("Field's name cannot be empty");
       }
     });
@@ -80,7 +80,7 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
 
     const response = await fetchData(
       "POST",
-      `/users/${user}/databases`,
+      `/users/${user.userId}/databases`,
       newDatabase,
     );
 
@@ -90,8 +90,11 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
   const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
     onSuccess: result => {
       setCurrentDBId(result.data.newDatabase._id);
+
       queryClient.refetchQueries(["userDbList"]);
+
       navigate("/dashboard/listview");
+
       closeModal();
     },
     onFailure: () => {

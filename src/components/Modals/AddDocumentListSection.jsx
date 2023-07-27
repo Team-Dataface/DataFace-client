@@ -1,14 +1,46 @@
 import PropTypes from "prop-types";
+import { useQuery } from "@tanstack/react-query";
+
+import fetchData from "../../utils/axios";
 
 import ModalLabel from "./ModalLabel";
 import ModalInputArea from "./ModalInputArea";
 
-function AddDocumentListSection({ fields, updateFieldValue }) {
-  return fields.map((element, index) => {
+function AddDocumentListSection({
+  user,
+  updateFieldValue,
+  currentDBId,
+  setFields,
+}) {
+  async function getDatabase() {
+    const response = await fetchData(
+      "GET",
+      `users/${user.userId}/databases/${currentDBId}`,
+    );
+
+    return response.data.database.documents[0];
+  }
+
+  const { data, isLoading } = useQuery(["userDb"], getDatabase, {
+    enabled: !!user,
+    onSuccess: result => {
+      setFields(result.fields);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  return data.fields.map((element, index) => {
     return (
       <div key={element.field_id} className="flex">
         <div className="w-[130px]">
-          <ModalLabel value={element.name} />
+          <ModalLabel value={element.fieldName} />
         </div>
         <div className="flex justify-center items-center px-3">
           <ModalInputArea>
@@ -25,14 +57,6 @@ function AddDocumentListSection({ fields, updateFieldValue }) {
   });
 }
 
-AddDocumentListSection.propTypes = {
-  fields: PropTypes.arrayOf(
-    PropTypes.shape({
-      field_id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  updateFieldValue: PropTypes.func,
-};
+AddDocumentListSection.propTypes = {};
 
 export default AddDocumentListSection;
