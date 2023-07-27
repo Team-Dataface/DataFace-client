@@ -39,7 +39,7 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
 
   return data.fields.map((element, index) => {
     return (
-      <div key={element.field_id} className="flex">
+      <div key={element._id} className="flex">
         <div className="w-[130px]">
           <ModalLabel value={element.fieldName} />
         </div>

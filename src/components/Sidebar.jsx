@@ -43,7 +43,7 @@ function Sidebar({ setCurrentDBId }) {
       onSuccess: result => {
         if (result.length && isInitial) {
           setCurrentDBId(result[0]._id);
-            setIsInitial(false);
+          setIsInitial(false);
         }
       },
       onFailure: () => {
@@ -61,7 +61,7 @@ function Sidebar({ setCurrentDBId }) {
     onSuccess: () => {
       queryClient.refetchQueries(["dbDocumentList"]);
       queryClient.refetchQueries(["userDbList"]);
-      setCurrentDBId(data.data.databases[0]._id);
+      setCurrentDBId(databases[0]._id);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
