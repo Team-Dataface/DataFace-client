@@ -19,6 +19,7 @@ module.exports = {
       "blue": "#5AA6FF",
       "google-blue": "#4285F4",
       "google-blue-hover": "#679df5",
+      "inherit": "inherit",
     },
   },
   plugins: [],
