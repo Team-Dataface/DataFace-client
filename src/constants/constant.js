@@ -11,6 +11,8 @@ const CONSTANT = {
   maxDatabaseNameLength: 15,
   maxfieldNameLength: 20,
   oneHourInMillisecond: 1000 * 60 * 60,
+  XdragAdjustment: 330,
+  YdragAdjustment: 177,
 };
 
 export default CONSTANT;

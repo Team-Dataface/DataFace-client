@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
-function ListView({ user, currentDBId }) {
+function ListView({ user, currentDBId, setDocumentsIds }) {
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
@@ -15,9 +15,19 @@ function ListView({ user, currentDBId }) {
 
   const { data, isLoading } = useQuery(["dbDocumentList"], getDocumentsList, {
     enabled: !!user,
+    onSuccess: result => {
+      const newArr = [];
+
+      result.data.database.documents.forEach(element => {
+        newArr.push(element._id);
+      });
+
+      setDocumentsIds(newArr);
+    },
     onFailure: () => {
       console.log("sending user to errorpage");
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {

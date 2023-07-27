@@ -6,6 +6,7 @@ import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
 import ContentsContainer from "../components/ContentsContainer";
+import DetailView from "../components/contents/DetailView";
 import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
@@ -15,6 +16,9 @@ import CONSTANT from "../constants/constant";
 function App() {
   const [user, setUser] = useState("");
   const [currentDBId, setCurrentDBId] = useState("");
+  const [currentDocIndex, setCurrentDocIndex] = useState(0);
+  const [documentsIds, setDocumentsIds] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -34,6 +38,7 @@ function App() {
       return navigate("/login");
     },
     staleTime: CONSTANT.oneHourInMillisecond,
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -47,6 +52,10 @@ function App() {
           user={user}
           clickHandleLogout={setUser}
           currentDBId={currentDBId}
+          isEditMode={isEditMode}
+          onClickSave={setIsEditMode}
+          currentDocIndex={currentDocIndex}
+          clickHandleNavigator={setCurrentDocIndex}
         />
       ) : null}
       <div className="flex flex-1">
@@ -55,6 +64,7 @@ function App() {
             user={user}
             currentDBId={currentDBId}
             setCurrentDBId={setCurrentDBId}
+            setDocumentsIds={setDocumentsIds}
           />
         ) : null}
         <div className="flex grow justify-center">
@@ -66,7 +76,31 @@ function App() {
             >
               <Route
                 path="listview"
-                element={<ListView user={user} currentDBId={currentDBId} />}
+                element={
+                  <ListView
+                    user={user}
+                    currentDBId={currentDBId}
+                    isEditMode={isEditMode}
+                    setIsSaveMode={setIsEditMode}
+                    currentDocIndex={currentDocIndex}
+                    setCurrentDocIndex={setCurrentDocIndex}
+                    setDocumentsIds={setDocumentsIds}
+                  />
+                }
+              />
+              <Route
+                path="detailview"
+                element={
+                  <DetailView
+                    user={user}
+                    currentDBId={currentDBId}
+                    isEditMode={isEditMode}
+                    setIsEditMode={setIsEditMode}
+                    currentDocIndex={currentDocIndex}
+                    setCurrentDocIndex={setCurrentDocIndex}
+                    documentsIds={documentsIds}
+                  />
+                }
               />
               <Route
                 path="nodatabase"

@@ -28,6 +28,7 @@ function ContentsContainer({ user }) {
     onFailure: () => {
       console.log("sending user to errorpage");
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {

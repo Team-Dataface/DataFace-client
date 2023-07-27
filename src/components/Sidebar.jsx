@@ -7,7 +7,7 @@ import fetchData from "../utils/axios";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ user, currentDBId, setCurrentDBId }) {
+function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
