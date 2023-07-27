@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const baseUrl = import.meta.env.VITE_API_KEY;
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 function fetchData(method, url, data) {
   const response = axios({
     method,
     url,
     data,
-    baseUrl,
+    baseURL,
     withCredentials: true,
   });
 
