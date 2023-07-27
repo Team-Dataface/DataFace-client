@@ -39,17 +39,21 @@ function DocHandlerButtons({
     return response.data.database.documents;
   }
 
-  const { isLoading } = useQuery(["dbDocumentList"], getDocumentsList, {
-    retry: false,
-    enabled: !!user && !!currentDBId,
-    onSuccess: result => {
-      setDocumentsNum(result.length);
+  const { isLoading } = useQuery(
+    ["dbDocumentList", currentDBId],
+    getDocumentsList,
+    {
+      retry: false,
+      enabled: !!user && !!currentDBId,
+      onSuccess: result => {
+        setDocumentsNum(result.length);
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
+      refetchOnWindowFocus: false,
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
+  );
 
   if (isLoading && currentDBId) {
     return <h1>loading</h1>;
