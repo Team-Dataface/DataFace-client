@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
+import UserContext from "../context/UserContext";
 import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
@@ -46,74 +47,67 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      {user && (
-        <Header
-          user={user}
-          clickHandleLogout={setUser}
-          currentDBId={currentDBId}
-          isEditMode={isEditMode}
-          onClickSave={setIsEditMode}
-          currentDocIndex={currentDocIndex}
-          clickHandleNavigator={setCurrentDocIndex}
-        />
-      )}
-      <div className="flex flex-1">
+    <UserContext.Provider value={user}>
+      <div className="flex flex-col h-screen">
         {user && (
-          <Sidebar
-            user={user}
+          <Header
+            clickHandleLogout={setUser}
             currentDBId={currentDBId}
-            setCurrentDBId={setCurrentDBId}
-            setDocumentsIds={setDocumentsIds}
+            isEditMode={isEditMode}
+            onClickSave={setIsEditMode}
+            currentDocIndex={currentDocIndex}
+            clickHandleNavigator={setCurrentDocIndex}
           />
         )}
-        <div className="flex grow justify-center">
-          <Routes>
-            <Route path="/login" element={<Login setUser={setUser} />} />
-            <Route
-              path="/dashboard"
-              element={<ContentsContainer user={user} />}
-            >
-              <Route
-                path="listview"
-                element={
-                  <ListView
-                    user={user}
-                    currentDBId={currentDBId}
-                    isEditMode={isEditMode}
-                    setIsSaveMode={setIsEditMode}
-                    currentDocIndex={currentDocIndex}
-                    setCurrentDocIndex={setCurrentDocIndex}
-                    setDocumentsIds={setDocumentsIds}
-                  />
-                }
-              />
-              <Route
-                path="detailview"
-                element={
-                  <DetailView
-                    user={user}
-                    currentDBId={currentDBId}
-                    isEditMode={isEditMode}
-                    setIsEditMode={setIsEditMode}
-                    currentDocIndex={currentDocIndex}
-                    setCurrentDocIndex={setCurrentDocIndex}
-                    documentsIds={documentsIds}
-                  />
-                }
-              />
-              <Route
-                path="nodatabase"
-                element={
-                  <NoDatabase user={user} setCurrentDBId={setCurrentDBId} />
-                }
-              />
-            </Route>
-            <Route path="/" element={<Navigate replace to="/login" />} />
-          </Routes>
+        <div className="flex flex-1">
+          {user && (
+            <Sidebar
+              currentDBId={currentDBId}
+              setCurrentDBId={setCurrentDBId}
+              setDocumentsIds={setDocumentsIds}
+            />
+          )}
+          <div className="flex grow justify-center">
+            <Routes>
+              <Route path="/login" element={<Login setUser={setUser} />} />
+              <Route path="/dashboard" element={<ContentsContainer />}>
+                <Route
+                  path="listview"
+                  element={
+                    <ListView
+                      currentDBId={currentDBId}
+                      isEditMode={isEditMode}
+                      setIsSaveMode={setIsEditMode}
+                      currentDocIndex={currentDocIndex}
+                      setCurrentDocIndex={setCurrentDocIndex}
+                      setDocumentsIds={setDocumentsIds}
+                    />
+                  }
+                />
+                <Route
+                  path="detailview"
+                  element={
+                    <DetailView
+                      currentDBId={currentDBId}
+                      isEditMode={isEditMode}
+                      setIsEditMode={setIsEditMode}
+                      currentDocIndex={currentDocIndex}
+                      setCurrentDocIndex={setCurrentDocIndex}
+                      documentsIds={documentsIds}
+                    />
+                  }
+                />
+                <Route
+                  path="nodatabase"
+                  element={<NoDatabase setCurrentDBId={setCurrentDBId} />}
+                />
+              </Route>
+              <Route path="/" element={<Navigate replace to="/login" />} />
+            </Routes>
+          </div>
         </div>
       </div>
-    </div>
+    </UserContext.Provider>
   );
 }
 

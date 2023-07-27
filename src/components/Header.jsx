@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 
 import LogoutButton from "./HeaderItems/LogoutButton";
@@ -6,7 +5,6 @@ import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
 function Header({
-  user,
   clickHandleLogout,
   currentDBId,
   isEditMode,
@@ -28,7 +26,6 @@ function Header({
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
         <Toolbar
-          user={user}
           currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}
           clickHandleNavigator={clickHandleNavigator}
@@ -40,7 +37,6 @@ function Header({
 }
 
 Header.propTypes = {
-  user: PropTypes.string.isRequired,
   clickHandleLogout: PropTypes.func.isRequired,
   currentDBId: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool.isRequired,

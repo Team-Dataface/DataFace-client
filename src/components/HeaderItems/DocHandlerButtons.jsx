@@ -1,20 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
+import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
 import AddDocumentModal from "../Modals/AddDocumentModal";
 
 function DocHandlerButtons({
-  user,
   currentDBId,
   currentDocIndex,
   clickHandleNavigator,
 }) {
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [documentsNum, setDocumentsNum] = useState(0);
+  const { userId } = useContext(UserContext);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -33,7 +34,7 @@ function DocHandlerButtons({
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user.userId}/databases/${currentDBId}`,
+      `users/${userId}/databases/${currentDBId}`,
     );
 
     return response.data.database.documents;
@@ -44,7 +45,7 @@ function DocHandlerButtons({
     getDocumentsList,
     {
       retry: false,
-      enabled: !!user && !!currentDBId,
+      enabled: !!userId && !!currentDBId,
       onSuccess: result => {
         setDocumentsNum(result.length);
       },
@@ -89,7 +90,6 @@ function DocHandlerButtons({
       </Button>
       {showAddDocumentModal && (
         <AddDocumentModal
-          user={user}
           closeModal={() => setShowAddDocumentModal(false)}
           currentDBId={currentDBId}
         />
@@ -99,7 +99,6 @@ function DocHandlerButtons({
 }
 
 DocHandlerButtons.propTypes = {
-  user: PropTypes.string.isRequired,
   currentDBId: PropTypes.string.isRequired,
   currentDocIndex: PropTypes.number.isRequired,
   clickHandleNavigator: PropTypes.func.isRequired,

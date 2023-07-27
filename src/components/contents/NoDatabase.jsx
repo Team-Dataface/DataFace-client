@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateDBModal";
 
-function NoDatabase({ user, setCurrentDBId }) {
+function NoDatabase({ setCurrentDBId }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return (
@@ -24,7 +24,6 @@ function NoDatabase({ user, setCurrentDBId }) {
       </div>
       {showCreateDBModal && (
         <CreateDBModal
-          user={user}
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
         />
@@ -34,7 +33,7 @@ function NoDatabase({ user, setCurrentDBId }) {
 }
 
 NoDatabase.propTypes = {
-  user: PropTypes.string.isRequired,
+  setCurrentDBId: PropTypes.func.isRequired,
 };
 
 export default NoDatabase;

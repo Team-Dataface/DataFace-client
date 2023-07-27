@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
 
+import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 import CreateDBListSection from "./CreateDBListSection";
@@ -14,9 +15,11 @@ import ModalInputArea from "./ModalInputArea";
 
 import CONSTANT from "../../constants/constant";
 
-function CreateDBModal({ user, closeModal, setCurrentDBId }) {
+function CreateDBModal({ closeModal, setCurrentDBId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { userId } = useContext(UserContext);
+
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useState([
     {
@@ -80,7 +83,7 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
 
     const response = await fetchData(
       "POST",
-      `/users/${user.userId}/databases`,
+      `/users/${userId}/databases`,
       newDatabase,
     );
 
@@ -155,7 +158,6 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
 }
 
 CreateDBModal.propTypes = {
-  user: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 

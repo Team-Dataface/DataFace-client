@@ -1,20 +1,23 @@
+import { useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 
-function ContentsContainer({ user }) {
+import UserContext from "../context/UserContext";
+
+function ContentsContainer() {
   const navigate = useNavigate();
+  const { userId } = useContext(UserContext);
 
   async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${user.userId}/databases`);
+    const response = await fetchData("GET", `users/${userId}/databases`);
 
     return response;
   }
 
   const { isLoading } = useQuery(["userDbList"], getDatabaseList, {
-    enabled: !!user,
+    enabled: !!userId,
     onSuccess: result => {
       if (!result.length) {
         navigate("/dashboard/nodatabase");
@@ -35,9 +38,5 @@ function ContentsContainer({ user }) {
 
   return <Outlet />;
 }
-
-ContentsContainer.propTypes = {
-  user: PropTypes.string.isRequired,
-};
 
 export default ContentsContainer;

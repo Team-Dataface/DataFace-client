@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import PropTypes from "prop-types";
 import fetchData from "../utils/axios";
 
+import UserContext from "../context/UserContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
+function Sidebar({ currentDBId, setCurrentDBId }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+  const { userId, username } = useContext(UserContext);
 
   async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${user.userId}/databases/${databaseId}`);
+    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
   }
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
@@ -25,7 +27,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
   });
 
   async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${user.userId}/databases`);
+    const response = await fetchData("GET", `users/${userId}/databases`);
 
     return response.data.databases;
   }
@@ -34,7 +36,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
     ["userDbList"],
     getDatabaseList,
     {
-      enabled: !!user,
+      enabled: !!userId,
       onSuccess: result => {
         if (result.length) {
           setCurrentDBId(result[0]._id);
@@ -102,7 +104,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
       <div className="flex flex-col w-full">
         <div className="flex h-10 ml-2 items-center">
           <img className="mr-2" src="/assets/DB_icon.svg" alt="DB icon" />
-          <p className="font-bold">{user.username}</p>
+          <p className="font-bold">{username}</p>
         </div>
         {databases && <ul className="mb-3">{renderDatabaseList()}</ul>}
       </div>
@@ -121,7 +123,6 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
       </div>
       {showCreateDBModal && (
         <CreateDBModal
-          user={user}
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
         />
@@ -131,7 +132,6 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
 }
 
 Sidebar.propTypes = {
-  user: PropTypes.string.isRequired,
   setCurrentDBId: PropTypes.func.isRequired,
 };
 

@@ -1,28 +1,27 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchData from "../../utils/axios";
 
+import UserContext from "../../context/UserContext";
 import ModalLabel from "./ModalLabel";
 import ModalInputArea from "./ModalInputArea";
 
-function AddDocumentListSection({
-  user,
-  updateFieldValue,
-  currentDBId,
-  setFields,
-}) {
+function AddDocumentListSection({ updateFieldValue, currentDBId, setFields }) {
+  const { userId } = useContext(UserContext);
+
   async function getDatabase() {
     const response = await fetchData(
       "GET",
-      `users/${user.userId}/databases/${currentDBId}`,
+      `users/${userId}/databases/${currentDBId}`,
     );
 
     return response.data.database.documents[0];
   }
 
   const { data, isLoading } = useQuery(["userDb"], getDatabase, {
-    enabled: !!user,
+    enabled: !!userId,
     onSuccess: result => {
       setFields(result.fields);
     },

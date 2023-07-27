@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
+import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
-function AddDocumentModal({ user, closeModal, currentDBId }) {
+function AddDocumentModal({ closeModal, currentDBId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { userId } = useContext(UserContext);
+
   const [fields, setFields] = useState([]);
 
   function updateFieldValue(index, event) {
@@ -24,7 +27,7 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
   async function handleClickSave() {
     await fetchData(
       "POST",
-      `/users/${user.userId}/databases/${currentDBId}/documents`,
+      `/users/${userId}/databases/${currentDBId}/documents`,
       fields,
     );
   }
@@ -48,7 +51,6 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
           <div className="flex">
             <div className="flex flex-col items-center p-3">
               <AddDocumentListSection
-                user={user}
                 updateFieldValue={updateFieldValue}
                 currentDBId={currentDBId}
                 setFields={setFields}
@@ -70,7 +72,6 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
 }
 
 AddDocumentModal.propTypes = {
-  user: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   currentDBId: PropTypes.string.isRequired,
 };
