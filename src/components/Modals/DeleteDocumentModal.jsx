@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import fetchData from "../../utils/axios";
 
@@ -14,16 +14,18 @@ function DeleteDocumentModal({
   currentDocIndex,
   documentsIds,
 }) {
+  const queryClient = useQueryClient();
+
   async function deleteDocument() {
     await fetchData(
       "DELETE",
-      `/users/${user}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
+      `/users/${user.userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
     );
   }
 
   const { mutate: fetchDeleteDocument } = useMutation(deleteDocument, {
     onSuccess: () => {
-      // will be added
+      queryClient.refetchQueries(["dbDocumentList"]);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
