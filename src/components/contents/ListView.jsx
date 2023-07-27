@@ -8,14 +8,17 @@ import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 
 import fetchData from "../../utils/axios";
 
-function ListView({ setDocumentsIds }) {
+function ListView({
+  isEditMode,
+  setIsEditMode,
+  currentDocIndex,
+  setDocumentsIds,
+}) {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
   const [changedDoc, setChangedDoc] = useState([]);
-  const [isEditMode, setIsEditMode] = useState(false);
   const queryClient = useQueryClient();
-  const docIndex = 2;
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -58,7 +61,7 @@ function ListView({ setDocumentsIds }) {
   }
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: () => {
+    onSuccess: result => {
       queryClient.refetchQueries(["dbDocumentList"]);
     },
     onFailure: () => {
@@ -117,7 +120,7 @@ function ListView({ setDocumentsIds }) {
               <tr
                 key={document._id}
                 className={`h-full border ${
-                  docIndex === index ? "bg-yellow" : ""
+                  currentDocIndex === index ? "bg-yellow" : ""
                 }`}
               >
                 <td className="h-full border px-2 text-center">{index + 1}</td>

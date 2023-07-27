@@ -79,9 +79,8 @@ function App() {
                     element={
                       <ListView
                         isEditMode={isEditMode}
-                        setIsSaveMode={setIsEditMode}
+                        setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
-                        setCurrentDocIndex={setCurrentDocIndex}
                         setDocumentsIds={setDocumentsIds}
                       />
                     }
