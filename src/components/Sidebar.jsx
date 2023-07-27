@@ -104,7 +104,7 @@ function Sidebar({ user, currentDBId, setCurrentDBId, setDocumentsIds }) {
           <img className="mr-2" src="/assets/DB_icon.svg" alt="DB icon" />
           <p className="font-bold">{user.username}</p>
         </div>
-        {databases ? <ul className="mb-3">{renderDatabaseList()}</ul> : null}
+        {databases && <ul className="mb-3">{renderDatabaseList()}</ul>}
       </div>
       <div className="flex justify-center">
         <Button

@@ -91,10 +91,12 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
 
   const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
     onSuccess: result => {
-      console.log(result);
       setCurrentDBId(result.data.newDatabase._id);
+
       queryClient.refetchQueries(["userDbList"]);
+
       navigate("/dashboard/listview");
+
       closeModal();
     },
     onFailure: () => {
