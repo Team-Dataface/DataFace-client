@@ -6,7 +6,7 @@ import DetailViewFields from "./ContentsItems/DetailViewFields";
 
 import CONSTANT from "../../constants/constant";
 
-const { XdragAdjustment, YdragAdjustment } = CONSTANT;
+const { X_DRAG_ADJUSTMENT, Y_DRAG_ADJUSTMENT } = CONSTANT;
 
 // import fetchData from "../../utils/axios";
 
@@ -78,9 +78,9 @@ function DetailView({
       const newArr = [...docData];
 
       newArr[draggedElementIndex].coordinates.x =
-        event.clientX - XdragAdjustment;
+        event.clientX - X_DRAG_ADJUSTMENT;
       newArr[draggedElementIndex].coordinates.y =
-        event.clientY - YdragAdjustment;
+        event.clientY - Y_DRAG_ADJUSTMENT;
 
       setDocData(newArr);
     }

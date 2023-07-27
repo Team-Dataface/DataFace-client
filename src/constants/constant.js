@@ -1,6 +1,5 @@
 const CONSTANT = {
-  baseURL: "http://localhost:3000",
-  fieldTypes: [
+  FIELD_TYPES: [
     "Text",
     "Number",
     "Date",
@@ -8,11 +7,11 @@ const CONSTANT = {
     "Date created",
     "Date modified",
   ],
-  maxDatabaseNameLength: 15,
-  maxfieldNameLength: 20,
-  oneHourInMillisecond: 1000 * 60 * 60,
-  XdragAdjustment: 330,
-  YdragAdjustment: 177,
+  MAX_DATABASE_NAME_LENGTH: 15,
+  MAX_FIELD_NAME_LENGTH: 20,
+  ONE_HOUR_IN_MILLISECONDS: 1000 * 60 * 60,
+  X_DRAG_ADJUSTMENT: 330,
+  Y_DRAG_ADJUSTMENT: 177,
 };
 
 export default CONSTANT;
