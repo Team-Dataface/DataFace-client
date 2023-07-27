@@ -18,6 +18,7 @@ function ListView({
   const currentDBId = useContext(CurrentDBIdContext);
 
   const [changedDoc, setChangedDoc] = useState([]);
+  const [isOnSave, setIsOnSave] = useState(false);
   const queryClient = useQueryClient();
 
   async function getDocumentsList() {
@@ -29,7 +30,7 @@ function ListView({
     return response.data.database.documents;
   }
 
-  const { data, isLoading } = useQuery(
+  const { data: documents, isLoading } = useQuery(
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
@@ -38,13 +39,11 @@ function ListView({
         const newArr = [];
         const documentIds = result.map(document => {
           newArr.push(document._id);
-          return { documentId: document._id, elements: [] };
+          return { documentId: document._id, fields: [] };
         });
 
         setChangedDoc(documentIds);
         setDocumentsIds(newArr);
-
-        console.log(docs);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -55,13 +54,13 @@ function ListView({
   async function handleClickSave() {
     await fetchData(
       "PUT",
-      `/users/${user}/databases/${currentDBId}/documents`,
+      `/users/${user.userId}/databases/${currentDBId}/documents`,
       changedDoc,
     );
   }
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: result => {
+    onSuccess: () => {
       queryClient.refetchQueries(["dbDocumentList"]);
     },
     onFailure: () => {
@@ -74,6 +73,11 @@ function ListView({
     return <h1>Loading</h1>;
   }
 
+  if (!isEditMode && isOnSave) {
+    fetchDocumentUpdate();
+    setIsOnSave(false);
+  }
+
   function handleOnChange(event, documentId) {
     const { id, value } = event.target;
     const newChangedDoc = [...changedDoc];
@@ -82,14 +86,17 @@ function ListView({
       doc => doc.documentId === documentId,
     );
 
-    const elementIndex = changedDoc[documentIndex].elements.findIndex(
-      element => element.elementId === id,
+    const fieldIndex = changedDoc[documentIndex].fields.findIndex(
+      field => field.fieldId === id,
     );
 
-    if (elementIndex === -1) {
-      newChangedDoc[documentIndex].elements.push({ elementId: id, value });
+    if (fieldIndex === -1) {
+      newChangedDoc[documentIndex].fields.push({
+        fieldId: id,
+        fieldValue: value,
+      });
     } else {
-      newChangedDoc[documentIndex].elements[elementIndex].value = value;
+      newChangedDoc[documentIndex].fields[fieldIndex].fieldValue = value;
     }
 
     setChangedDoc(newChangedDoc);
@@ -116,7 +123,7 @@ function ListView({
             </tr>
           </thead>
           <tbody>
-            {data.data.database.documents.map((document, index) => (
+            {documents.map((document, index) => (
               <tr
                 key={document._id}
                 className={`h-full border ${
@@ -124,11 +131,12 @@ function ListView({
                 }`}
               >
                 <td className="h-full border px-2 text-center">{index + 1}</td>
-                {document.fields.map(element => (
+                {document.fields.map(field => (
                   <td
-                    key={element._id}
-                    id={element.field}
+                    key={field._id}
+                    id={field.field}
                     onDoubleClick={() => {
+                      setIsOnSave(true);
                       setIsEditMode(true);
                     }}
                     className="h-full border"
@@ -141,8 +149,8 @@ function ListView({
                             ? "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
                             : null
                         }`}
-                        id={element._id}
-                        defaultValue={element.fieldValue}
+                        id={field._id}
+                        defaultValue={field.fieldValue}
                         disabled={!isEditMode}
                         onChange={event => handleOnChange(event, document._id)}
                       ></textarea>
