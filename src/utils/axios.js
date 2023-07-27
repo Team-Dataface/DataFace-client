@@ -1,14 +1,14 @@
 import axios from "axios";
 import CONSTANT from "../constants/constant";
 
-const { baseURL } = CONSTANT;
+const { BASE_URL } = CONSTANT;
 
 function fetchData(method, url, data) {
   const response = axios({
     method,
     url,
     data,
-    baseURL,
+    BASE_URL,
     withCredentials: true,
   });
 

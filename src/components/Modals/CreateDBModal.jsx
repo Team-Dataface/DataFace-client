@@ -14,8 +14,6 @@ import ModalInputArea from "./ModalInputArea";
 
 import CONSTANT from "../../constants/constant";
 
-const { maxDatabaseNameLength } = CONSTANT;
-
 function CreateDBModal({ user, closeModal, setCurrentDBId }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -115,7 +113,7 @@ function CreateDBModal({ user, closeModal, setCurrentDBId }) {
               <ModalInputArea>
                 <input
                   className="flex w-full h-7 rounded-lg text-center"
-                  maxLength={maxDatabaseNameLength}
+                  maxLength={CONSTANT.MAX_DATABASE_NAME_LENGTH}
                   onChange={event => setdbName(event.target.value)}
                 />
               </ModalInputArea>

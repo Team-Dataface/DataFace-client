@@ -6,7 +6,7 @@ import ModalInputArea from "./ModalInputArea";
 
 import CONSTANT from "../../constants/constant";
 
-const { maxFieldNameLength, fieldTypes } = CONSTANT;
+const { MAX_FIELD_NAME_LENGTH, FIELD_TYPES } = CONSTANT;
 
 function CreateDBListSection({
   fields,
@@ -21,12 +21,12 @@ function CreateDBListSection({
           <div className="flex flex-row justify-center items-center">
             <input
               className="flex h-7 w-full mr-3 rounded-md text-center"
-              maxLength={maxFieldNameLength}
+              maxLength={MAX_FIELD_NAME_LENGTH}
               value={element.name}
               onChange={event => updateFieldName(index, event)}
             />
             <Select
-              options={fieldTypes}
+              options={FIELD_TYPES}
               onChange={event => updateFieldType(index, event)}
             />
             <Button
