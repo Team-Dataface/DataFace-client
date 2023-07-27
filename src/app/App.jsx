@@ -59,7 +59,8 @@ function App() {
               onClickSave={setIsEditMode}
               currentDocIndex={currentDocIndex}
               clickHandleNavigator={setCurrentDocIndex}
-            />
+              documentsIds={documentsIds}
+        />
           )}
           <div className="flex flex-1">
             {user && (

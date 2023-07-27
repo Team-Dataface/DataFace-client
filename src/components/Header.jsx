@@ -10,6 +10,7 @@ function Header({
   onClickSave,
   currentDocIndex,
   clickHandleNavigator,
+  documentsIds,
 }) {
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
@@ -27,6 +28,7 @@ function Header({
         <Toolbar
           currentDocIndex={currentDocIndex}
           clickHandleNavigator={clickHandleNavigator}
+          documentsIds={documentsIds}
         />
         <SaveButton isEditMode={isEditMode} onClickSave={onClickSave} />
       </div>

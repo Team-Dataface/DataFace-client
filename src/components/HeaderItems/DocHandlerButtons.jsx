@@ -8,13 +8,16 @@ import UserContext from "../../context/UserContext";
 import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Button from "../shared/Button";
 import AddDocumentModal from "../Modals/AddDocumentModal";
+import DeleteDocumentModal from "../Modals/DeleteDocumentModal";
 
-function DocHandlerButtons({ currentDocIndex, clickHandleNavigator }) {
+function DocHandlerButtons({ currentDocIndex, clickHandleNavigator   documentsIds,
+}) {
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [documentsNum, setDocumentsNum] = useState(0);
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
+  const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -84,13 +87,25 @@ function DocHandlerButtons({ currentDocIndex, clickHandleNavigator }) {
       >
         <img src="/assets/plus_icon.svg" alt="plus icon" />
       </Button>
-      <Button className="flex justify-center items-center w-8 h-8 rounded-md bg-white hover:bg-yellow">
+      <Button
+        className="flex justify-center items-center w-8 h-8 rounded-md bg-white hover:bg-yellow"
+        onClick={() => setShowDeleteDocumentModal(true)}
+      >
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
       {showAddDocumentModal && (
         <AddDocumentModal
           closeModal={() => setShowAddDocumentModal(false)}
           currentDBId={currentDBId}
+        />
+      )}
+      {showDeleteDocumentModal && (
+        <DeleteDocumentModal
+          user={user}
+          closeModal={() => setShowDeleteDocumentModal(false)}
+          currentDBId={currentDBId}
+          currentDocIndex={currentDocIndex}
+          documentsIds={documentsIds}
         />
       )}
     </div>
