@@ -37,7 +37,7 @@ function App() {
       setUser("");
       return navigate("/login");
     },
-    staleTime: CONSTANT.ONE_HOUR_IN_MILLISECOND,
+    staleTime: CONSTANT.ONE_HOUR_IN_MILLISECONDS,
     refetchOnWindowFocus: false,
   });
 

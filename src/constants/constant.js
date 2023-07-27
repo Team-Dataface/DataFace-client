@@ -1,5 +1,4 @@
 const CONSTANT = {
-  BASE_URL: "http://localhost:3000",
   FIELD_TYPES: [
     "Text",
     "Number",
@@ -10,7 +9,7 @@ const CONSTANT = {
   ],
   MAX_DATABASE_NAME_LENGTH: 15,
   MAX_FIELD_NAME_LENGTH: 20,
-  ONE_HOUR_IN_MILLISECOND: 1000 * 60 * 60,
+  ONE_HOUR_IN_MILLISECONDS: 1000 * 60 * 60,
   X_DRAG_ADJUSTMENT: 330,
   Y_DRAG_ADJUSTMENT: 177,
 };
