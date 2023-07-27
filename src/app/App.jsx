@@ -22,12 +22,12 @@ function App() {
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
-    retry: 1,
+    retry: false,
     onSuccess: response => {
-      const { success, userId } = response.data;
+      const { success, userInfo } = response.data;
 
       if (success) {
-        setUser(userId);
+        setUser(userInfo);
         navigate("/dashboard");
       } else {
         setUser("");
@@ -47,7 +47,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen">
-      {user ? (
+      {user && (
         <Header
           user={user}
           clickHandleLogout={setUser}
@@ -57,16 +57,16 @@ function App() {
           currentDocIndex={currentDocIndex}
           clickHandleNavigator={setCurrentDocIndex}
         />
-      ) : null}
+      )}
       <div className="flex flex-1">
-        {user ? (
+        {user && (
           <Sidebar
             user={user}
             currentDBId={currentDBId}
             setCurrentDBId={setCurrentDBId}
             setDocumentsIds={setDocumentsIds}
           />
-        ) : null}
+        )}
         <div className="flex grow justify-center">
           <Routes>
             <Route path="/login" element={<Login setUser={setUser} />} />

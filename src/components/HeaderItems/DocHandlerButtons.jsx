@@ -33,16 +33,17 @@ function DocHandlerButtons({
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user}/databases/${currentDBId}`,
+      `users/${user.userId}/databases/${currentDBId}`,
     );
 
-    return response;
+    return response.data.database.documents;
   }
 
   const { isLoading } = useQuery(["dbDocumentList"], getDocumentsList, {
+    retry: false,
     enabled: !!user && !!currentDBId,
     onSuccess: result => {
-      setDocumentsNum(result.data.database.documents.length);
+      setDocumentsNum(result.length);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -50,7 +51,7 @@ function DocHandlerButtons({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
+  if (isLoading && currentDBId) {
     return <h1>loading</h1>;
   }
 

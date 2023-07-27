@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
@@ -17,15 +17,14 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
 
   function updateFieldValue(index, event) {
     const newArr = [...fields];
-    newArr[index].value = event.target.value;
-
+    newArr[index].fieldValue = event.target.value;
     setFields(newArr);
   }
 
   async function handleClickSave() {
     await fetchData(
       "POST",
-      `/users/${user}/databases/${currentDBId}/documents`,
+      `/users/${user.userId}/databases/${currentDBId}/documents`,
       fields,
     );
   }
@@ -41,40 +40,6 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
     },
   });
 
-  async function getDatabase() {
-    const response = await fetchData(
-      "GET",
-      `users/${user}/databases/${currentDBId}`,
-    );
-
-    return response;
-  }
-
-  const { isLoading } = useQuery(["userDb"], getDatabase, {
-    enabled: !!user,
-    onSuccess: result => {
-      const newArr = [];
-
-      result.data.database.fields.map(element => {
-        return newArr.push({
-          field_id: element._id,
-          name: element.name,
-          value: "",
-        });
-      });
-
-      setFields(newArr);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return <h1>LOADING</h1>;
-  }
-
   return (
     <Modal onClick={closeModal}>
       <div className="flex flex-col items-center">
@@ -83,8 +48,10 @@ function AddDocumentModal({ user, closeModal, currentDBId }) {
           <div className="flex">
             <div className="flex flex-col items-center p-3">
               <AddDocumentListSection
-                fields={fields}
+                user={user}
                 updateFieldValue={updateFieldValue}
+                currentDBId={currentDBId}
+                setFields={setFields}
               />
             </div>
           </div>
