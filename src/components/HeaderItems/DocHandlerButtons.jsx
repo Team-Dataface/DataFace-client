@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
@@ -18,13 +18,13 @@ function DocHandlerButtons({
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
-  function navigateDownTilZero() {
+  function navigateDown() {
     if (currentDocIndexShownToUser !== 1) {
       clickHandleNavigator(prev => prev - 1);
     }
   }
 
-  function navigateDownTilMaxNum() {
+  function navigateUp() {
     if (currentDocIndexShownToUser !== documentsNum) {
       clickHandleNavigator(prev => prev + 1);
     }
@@ -58,7 +58,7 @@ function DocHandlerButtons({
     <div className="flex items-center">
       <Button
         className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey"
-        onClick={() => navigateDownTilZero()}
+        onClick={() => navigateDown()}
       >
         <img src="/assets/left_icon.svg" alt="left icon" />
       </Button>
@@ -67,7 +67,7 @@ function DocHandlerButtons({
       </span>
       <Button
         className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey"
-        onClick={() => navigateDownTilMaxNum()}
+        onClick={() => navigateUp()}
       >
         <img src="/assets/right_icon.svg" alt="right icon" />
       </Button>

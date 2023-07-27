@@ -19,7 +19,7 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
       const newArr = [];
 
       result.data.database.documents.forEach(element => {
-        return newArr.push(element._id);
+        newArr.push(element._id);
       });
 
       setDocumentsIds(newArr);

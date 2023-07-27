@@ -1,7 +1,12 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState, useEffect } from "react";
 // import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
+
+import DetailViewFields from "./ContentsItems/DetailViewFields";
+
+import CONSTANT from "../../constants/constant";
+
+const { XdragAdjustment, YdragAdjustment } = CONSTANT;
 
 // import fetchData from "../../utils/axios";
 
@@ -72,19 +77,21 @@ function DetailView({
     if (isEditMode && isDragging) {
       const newArr = [...docData];
 
-      newArr[draggedElementIndex].coordinates.x = event.clientX - 330;
-      newArr[draggedElementIndex].coordinates.y = event.clientY - 177;
+      newArr[draggedElementIndex].coordinates.x =
+        event.clientX - XdragAdjustment;
+      newArr[draggedElementIndex].coordinates.y =
+        event.clientY - YdragAdjustment;
 
       setDocData(newArr);
     }
   };
 
-  function startToggle(index) {
+  function startDragging(index) {
     setIsDragging(true);
     setDraggedElementIndex(index);
   }
 
-  function endToggle() {
+  function endDragging() {
     setIsDragging(false);
     setDraggedElementIndex(null);
   }
@@ -93,7 +100,7 @@ function DetailView({
     const arr = [];
 
     mockUp[currentDocIndex].elements.forEach((element, index) => {
-      return arr.push({
+      arr.push({
         field_id: element._id,
         name: element.name,
         coordinates: { x: 0, y: index * 40 },
@@ -112,46 +119,6 @@ function DetailView({
     setDocData(newArr);
   }
 
-  function renderFields(parameter) {
-    return parameter.map((element, index) => {
-      return (
-        <div
-          key={element.field_id}
-          className={`absolute w-[350px]
-            ${isEditMode && isDragging ? "rounded-md drop-shadow-md" : null}
-          `}
-          style={{
-            top: `${element.coordinates.y}px`,
-            left: `${element.coordinates.x}px`,
-          }}
-        >
-          <div className="flex w-full p-2">
-            <span
-              className={`flex justify-end mr-3 w-[100px] select-none
-              ${isEditMode ? "hover:cursor-move" : null}`}
-              onMouseDown={event => startToggle(index, event)}
-              onMouseUp={() => endToggle(index)}
-            >
-              {element.name}
-            </span>
-            <textarea
-              className={`flex w-full h-7 mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
-                isEditMode && !isDragging
-                  ? "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
-                  : null
-              }`}
-              maxLength="15"
-              onDoubleClick={() => setIsEditMode(true)}
-              onChange={event => updateFieldValue(index, event)}
-              value={element.value}
-              readOnly={!isEditMode}
-            />
-          </div>
-        </div>
-      );
-    });
-  }
-
   return (
     <div className="flex w-full bg-grey">
       <div
@@ -162,7 +129,15 @@ function DetailView({
         onMouseMove={event => handleMouseMove(event)}
       >
         <div className="flex flex-col absolute w-[150px] h-10 ">
-          {renderFields(docData)}
+          <DetailViewFields
+            docData={docData}
+            isEditMode={isEditMode}
+            updateFieldValue={updateFieldValue}
+            setIsEditMode={setIsEditMode}
+            isDragging={isDragging}
+            startDragging={startDragging}
+            endDragging={endDragging}
+          />
         </div>
       </div>
     </div>
