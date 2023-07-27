@@ -41,10 +41,9 @@ function Sidebar({ setCurrentDBId }) {
     {
       enabled: !!userId,
       onSuccess: result => {
-        if (result.length) {
+        if (result.length && isInitial) {
           setCurrentDBId(result[0]._id);
-        } else {
-          setCurrentDBId("");
+            setIsInitial(false);
         }
       },
       onFailure: () => {
@@ -53,6 +52,21 @@ function Sidebar({ setCurrentDBId }) {
       refetchOnWindowFocus: false,
     },
   );
+
+  async function deleteDatabase(databaseId) {
+    await fetchData("DELETE", `/users/${user.userId}/databases/${databaseId}`);
+  }
+
+  const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
+    onSuccess: () => {
+      queryClient.refetchQueries(["dbDocumentList"]);
+      queryClient.refetchQueries(["userDbList"]);
+      setCurrentDBId(data.data.databases[0]._id);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
 
   if (isLoading) {
     return <h1>Loading</h1>;
@@ -69,7 +83,7 @@ function Sidebar({ setCurrentDBId }) {
 
     function switchDatabase(clickedDatabaseId) {
       setCurrentDBId(clickedDatabaseId);
-      queryClient.refetchQueries(["userDb"]);
+      queryClient.refetchQueries(["userDb", "dbDocumentList"]);
     }
 
     return databases.map(element => {

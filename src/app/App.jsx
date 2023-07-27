@@ -21,6 +21,7 @@ function App() {
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isInitial, setIsInitial] = useState(true);
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -65,6 +66,8 @@ function App() {
               <Sidebar
                 setCurrentDBId={setCurrentDBId}
                 setDocumentsIds={setDocumentsIds}
+                isInitial={isInitial}
+                setIsInitial={setIsInitial}
               />
             )}
             <div className="flex grow justify-center">
