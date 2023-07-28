@@ -6,7 +6,6 @@ import SaveButton from "./HeaderItems/SaveButton";
 
 function Header({
   clickHandleLogout,
-  currentDBId,
   isEditMode,
   onClickSave,
   currentDocIndex,
@@ -26,7 +25,6 @@ function Header({
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
         <Toolbar
-          currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}
           clickHandleNavigator={clickHandleNavigator}
         />
@@ -38,7 +36,6 @@ function Header({
 
 Header.propTypes = {
   clickHandleLogout: PropTypes.func.isRequired,
-  currentDBId: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   onClickSave: PropTypes.func.isRequired,
   currentDocIndex: PropTypes.number.isRequired,

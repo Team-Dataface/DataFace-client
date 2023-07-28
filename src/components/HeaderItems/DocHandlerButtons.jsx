@@ -5,17 +5,16 @@ import PropTypes from "prop-types";
 import fetchData from "../../utils/axios";
 
 import UserContext from "../../context/UserContext";
+import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Button from "../shared/Button";
 import AddDocumentModal from "../Modals/AddDocumentModal";
 
-function DocHandlerButtons({
-  currentDBId,
-  currentDocIndex,
-  clickHandleNavigator,
-}) {
+function DocHandlerButtons({ currentDocIndex, clickHandleNavigator }) {
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [documentsNum, setDocumentsNum] = useState(0);
+
   const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -99,7 +98,6 @@ function DocHandlerButtons({
 }
 
 DocHandlerButtons.propTypes = {
-  currentDBId: PropTypes.string.isRequired,
   currentDocIndex: PropTypes.number.isRequired,
   clickHandleNavigator: PropTypes.func.isRequired,
 };

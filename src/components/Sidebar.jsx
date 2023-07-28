@@ -5,13 +5,16 @@ import PropTypes from "prop-types";
 import fetchData from "../utils/axios";
 
 import UserContext from "../context/UserContext";
+import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ currentDBId, setCurrentDBId }) {
+function Sidebar({ setCurrentDBId }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+
   const { userId, username } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
 
   async function deleteDatabase(databaseId) {
     await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);

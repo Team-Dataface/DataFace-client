@@ -6,15 +6,17 @@ import PropTypes from "prop-types";
 import fetchData from "../../utils/axios";
 
 import UserContext from "../../context/UserContext";
+import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
-function AddDocumentModal({ closeModal, currentDBId }) {
+function AddDocumentModal({ closeModal }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
 
   const [fields, setFields] = useState([]);
 
@@ -73,7 +75,6 @@ function AddDocumentModal({ closeModal, currentDBId }) {
 
 AddDocumentModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  currentDBId: PropTypes.string.isRequired,
 };
 
 export default AddDocumentModal;
