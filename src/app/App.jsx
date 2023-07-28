@@ -21,6 +21,7 @@ function App() {
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isOnSave, setIsOnSave] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
   const navigate = useNavigate();
 
@@ -56,11 +57,12 @@ function App() {
             <Header
               clickHandleLogout={setUser}
               isEditMode={isEditMode}
-              onClickSave={setIsEditMode}
+              setIsEditMode={setIsEditMode}
               currentDocIndex={currentDocIndex}
               clickHandleNavigator={setCurrentDocIndex}
               documentsIds={documentsIds}
-        />
+              setIsOnSave={setIsOnSave}
+            />
           )}
           <div className="flex flex-1">
             {user && (
@@ -70,7 +72,7 @@ function App() {
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
-          />
+              />
             )}
             <div className="flex grow justify-center">
               <Routes>
@@ -84,6 +86,8 @@ function App() {
                         setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
                         setDocumentsIds={setDocumentsIds}
+                        isOnSave={isOnSave}
+                        setIsOnSave={setIsOnSave}
                       />
                     }
                   />

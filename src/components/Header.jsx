@@ -7,10 +7,11 @@ import SaveButton from "./HeaderItems/SaveButton";
 function Header({
   clickHandleLogout,
   isEditMode,
-  onClickSave,
+  setIsEditMode,
   currentDocIndex,
   clickHandleNavigator,
   documentsIds,
+  setIsOnSave,
 }) {
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
@@ -30,7 +31,11 @@ function Header({
           clickHandleNavigator={clickHandleNavigator}
           documentsIds={documentsIds}
         />
-        <SaveButton isEditMode={isEditMode} onClickSave={onClickSave} />
+        <SaveButton
+          isEditMode={isEditMode}
+          setIsEditMode={setIsEditMode}
+          setIsOnSave={setIsOnSave}
+        />
       </div>
     </div>
   );
@@ -39,7 +44,7 @@ function Header({
 Header.propTypes = {
   clickHandleLogout: PropTypes.func.isRequired,
   isEditMode: PropTypes.bool.isRequired,
-  onClickSave: PropTypes.func.isRequired,
+  setIsEditMode: PropTypes.func.isRequired,
   currentDocIndex: PropTypes.number.isRequired,
   clickHandleNavigator: PropTypes.func.isRequired,
 };

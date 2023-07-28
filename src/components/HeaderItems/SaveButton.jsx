@@ -2,15 +2,18 @@ import PropTypes from "prop-types";
 
 import Button from "../shared/Button";
 
-function SaveButton({ isEditMode, onClickSave }) {
+function SaveButton({ isEditMode, setIsEditMode, setIsOnSave }) {
   return (
     <div className="flex w-20 justify-center items-center">
       <Button
-        className={`w-20 h-8 rounded-md ring-4 bg-white ring-blue hover:bg-blue
-        ${isEditMode ? "" : "hidden"}`}
-        onClick={() => onClickSave(false)}
+        className={`w-20 h-8 rounded-md bg-white
+        ${isEditMode ? "ring-4 ring-blue hover:bg-blue" : ""}`}
+        onClick={() => {
+          setIsOnSave(true);
+          setIsEditMode(!isEditMode);
+        }}
       >
-        Save
+        {isEditMode ? "Save" : "Edit"}
       </Button>
     </div>
   );
@@ -18,7 +21,7 @@ function SaveButton({ isEditMode, onClickSave }) {
 
 SaveButton.propTypes = {
   isEditMode: PropTypes.bool.isRequired,
-  onClickSave: PropTypes.func.isRequired,
+  setIsEditMode: PropTypes.func.isRequired,
 };
 
 export default SaveButton;

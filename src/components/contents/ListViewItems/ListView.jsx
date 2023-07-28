@@ -14,13 +14,14 @@ function ListView({
   setIsEditMode,
   currentDocIndex,
   setDocumentsIds,
+  isOnSave,
+  setIsOnSave,
 }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
   const [changedDoc, setChangedDoc] = useState([]);
-  const [isOnSave, setIsOnSave] = useState(false);
 
   async function getDocumentsList() {
     const response = await fetchData(
