@@ -10,14 +10,17 @@ import Button from "../shared/Button";
 import AddDocumentModal from "../Modals/AddDocumentModal";
 import DeleteDocumentModal from "../Modals/DeleteDocumentModal";
 
-function DocHandlerButtons({ currentDocIndex, clickHandleNavigator   documentsIds,
+function DocHandlerButtons({
+  currentDocIndex,
+  clickHandleNavigator,
+  documentsIds,
 }) {
-  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
-  const [documentsNum, setDocumentsNum] = useState(0);
-
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
+
+  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
+  const [documentsNum, setDocumentsNum] = useState(0);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -101,7 +104,7 @@ function DocHandlerButtons({ currentDocIndex, clickHandleNavigator   documentsId
       )}
       {showDeleteDocumentModal && (
         <DeleteDocumentModal
-          user={user}
+          user={userId}
           closeModal={() => setShowDeleteDocumentModal(false)}
           currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}

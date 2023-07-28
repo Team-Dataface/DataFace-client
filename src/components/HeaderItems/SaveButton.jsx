@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import Button from "../shared/Button";
 
 function SaveButton({ isEditMode, onClickSave }) {
@@ -13,5 +15,10 @@ function SaveButton({ isEditMode, onClickSave }) {
     </div>
   );
 }
+
+SaveButton.propTypes = {
+  isEditMode: PropTypes.bool.isRequired,
+  onClickSave: PropTypes.func.isRequired,
+};
 
 export default SaveButton;

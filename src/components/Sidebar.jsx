@@ -21,19 +21,6 @@ function Sidebar({
   const { userId, username } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
-  async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
-  }
-
-  const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["userDbList"]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
-
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
 
@@ -59,7 +46,7 @@ function Sidebar({
   );
 
   async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${user.userId}/databases/${databaseId}`);
+    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
   }
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {

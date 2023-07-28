@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
+import UserContext from "../../../context/UserContext";
+import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import fetchData from "../../../utils/axios";
 
@@ -8,21 +10,22 @@ import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 
 function ListView({
-  user,
-  currentDBId,
   isEditMode,
   setIsEditMode,
   currentDocIndex,
   setDocumentsIds,
 }) {
+  const queryClient = useQueryClient();
+  const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
+
   const [changedDoc, setChangedDoc] = useState([]);
   const [isOnSave, setIsOnSave] = useState(false);
-  const queryClient = useQueryClient();
 
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user.userId}/databases/${currentDBId}`,
+      `users/${userId}/databases/${currentDBId}`,
     );
 
     return response.data.database.documents;
@@ -32,7 +35,7 @@ function ListView({
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
-      enabled: !!user,
+      enabled: !!userId,
       onSuccess: result => {
         const newArr = [];
         const docs = result.map(document => {
@@ -52,7 +55,7 @@ function ListView({
   async function handleClickSave() {
     await fetchData(
       "PUT",
-      `/users/${user.userId}/databases/${currentDBId}/documents`,
+      `/users/${userId}/databases/${currentDBId}/documents`,
       changedDoc,
     );
   }
@@ -100,8 +103,10 @@ function ListView({
 }
 
 ListView.propTypes = {
-  user: PropTypes.string.isRequired,
-  currentDBId: PropTypes.string.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
+  setIsEditMode: PropTypes.func.isRequired,
+  currentDocIndex: PropTypes.number.isRequired,
+  setDocumentsIds: PropTypes.func.isRequired,
 };
 
 export default ListView;

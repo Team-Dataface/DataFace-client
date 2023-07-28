@@ -23,7 +23,7 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
   }
 
   const { data, isLoading } = useQuery(["userDb", currentDBId], getDatabase, {
-    enabled: !!user && !!currentDBId,
+    enabled: !!userId && !!currentDBId,
     onSuccess: result => {
       setFields(result.fields);
     },
@@ -58,6 +58,9 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
   });
 }
 
-AddDocumentListSection.propTypes = {};
+AddDocumentListSection.propTypes = {
+  updateFieldValue: PropTypes.func.isRequired,
+  setFields: PropTypes.func.isRequired,
+};
 
 export default AddDocumentListSection;

@@ -1,25 +1,24 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
 
+import UserContext from "../../context/UserContext";
+import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 import ModalTitle from "./ModalTitle";
 
-function DeleteDocumentModal({
-  user,
-  closeModal,
-  currentDBId,
-  currentDocIndex,
-  documentsIds,
-}) {
+function DeleteDocumentModal({ closeModal, currentDocIndex, documentsIds }) {
   const queryClient = useQueryClient();
+  const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
 
   async function deleteDocument() {
     await fetchData(
       "DELETE",
-      `/users/${user.userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
+      `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
     );
   }
 
@@ -57,9 +56,8 @@ function DeleteDocumentModal({
 }
 
 DeleteDocumentModal.propTypes = {
-  user: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
-  currentDBId: PropTypes.string.isRequired,
+  currentDocIndex: PropTypes.number.isRequired,
 };
 
 export default DeleteDocumentModal;

@@ -29,7 +29,6 @@ function TableBody({
     }
 
     setChangedDoc(newChangedDoc);
-    console.log(changedDoc);
 
     event.target.style.height = `${event.target.scrollHeight}px`;
   }
@@ -48,7 +47,7 @@ function TableBody({
             <td
               key={field._id}
               id={field.field}
-              onClick={() => {
+              onDoubleClick={() => {
                 setIsOnSave(true);
                 setIsEditMode(true);
               }}
