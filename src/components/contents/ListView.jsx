@@ -1,13 +1,20 @@
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
+import UserContext from "../../context/UserContext";
+import CurrentDBIdContext from "../../context/CurrentDBIdContext";
+
 import fetchData from "../../utils/axios";
 
-function ListView({ user, currentDBId, setDocumentsIds }) {
+function ListView({ setDocumentsIds }) {
+  const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
+
   async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${user.userId}/databases/${currentDBId}`,
+      `users/${userId}/databases/${currentDBId}`,
     );
 
     return response.data.database.documents;
@@ -17,15 +24,11 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
-      enabled: !!user,
+      enabled: !!userId,
       onSuccess: result => {
-        const newArr = [];
+        const documentIds = result.map(element => element._id);
 
-        result.forEach(element => {
-          newArr.push(element._id);
-        });
-
-        setDocumentsIds(newArr);
+        setDocumentsIds(documentIds);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -71,8 +74,7 @@ function ListView({ user, currentDBId, setDocumentsIds }) {
 }
 
 ListView.propTypes = {
-  user: PropTypes.string.isRequired,
-  currentDBId: PropTypes.string.isRequired,
+  setDocumentsIds: PropTypes.func.isRequired,
 };
 
 export default ListView;

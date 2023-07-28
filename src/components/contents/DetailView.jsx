@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
+import UserContext from "../../context/UserContext";
+import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import DetailViewFields from "./ContentsItems/DetailViewFields";
 
 import CONSTANT from "../../constants/constant";
@@ -14,13 +16,14 @@ function DetailView({
   isEditMode,
   setIsEditMode,
   currentDocIndex,
-  // user,
-  // currentDBId,
   // documentsIds,
 }) {
   const [docData, setDocData] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElementIndex, setDraggedElementIndex] = useState(null);
+
+  const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
 
   const mockUp = [
     {
@@ -145,8 +148,6 @@ function DetailView({
 }
 
 DetailView.propTypes = {
-  // user: PropTypes.string.isRequired,
-  // currentDBId: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
 };
