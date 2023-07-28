@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import ContentsContainer from "../components/ContentsContainer";
 import DetailView from "../components/contents/DetailView";
 import Sidebar from "../components/Sidebar";
-import ListView from "../components/contents/ListView";
+import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
 
 import CONSTANT from "../constants/constant";
@@ -69,7 +69,8 @@ function App() {
                 setDocumentsIds={setDocumentsIds}
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
-              />
+                setCurrentDocIndex={setCurrentDocIndex}
+          />
             )}
             <div className="flex grow justify-center">
               <Routes>

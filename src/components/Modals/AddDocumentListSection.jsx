@@ -22,8 +22,8 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
     return response.data.database.documents[0];
   }
 
-  const { data, isLoading } = useQuery(["userDb"], getDatabase, {
-    enabled: !!userId,
+  const { data, isLoading } = useQuery(["userDb", currentDBId], getDatabase, {
+    enabled: !!user && !!currentDBId,
     onSuccess: result => {
       setFields(result.fields);
     },

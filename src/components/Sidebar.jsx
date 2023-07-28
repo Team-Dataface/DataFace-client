@@ -9,7 +9,12 @@ import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ setCurrentDBId }) {
+function Sidebar({
+  setCurrentDBId,
+  isInitial,
+  setIsInitial,
+  setCurrentDocIndex,
+}) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
@@ -59,9 +64,9 @@ function Sidebar({ setCurrentDBId }) {
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
     onSuccess: () => {
+      setCurrentDBId(databases[0]._id);
       queryClient.refetchQueries(["dbDocumentList"]);
       queryClient.refetchQueries(["userDbList"]);
-      setCurrentDBId(databases[0]._id);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -82,6 +87,7 @@ function Sidebar({ setCurrentDBId }) {
     }
 
     function switchDatabase(clickedDatabaseId) {
+      setCurrentDocIndex(0);
       setCurrentDBId(clickedDatabaseId);
       queryClient.refetchQueries(["userDb", "dbDocumentList"]);
     }
