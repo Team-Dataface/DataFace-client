@@ -9,25 +9,17 @@ import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({ setCurrentDBId }) {
+function Sidebar({
+  setCurrentDBId,
+  isInitial,
+  setIsInitial,
+  setCurrentDocIndex,
+}) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   const { userId, username } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
-
-  async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
-  }
-
-  const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["userDbList"]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -41,10 +33,9 @@ function Sidebar({ setCurrentDBId }) {
     {
       enabled: !!userId,
       onSuccess: result => {
-        if (result.length) {
+        if (result.length && isInitial) {
           setCurrentDBId(result[0]._id);
-        } else {
-          setCurrentDBId("");
+          setIsInitial(false);
         }
       },
       onFailure: () => {
@@ -53,6 +44,21 @@ function Sidebar({ setCurrentDBId }) {
       refetchOnWindowFocus: false,
     },
   );
+
+  async function deleteDatabase(databaseId) {
+    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
+  }
+
+  const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
+    onSuccess: () => {
+      setCurrentDBId(databases[0]._id);
+      queryClient.refetchQueries(["dbDocumentList"]);
+      queryClient.refetchQueries(["userDbList"]);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
 
   if (isLoading) {
     return <h1>Loading</h1>;
@@ -68,8 +74,9 @@ function Sidebar({ setCurrentDBId }) {
     }
 
     function switchDatabase(clickedDatabaseId) {
+      setCurrentDocIndex(0);
       setCurrentDBId(clickedDatabaseId);
-      queryClient.refetchQueries(["userDb"]);
+      queryClient.refetchQueries(["userDb", "dbDocumentList"]);
     }
 
     return databases.map(element => {

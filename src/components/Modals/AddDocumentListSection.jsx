@@ -22,8 +22,8 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
     return response.data.database.documents[0];
   }
 
-  const { data, isLoading } = useQuery(["userDb"], getDatabase, {
-    enabled: !!userId,
+  const { data, isLoading } = useQuery(["userDb", currentDBId], getDatabase, {
+    enabled: !!userId && !!currentDBId,
     onSuccess: result => {
       setFields(result.fields);
     },
@@ -39,7 +39,7 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
 
   return data.fields.map((element, index) => {
     return (
-      <div key={element.field_id} className="flex">
+      <div key={element._id} className="flex">
         <div className="w-[130px]">
           <ModalLabel value={element.fieldName} />
         </div>
@@ -58,6 +58,9 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
   });
 }
 
-AddDocumentListSection.propTypes = {};
+AddDocumentListSection.propTypes = {
+  updateFieldValue: PropTypes.func.isRequired,
+  setFields: PropTypes.func.isRequired,
+};
 
 export default AddDocumentListSection;

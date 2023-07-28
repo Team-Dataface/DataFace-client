@@ -159,6 +159,7 @@ function CreateDBModal({ closeModal, setCurrentDBId }) {
 
 CreateDBModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  setCurrentDBId: PropTypes.func.isRequired,
 };
 
 export default CreateDBModal;

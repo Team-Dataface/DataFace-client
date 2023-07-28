@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import ContentsContainer from "../components/ContentsContainer";
 import DetailView from "../components/contents/DetailView";
 import Sidebar from "../components/Sidebar";
-import ListView from "../components/contents/ListView";
+import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
 
 import CONSTANT from "../constants/constant";
@@ -21,6 +21,8 @@ function App() {
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isOnSave, setIsOnSave] = useState(false);
+  const [isInitial, setIsInitial] = useState(true);
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -55,9 +57,11 @@ function App() {
             <Header
               clickHandleLogout={setUser}
               isEditMode={isEditMode}
-              onClickSave={setIsEditMode}
+              setIsEditMode={setIsEditMode}
               currentDocIndex={currentDocIndex}
               clickHandleNavigator={setCurrentDocIndex}
+              documentsIds={documentsIds}
+              setIsOnSave={setIsOnSave}
             />
           )}
           <div className="flex flex-1">
@@ -65,6 +69,9 @@ function App() {
               <Sidebar
                 setCurrentDBId={setCurrentDBId}
                 setDocumentsIds={setDocumentsIds}
+                isInitial={isInitial}
+                setIsInitial={setIsInitial}
+                setCurrentDocIndex={setCurrentDocIndex}
               />
             )}
             <div className="flex grow justify-center">
@@ -76,10 +83,11 @@ function App() {
                     element={
                       <ListView
                         isEditMode={isEditMode}
-                        setIsSaveMode={setIsEditMode}
+                        setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
-                        setCurrentDocIndex={setCurrentDocIndex}
                         setDocumentsIds={setDocumentsIds}
+                        isOnSave={isOnSave}
+                        setIsOnSave={setIsOnSave}
                       />
                     }
                   />
