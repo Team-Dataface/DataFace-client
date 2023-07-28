@@ -9,7 +9,12 @@ import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 
-function DeleteDocumentModal({ closeModal, currentDocIndex, documentsIds }) {
+function DeleteDocumentModal({
+  closeModal,
+  currentDocIndex,
+  documentsIds,
+  setCurrentDocIndex,
+}) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -24,6 +29,8 @@ function DeleteDocumentModal({ closeModal, currentDocIndex, documentsIds }) {
   const { mutate: fetchDeleteDocument } = useMutation(deleteDocument, {
     onSuccess: () => {
       queryClient.refetchQueries(["dbDocumentList"]);
+      setCurrentDocIndex(0);
+      closeModal();
     },
     onFailure: () => {
       console.log("sending user to errorpage");

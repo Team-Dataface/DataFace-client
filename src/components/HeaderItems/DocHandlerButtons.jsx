@@ -109,6 +109,7 @@ function DocHandlerButtons({
           currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}
           documentsIds={documentsIds}
+          setCurrentDocIndex={clickHandleNavigator}
         />
       )}
     </div>
