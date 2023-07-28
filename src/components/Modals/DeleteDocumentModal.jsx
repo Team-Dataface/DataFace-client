@@ -8,7 +8,6 @@ import UserContext from "../../context/UserContext";
 import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
-import ModalTitle from "./ModalTitle";
 
 function DeleteDocumentModal({ closeModal, currentDocIndex, documentsIds }) {
   const queryClient = useQueryClient();
@@ -34,14 +33,15 @@ function DeleteDocumentModal({ closeModal, currentDocIndex, documentsIds }) {
   return (
     <Modal onClick={closeModal}>
       <div className="flex flex-col items-center">
-        <ModalTitle value="DELETE DOCUMENT" />
-        <h1>Do you really want to DELETE this document?</h1>
-        <div className="flex justify-around w-full">
+        <span className="text-xl p-10">
+          Are you sure you want to permanently delete this document?
+        </span>
+        <div className="flex justify-evenly w-full">
           <Button
             className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
             onClick={closeModal}
           >
-            Discard
+            Cancel
           </Button>
           <Button
             className="w-20 h-8 rounded-md bg-red text-white hover:bg-red-hover"
