@@ -38,14 +38,15 @@ function ListView({
     {
       enabled: !!userId,
       onSuccess: result => {
-        const newArr = [];
+        const documentsId = [];
+
         const docs = result.map(document => {
-          newArr.push(document._id);
+          documentsId.push(document._id);
           return { documentId: document._id, fields: [] };
         });
 
         setChangedDoc(docs);
-        setDocumentsIds(newArr);
+        setDocumentsIds(documentsId);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
