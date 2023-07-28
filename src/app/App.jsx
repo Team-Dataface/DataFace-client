@@ -58,7 +58,7 @@ function App() {
               isEditMode={isEditMode}
               setIsEditMode={setIsEditMode}
               currentDocIndex={currentDocIndex}
-              clickHandleNavigator={setCurrentDocIndex}
+              setCurrentDocIndex={setCurrentDocIndex}
               documentsIds={documentsIds}
               setIsOnSave={setIsOnSave}
             />

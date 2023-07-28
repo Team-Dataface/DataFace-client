@@ -4,13 +4,13 @@ import RelationButton from "./RelationButton";
 import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 
-function Toolbar({ currentDocIndex, clickHandleNavigator, documentsIds }) {
+function Toolbar({ currentDocIndex, setCurrentDocIndex, documentsIds }) {
   return (
     <div className="flex justify-between items-center w-full h-full mr-3 bg-black-bg">
       <RelationButton />
       <DocHandlerButtons
         currentDocIndex={currentDocIndex}
-        clickHandleNavigator={clickHandleNavigator}
+        setCurrentDocIndex={setCurrentDocIndex}
         documentsIds={documentsIds}
       />
       <SwitchViewButtons />
@@ -20,7 +20,7 @@ function Toolbar({ currentDocIndex, clickHandleNavigator, documentsIds }) {
 
 Toolbar.propTypes = {
   currentDocIndex: PropTypes.number.isRequired,
-  clickHandleNavigator: PropTypes.func.isRequired,
+  setCurrentDocIndex: PropTypes.func.isRequired,
 };
 
 export default Toolbar;

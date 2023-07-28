@@ -9,7 +9,7 @@ function Header({
   isEditMode,
   setIsEditMode,
   currentDocIndex,
-  clickHandleNavigator,
+  setCurrentDocIndex,
   documentsIds,
   setIsOnSave,
 }) {
@@ -28,7 +28,7 @@ function Header({
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
         <Toolbar
           currentDocIndex={currentDocIndex}
-          clickHandleNavigator={clickHandleNavigator}
+          setCurrentDocIndex={setCurrentDocIndex}
           documentsIds={documentsIds}
         />
         <SaveButton
@@ -46,7 +46,7 @@ Header.propTypes = {
   isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
   currentDocIndex: PropTypes.number.isRequired,
-  clickHandleNavigator: PropTypes.func.isRequired,
+  setCurrentDocIndex: PropTypes.func.isRequired,
 };
 
 export default Header;
