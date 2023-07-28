@@ -9,12 +9,7 @@ import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateDBModal";
 
-function Sidebar({
-  setCurrentDBId,
-  isInitial,
-  setIsInitial,
-  setCurrentDocIndex,
-}) {
+function Sidebar({ setCurrentDBId, setCurrentDocIndex }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
@@ -33,9 +28,8 @@ function Sidebar({
     {
       enabled: !!userId,
       onSuccess: result => {
-        if (result.length && isInitial) {
+        if (result.length) {
           setCurrentDBId(result[0]._id);
-          setIsInitial(false);
         }
       },
       onFailure: () => {
