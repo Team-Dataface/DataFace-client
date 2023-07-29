@@ -2,14 +2,17 @@ import { useState, useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
-import fetchData from "../../utils/axios";
+import fetchData from "../../../utils/axios";
 
-import UserContext from "../../context/UserContext";
-import CurrentDBIdContext from "../../context/CurrentDBIdContext";
-import Button from "../shared/Button";
-import Modal from "../shared/Modal";
-import ModalTitle from "./ModalTitle";
-import AddDocumentListSection from "./AddDocumentListSection";
+import UserContext from "../../../context/UserContext";
+import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import Button from "../../shared/Button";
+import Modal from "../../shared/Modal";
+import Title from "../SharedItems/Title";
+import AddDocInputList from "./AddDocInputList";
+import ContentWrapper from "../SharedItems/ContentWrapper";
+import Content from "../SharedItems/Content";
+import InputsArea from "../SharedItems/InputsArea";
 
 function AddDocumentModal({
   closeModal,
@@ -62,28 +65,24 @@ function AddDocumentModal({
 
   return (
     <Modal onClick={closeModal}>
-      <div className="flex flex-col items-center">
-        <ModalTitle value="Add New Document" />
-        <div className="flex flex-col justify-center items-center h-auto">
-          <div className="flex">
-            <div className="flex flex-col items-center p-3">
-              <AddDocumentListSection
-                updateFieldValue={updateFieldValue}
-                currentDBId={currentDBId}
-                setFields={setFields}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Button
-            className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-            onClick={fetchDocumentSave}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
+      <ContentWrapper>
+        <Title value="Add New Document" />
+        <Content>
+          <InputsArea>
+            <AddDocInputList
+              updateFieldValue={updateFieldValue}
+              currentDBId={currentDBId}
+              setFields={setFields}
+            />
+          </InputsArea>
+        </Content>
+        <Button
+          className="w-20 h-8 mt-5 rounded-md bg-black-bg text-white hover:bg-dark-grey"
+          onClick={fetchDocumentSave}
+        >
+          Submit
+        </Button>
+      </ContentWrapper>
     </Modal>
   );
 }

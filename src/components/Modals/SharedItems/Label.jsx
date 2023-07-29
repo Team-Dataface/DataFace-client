@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 
-function ModalLabel({ value }) {
+function Label({ value }) {
   return (
     <div className="flex justify-end p-3">
-      <span className="flex items-center h-7">{value}</span>
+      <span className="flex items-center h-7 text-right">{value}</span>
     </div>
   );
 }
 
-ModalLabel.propTypes = {
+Label.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default ModalLabel;
+export default Label;

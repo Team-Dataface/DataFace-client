@@ -7,9 +7,14 @@ import fetchData from "../utils/axios";
 import UserContext from "../context/UserContext";
 import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
-import CreateDBModal from "./Modals/CreateDBModal";
+import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 
-function Sidebar({ setCurrentDBId, setCurrentDocIndex }) {
+function Sidebar({
+  setCurrentDBId,
+  isInitial,
+  setIsInitial,
+  setCurrentDocIndex,
+}) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
@@ -28,8 +33,9 @@ function Sidebar({ setCurrentDBId, setCurrentDocIndex }) {
     {
       enabled: !!userId,
       onSuccess: result => {
-        if (result.length) {
+        if (result.length && isInitial) {
           setCurrentDBId(result[0]._id);
+          setIsInitial(false);
         }
       },
       onFailure: () => {
@@ -70,7 +76,7 @@ function Sidebar({ setCurrentDBId, setCurrentDocIndex }) {
     function switchDatabase(clickedDatabaseId) {
       setCurrentDocIndex(0);
       setCurrentDBId(clickedDatabaseId);
-      queryClient.refetchQueries(["userDb", "dbDocumentList"]);
+      queryClient.refetchQueries(["userDb", "dbDocumentList", "document"]);
     }
 
     return databases.map(element => {
