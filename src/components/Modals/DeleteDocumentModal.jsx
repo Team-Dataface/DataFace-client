@@ -20,6 +20,13 @@ function DeleteDocumentModal({
   const currentDBId = useContext(CurrentDBIdContext);
 
   async function deleteDocument() {
+    if (documentsIds.length === 1) {
+      alert(
+        "Please ensure that the database contains at least one document before proceeding.",
+      );
+      return;
+    }
+
     await fetchData(
       "DELETE",
       `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
