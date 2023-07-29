@@ -16,7 +16,6 @@ function DetailView({
   isEditMode,
   setIsEditMode,
   currentDocIndex,
-  documentsIds,
   isOnSave,
   setIsOnSave,
 }) {
@@ -29,41 +28,45 @@ function DetailView({
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
-  async function getDocument() {
+  async function getDocumentsList() {
     const response = await fetchData(
       "GET",
-      `users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
+      `users/${userId}/databases/${currentDBId}`,
     );
 
-    return response.data.document;
+    return response.data.database.documents;
   }
 
-  const { isLoading } = useQuery(["document", currentDocIndex], getDocument, {
-    enabled: !!userId && !!documentsIds,
-    onSuccess: result => {
-      const receivedFields = result.fields.map(element => {
-        return {
-          fieldName: element.fieldName,
-          fieldType: element.fieldType,
-          fieldValue: element.fieldValue,
-          xCoordinate: element.xCoordinate,
-          yCoordinate: element.yCoordinate,
-          fieldId: element._id,
-        };
-      });
+  const { data: document, isLoading } = useQuery(
+    ["dbDocumentList", currentDBId],
+    getDocumentsList,
+    {
+      enabled: !!userId,
+      onSuccess: result => {
+        const receivedFields = result[currentDocIndex].fields.map(element => {
+          return {
+            fieldName: element.fieldName,
+            fieldType: element.fieldType,
+            fieldValue: element.fieldValue,
+            xCoordinate: element.xCoordinate,
+            yCoordinate: element.yCoordinate,
+            fieldId: element._id,
+          };
+        });
 
-      setDocData(receivedFields);
+        setDocData(receivedFields);
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
+      refetchOnWindowFocus: false,
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
+  );
 
   async function handleClickSave() {
     await fetchData(
       "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
+      `/users/${userId}/databases/${currentDBId}/documents/${document[currentDocIndex]._id}`,
       { fields: docData },
     );
   }
@@ -154,7 +157,7 @@ function DetailView({
       >
         <div className="flex flex-col absolute w-[150px] h-10 ">
           <FieldList
-            docData={docData}
+            document={document[currentDocIndex]}
             isEditMode={isEditMode}
             updateFieldValue={updateFieldValue}
             setIsEditMode={setIsEditMode}

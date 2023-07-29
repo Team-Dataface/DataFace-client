@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 function FieldList({
-  docData,
+  document,
   isEditMode,
   updateFieldValue,
   setIsEditMode,
@@ -8,7 +8,7 @@ function FieldList({
   startDragging,
   endDragging,
 }) {
-  return docData.map((element, index) => {
+  return document.fields.map((element, index) => {
     return (
       <div
         key={element.fieldName}
