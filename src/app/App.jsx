@@ -12,7 +12,7 @@ import DetailView from "../components/contents/DetailViewItems/DetailView";
 import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
-import RelationView from "../components/contents/RelationView";
+import RelationView from "../components/contents/RelationItems/RelationView";
 
 import CONSTANT from "../constants/constant";
 

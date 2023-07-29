@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import fetchData from "../../utils/axios";
+import fetchData from "../../../utils/axios";
 
-import UserContext from "../../context/UserContext";
-import CurrentDBIdContext from "../../context/CurrentDBIdContext";
+import UserContext from "../../../context/UserContext";
+import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
-import DatabaseFields from "./RelationItems/DatabaseFields";
-import Button from "../shared/Button";
+import DatabaseFields from "./DatabaseFields";
+import Button from "../../shared/Button";
 
 function RelationView() {
   const { userId } = useContext(UserContext);
@@ -29,7 +29,7 @@ function RelationView() {
       retry: false,
       enabled: !!userId && !!currentDBId,
       onSuccess: result => {
-        console.log(result);
+        // will be added..
       },
       onFailure: () => {
         console.log("sending user to errorpage");
