@@ -11,6 +11,7 @@ function Header({
   currentDocIndex,
   setCurrentDocIndex,
   documentsIds,
+  setDocumentsIds,
   setIsOnSave,
 }) {
   return (
@@ -30,6 +31,7 @@ function Header({
           currentDocIndex={currentDocIndex}
           setCurrentDocIndex={setCurrentDocIndex}
           documentsIds={documentsIds}
+          setDocumentsIds={setDocumentsIds}
         />
         <SaveButton
           isEditMode={isEditMode}

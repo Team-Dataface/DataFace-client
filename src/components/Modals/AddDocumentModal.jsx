@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
@@ -12,9 +11,14 @@ import Modal from "../shared/Modal";
 import ModalTitle from "./ModalTitle";
 import AddDocumentListSection from "./AddDocumentListSection";
 
-function AddDocumentModal({ closeModal }) {
+function AddDocumentModal({
+  closeModal,
+  setDocumentsIds,
+  setCurrentDocIndex,
+  documentsIds,
+}) {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
@@ -26,19 +30,30 @@ function AddDocumentModal({ closeModal }) {
     setFields(newArr);
   }
 
+  function addNewDocumentId(newId) {
+    const newArr = [...documentsIds];
+
+    newArr.push(newId);
+    setDocumentsIds(newArr);
+  }
+
   async function handleClickSave() {
-    await fetchData(
+    const response = await fetchData(
       "POST",
       `/users/${userId}/databases/${currentDBId}/documents`,
       fields,
     );
+
+    return response.data.newDocument._id;
   }
 
   const { mutate: fetchDocumentSave } = useMutation(handleClickSave, {
-    onSuccess: () => {
+    onSuccess: result => {
       queryClient.refetchQueries(["dbDocumentList"]);
-      navigate("/dashboard/listview");
       closeModal();
+
+      addNewDocumentId(result);
+      setCurrentDocIndex(documentsIds.length);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
