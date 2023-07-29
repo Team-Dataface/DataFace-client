@@ -14,6 +14,7 @@ function DocHandlerButtons({
   currentDocIndex,
   setCurrentDocIndex,
   documentsIds,
+  setDocumentsIds,
 }) {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -100,6 +101,10 @@ function DocHandlerButtons({
         <AddDocumentModal
           closeModal={() => setShowAddDocumentModal(false)}
           currentDBId={currentDBId}
+          documentsIds={documentsIds}
+          setDocumentsIds={setDocumentsIds}
+          currentDocIndex={currentDocIndex}
+          setCurrentDocIndex={setCurrentDocIndex}
         />
       )}
       {showDeleteDocumentModal && (

@@ -13,6 +13,7 @@ function ListView({
   isEditMode,
   setIsEditMode,
   currentDocIndex,
+  setCurrentDocIndex,
   setDocumentsIds,
   isOnSave,
   setIsOnSave,
@@ -92,6 +93,7 @@ function ListView({
           <TableBody
             documents={documents}
             currentDocIndex={currentDocIndex}
+            setCurrentDocIndex={setCurrentDocIndex}
             changedDoc={changedDoc}
             setChangedDoc={setChangedDoc}
             setIsOnSave={setIsOnSave}

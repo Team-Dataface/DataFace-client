@@ -8,7 +8,7 @@ import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
 import ContentsContainer from "../components/ContentsContainer";
-import DetailView from "../components/contents/DetailView";
+import DetailView from "../components/contents/DetailViewItems/DetailView";
 import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
@@ -60,6 +60,7 @@ function App() {
               currentDocIndex={currentDocIndex}
               setCurrentDocIndex={setCurrentDocIndex}
               documentsIds={documentsIds}
+              setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
             />
           )}
@@ -81,6 +82,7 @@ function App() {
                         isEditMode={isEditMode}
                         setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
+                        setCurrentDocIndex={setCurrentDocIndex}
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
@@ -96,6 +98,8 @@ function App() {
                         currentDocIndex={currentDocIndex}
                         setCurrentDocIndex={setCurrentDocIndex}
                         documentsIds={documentsIds}
+                        isOnSave={isOnSave}
+                        setIsOnSave={setIsOnSave}
                       />
                     }
                   />

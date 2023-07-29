@@ -1,6 +1,7 @@
 function TableBody({
   documents,
   currentDocIndex,
+  setCurrentDocIndex,
   changedDoc,
   setChangedDoc,
   setIsOnSave,
@@ -41,6 +42,7 @@ function TableBody({
           className={`h-full border ${
             currentDocIndex === index ? "bg-yellow" : ""
           }`}
+          onClick={() => setCurrentDocIndex(index)}
         >
           <td className="h-full border px-2 text-center">{index + 1}</td>
           {document.fields.map(field => (

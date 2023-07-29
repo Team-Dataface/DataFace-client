@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function DetailViewFields({
+function FieldList({
   docData,
   isEditMode,
   updateFieldValue,
@@ -11,13 +11,13 @@ function DetailViewFields({
   return docData.map((element, index) => {
     return (
       <div
-        key={element.field_id}
+        key={element.fieldName}
         className={`absolute w-[350px]
           ${isEditMode && isDragging ? "rounded-md drop-shadow-md" : null}
         `}
         style={{
-          top: `${element.coordinates.y}px`,
-          left: `${element.coordinates.x}px`,
+          top: `${element.yCoordinate}px`,
+          left: `${element.xCoordinate}px`,
         }}
       >
         <div className="flex w-full p-2">
@@ -27,7 +27,7 @@ function DetailViewFields({
             onMouseDown={event => startDragging(index, event)}
             onMouseUp={() => endDragging(index)}
           >
-            {element.name}
+            {element.fieldName}
           </span>
           <textarea
             className={`flex w-full h-7 mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
@@ -38,7 +38,7 @@ function DetailViewFields({
             maxLength="15"
             onDoubleClick={() => setIsEditMode(true)}
             onChange={event => updateFieldValue(index, event)}
-            value={element.value}
+            value={element.fieldValue}
             readOnly={!isEditMode}
           />
         </div>
@@ -47,4 +47,4 @@ function DetailViewFields({
   });
 }
 
-export default DetailViewFields;
+export default FieldList;

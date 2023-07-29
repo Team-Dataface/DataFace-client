@@ -4,7 +4,12 @@ import RelationButton from "./RelationButton";
 import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 
-function Toolbar({ currentDocIndex, setCurrentDocIndex, documentsIds }) {
+function Toolbar({
+  currentDocIndex,
+  setCurrentDocIndex,
+  documentsIds,
+  setDocumentsIds,
+}) {
   return (
     <div className="flex justify-between items-center w-full h-full mr-3 bg-black-bg">
       <RelationButton />
@@ -12,6 +17,7 @@ function Toolbar({ currentDocIndex, setCurrentDocIndex, documentsIds }) {
         currentDocIndex={currentDocIndex}
         setCurrentDocIndex={setCurrentDocIndex}
         documentsIds={documentsIds}
+        setDocumentsIds={setDocumentsIds}
       />
       <SwitchViewButtons />
     </div>
