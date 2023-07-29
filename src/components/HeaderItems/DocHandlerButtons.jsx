@@ -7,8 +7,8 @@ import fetchData from "../../utils/axios";
 import UserContext from "../../context/UserContext";
 import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Button from "../shared/Button";
-import AddDocumentModal from "../Modals/AddDocumentModal";
-import DeleteDocumentModal from "../Modals/DeleteDocumentModal";
+import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
+import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 
 function DocHandlerButtons({
   currentDocIndex,
@@ -98,7 +98,7 @@ function DocHandlerButtons({
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
       {showAddDocumentModal && (
-        <AddDocumentModal
+        <AddDocModal
           closeModal={() => setShowAddDocumentModal(false)}
           currentDBId={currentDBId}
           documentsIds={documentsIds}
@@ -108,7 +108,7 @@ function DocHandlerButtons({
         />
       )}
       {showDeleteDocumentModal && (
-        <DeleteDocumentModal
+        <DeleteDocModal
           user={userId}
           closeModal={() => setShowDeleteDocumentModal(false)}
           currentDBId={currentDBId}

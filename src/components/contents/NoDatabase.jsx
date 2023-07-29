@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import Button from "../shared/Button";
-import CreateDBModal from "../Modals/CreateDBModal";
+import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
 function NoDatabase({ setCurrentDBId }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);

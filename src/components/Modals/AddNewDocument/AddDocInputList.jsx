@@ -2,14 +2,15 @@ import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
-import fetchData from "../../utils/axios";
+import fetchData from "../../../utils/axios";
 
-import UserContext from "../../context/UserContext";
-import CurrentDBIdContext from "../../context/CurrentDBIdContext";
-import ModalLabel from "./ModalLabel";
-import ModalInputArea from "./ModalInputArea";
+import UserContext from "../../../context/UserContext";
+import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import Label from "../SharedItems/Label";
+import InputWrapper from "../SharedItems/InputWrapper";
+import LabelArea from "../SharedItems/InputsArea";
 
-function AddDocumentListSection({ updateFieldValue, setFields }) {
+function AddDocInputList({ updateFieldValue, setFields }) {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
@@ -39,28 +40,27 @@ function AddDocumentListSection({ updateFieldValue, setFields }) {
 
   return data.fields.map((element, index) => {
     return (
-      <div key={element._id} className="flex">
-        <div className="w-[130px]">
-          <ModalLabel value={element.fieldName} />
-        </div>
-        <div className="flex justify-center items-center px-3">
-          <ModalInputArea>
-            <div className="flex flex-row justify-center items-center">
-              <textarea
-                className="flex h-7 w-[300px] rounded-md text-center"
-                onChange={event => updateFieldValue(index, event)}
-              />
-            </div>
-          </ModalInputArea>
-        </div>
+      <div key={element._id} className="flex w-[500px]">
+        <span
+          className="flex justify-end items-center w-[150px] mr-3 text-right"
+          type="text"
+        >
+          {element.fieldName}
+        </span>
+        <InputWrapper>
+          <textarea
+            className="flex w-full h-7 rounded-md text-center"
+            onChange={event => updateFieldValue(index, event)}
+          />
+        </InputWrapper>
       </div>
     );
   });
 }
 
-AddDocumentListSection.propTypes = {
+AddDocInputList.propTypes = {
   updateFieldValue: PropTypes.func.isRequired,
   setFields: PropTypes.func.isRequired,
 };
 
-export default AddDocumentListSection;
+export default AddDocInputList;
