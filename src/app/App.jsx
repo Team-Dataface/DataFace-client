@@ -23,6 +23,9 @@ function App() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isOnSave, setIsOnSave] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
+  const [currentDBName, setCurrentDBName] = useState("");
+
+  const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
     retry: false,
@@ -62,16 +65,19 @@ function App() {
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
+              currentDBName={currentDBName}
             />
           )}
           <div className="flex flex-1">
             {user && (
               <Sidebar
+                isEditMode={isEditMode}
                 setCurrentDBId={setCurrentDBId}
                 setDocumentsIds={setDocumentsIds}
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
+                setCurrentDBName={setCurrentDBName}
               />
             )}
             <div className="flex grow justify-center">
@@ -108,7 +114,12 @@ function App() {
                   />
                   <Route
                     path="nodatabase"
-                    element={<NoDatabase setCurrentDBId={setCurrentDBId} />}
+                    element={
+                      <NoDatabase
+                        setCurrentDBId={setCurrentDBId}
+                        setCurrentDBName={setCurrentDBName}
+                      />
+                    }
                   />
                 </Route>
                 <Route path="/" element={<Navigate replace to="/login" />} />

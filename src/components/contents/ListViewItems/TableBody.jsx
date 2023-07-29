@@ -59,9 +59,8 @@ function TableBody({
                 <textarea
                   className={`w-full h-full rounded-md disabled: bg-inherit resize-none
                   ${
-                    isEditMode
-                      ? "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
-                      : null
+                    isEditMode &&
+                    "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
                   }`}
                   id={field._id}
                   defaultValue={field.fieldValue}

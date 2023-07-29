@@ -86,7 +86,7 @@ function ListView({
     <div className="flex bg-grey w-full h-full">
       <div
         className={`relative flex bg-white w-full m-2 p-5 drop-shadow-md
-      ${isEditMode ? "ring-4 ring-blue" : null}`}
+      ${isEditMode && "ring-4 ring-blue"}`}
       >
         <table className="border-collapse w-full max-h-20 overflow-y-auto">
           <TableHead fields={documents[0].fields} />

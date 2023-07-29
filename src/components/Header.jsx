@@ -13,6 +13,7 @@ function Header({
   documentsIds,
   setDocumentsIds,
   setIsOnSave,
+  currentDBName,
 }) {
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
@@ -22,22 +23,27 @@ function Header({
           src="/assets/dataface_logo.png"
           alt="dataface logo"
         />
-        <h1 className="text-white">Page Name</h1>
+        <h1 className="text-white">{currentDBName}</h1>
         <LogoutButton clickHandleLogout={clickHandleLogout} />
       </div>
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
-        <Toolbar
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
-          documentsIds={documentsIds}
-          setDocumentsIds={setDocumentsIds}
-        />
-        <SaveButton
-          isEditMode={isEditMode}
-          setIsEditMode={setIsEditMode}
-          setIsOnSave={setIsOnSave}
-        />
+        {currentDBName && (
+          <Toolbar
+            isEditMode={isEditMode}
+            currentDocIndex={currentDocIndex}
+            setCurrentDocIndex={setCurrentDocIndex}
+            documentsIds={documentsIds}
+            setDocumentsIds={setDocumentsIds}
+          />
+        )}
+        {currentDBName && (
+          <SaveButton
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            setIsOnSave={setIsOnSave}
+          />
+        )}
       </div>
     </div>
   );

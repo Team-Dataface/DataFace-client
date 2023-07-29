@@ -5,6 +5,7 @@ import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 
 function Toolbar({
+  isEditMode,
   currentDocIndex,
   setCurrentDocIndex,
   documentsIds,
@@ -12,14 +13,15 @@ function Toolbar({
 }) {
   return (
     <div className="flex justify-between items-center w-full h-full mr-3 bg-black-bg">
-      <RelationButton />
+      <RelationButton isEditMode={isEditMode} />
       <DocHandlerButtons
+        isEditMode={isEditMode}
         currentDocIndex={currentDocIndex}
         setCurrentDocIndex={setCurrentDocIndex}
         documentsIds={documentsIds}
         setDocumentsIds={setDocumentsIds}
       />
-      <SwitchViewButtons />
+      <SwitchViewButtons isEditMode={isEditMode} />
     </div>
   );
 }

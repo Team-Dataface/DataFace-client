@@ -11,6 +11,7 @@ import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 
 function DocHandlerButtons({
+  isEditMode,
   currentDocIndex,
   setCurrentDocIndex,
   documentsIds,
@@ -69,31 +70,44 @@ function DocHandlerButtons({
   return (
     <div className="flex items-center">
       <Button
-        className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey"
+        className={`flex justify-center items-center w-8 h-8 mr-1 rounded-md
+        ${isEditMode ? "hover:none" : "hover:bg-dark-grey"}`}
         onClick={() => navigateDown()}
+        disabled={isEditMode}
       >
         <img src="/assets/left_icon.svg" alt="left icon" />
       </Button>
-      <span className="flex justify-center items-center w-20 h-8 mr-1 rounded-md bg-white">
+      <span
+        className={`flex justify-center items-center w-20 h-8 mr-1 rounded-md
+        ${isEditMode ? "bg-dark-grey" : "bg-white"}`}
+      >
         {currentDocIndexShownToUser} / {documentsNum}
       </span>
       <Button
-        className="flex justify-center items-center w-8 h-8 mr-1 rounded-md hover:bg-dark-grey"
+        className={`flex justify-center items-center w-8 h-8 mr-1 rounded-md
+        ${isEditMode ? "hover:none" : "hover:bg-dark-grey"}`}
         onClick={() => navigateUp()}
+        disabled={isEditMode}
       >
         <img src="/assets/right_icon.svg" alt="right icon" />
       </Button>
       <Button
-        className="flex justify-center items-center w-8 h-8 mr-1 rounded-md bg-white hover:bg-yellow"
+        className={`flex justify-center items-center w-8 h-8 mr-1 rounded-md
+          ${
+            isEditMode ? "bg-dark-grey hover:none" : "bg-white hover:bg-yellow"
+          }`}
         onClick={() => {
           setShowAddDocumentModal(true);
         }}
+        disabled={isEditMode}
       >
         <img src="/assets/plus_icon.svg" alt="plus icon" />
       </Button>
       <Button
-        className="flex justify-center items-center w-8 h-8 rounded-md bg-white hover:bg-yellow"
+        className={`flex justify-center items-center w-8 h-8 rounded-md
+        ${isEditMode ? "bg-dark-grey hover:none" : "bg-white hover:bg-yellow"}`}
         onClick={() => setShowDeleteDocumentModal(true)}
+        disabled={isEditMode}
       >
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
