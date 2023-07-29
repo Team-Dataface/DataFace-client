@@ -66,15 +66,27 @@ function CreateDBModal({ closeModal, setCurrentDBId }) {
   }
 
   async function handleClickSave() {
+    const names = [];
+
     if (!dbName) {
       alert("Database's name cannot be empty");
     }
 
     fields.forEach(element => {
+      names.push(element.fieldName);
+
       if (!element.fieldName) {
         alert("Field's name cannot be empty");
       }
     });
+
+    const fieldsSet = new Set(names);
+
+    if (fields.length !== fieldsSet.size) {
+      alert("Field's name cannot be same");
+
+      return null;
+    }
 
     const newDatabase = {
       dbName,

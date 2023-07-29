@@ -12,7 +12,7 @@ import DeleteDocumentModal from "../Modals/DeleteDocumentModal";
 
 function DocHandlerButtons({
   currentDocIndex,
-  clickHandleNavigator,
+  setCurrentDocIndex,
   documentsIds,
 }) {
   const { userId } = useContext(UserContext);
@@ -26,13 +26,13 @@ function DocHandlerButtons({
 
   function navigateDown() {
     if (currentDocIndexShownToUser !== 1) {
-      clickHandleNavigator(prev => prev - 1);
+      setCurrentDocIndex(prev => prev - 1);
     }
   }
 
   function navigateUp() {
     if (currentDocIndexShownToUser !== documentsNum) {
-      clickHandleNavigator(prev => prev + 1);
+      setCurrentDocIndex(prev => prev + 1);
     }
   }
 
@@ -109,6 +109,7 @@ function DocHandlerButtons({
           currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}
           documentsIds={documentsIds}
+          setCurrentDocIndex={setCurrentDocIndex}
         />
       )}
     </div>
@@ -117,7 +118,7 @@ function DocHandlerButtons({
 
 DocHandlerButtons.propTypes = {
   currentDocIndex: PropTypes.number.isRequired,
-  clickHandleNavigator: PropTypes.func.isRequired,
+  setCurrentDocIndex: PropTypes.func.isRequired,
 };
 
 export default DocHandlerButtons;

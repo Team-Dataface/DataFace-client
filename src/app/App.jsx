@@ -22,7 +22,6 @@ function App() {
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isOnSave, setIsOnSave] = useState(false);
-  const [isInitial, setIsInitial] = useState(true);
   const navigate = useNavigate();
 
   const { isLoading } = useQuery(["authStatus"], authUser, {
@@ -59,7 +58,7 @@ function App() {
               isEditMode={isEditMode}
               setIsEditMode={setIsEditMode}
               currentDocIndex={currentDocIndex}
-              clickHandleNavigator={setCurrentDocIndex}
+              setCurrentDocIndex={setCurrentDocIndex}
               documentsIds={documentsIds}
               setIsOnSave={setIsOnSave}
             />
@@ -68,9 +67,6 @@ function App() {
             {user && (
               <Sidebar
                 setCurrentDBId={setCurrentDBId}
-                setDocumentsIds={setDocumentsIds}
-                isInitial={isInitial}
-                setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
               />
             )}
