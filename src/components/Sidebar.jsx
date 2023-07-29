@@ -10,10 +10,12 @@ import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 
 function Sidebar({
+  isEditMode,
   setCurrentDBId,
   isInitial,
   setIsInitial,
   setCurrentDocIndex,
+  setCurrentDBName,
 }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
@@ -35,6 +37,7 @@ function Sidebar({
       onSuccess: result => {
         if (result.length && isInitial) {
           setCurrentDBId(result[0]._id);
+          setCurrentDBName(result[0].name);
           setIsInitial(false);
         }
       },
@@ -52,6 +55,8 @@ function Sidebar({
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
     onSuccess: () => {
       setCurrentDBId(databases[0]._id);
+      setCurrentDBName(databases[0].name);
+
       queryClient.refetchQueries(["dbDocumentList"]);
       queryClient.refetchQueries(["userDbList"]);
     },
@@ -73,10 +78,13 @@ function Sidebar({
       return false;
     }
 
-    function switchDatabase(clickedDatabaseId) {
+    function switchDatabase(clickedDBId, clickedDB) {
       setCurrentDocIndex(0);
-      setCurrentDBId(clickedDatabaseId);
+      setCurrentDBId(clickedDBId);
+      setCurrentDBName(clickedDB);
+
       queryClient.refetchQueries(["userDb", "dbDocumentList", "document"]);
+      queryClient.refetchQueries(["userDb", "dbDocumentList"]);
     }
 
     return databases.map(element => {
@@ -84,13 +92,15 @@ function Sidebar({
         <div
           key={element._id}
           className={`
-            flex justify-between items-center w-full hover:bg-grey
-            ${isActive(element._id) ? "bg-yellow" : ""}
+            flex justify-between items-center w-ful
+            ${isActive(element._id) && !isEditMode && "bg-yellow"}
+            ${!isEditMode && "hover:bg-yellow"}
             `}
         >
           <Button
             className="w-full"
-            onClick={() => switchDatabase(element._id)}
+            onClick={() => switchDatabase(element._id, element.name)}
+            disabled={isEditMode}
           >
             <div className="flex">
               <img
@@ -101,7 +111,10 @@ function Sidebar({
               <span>{element.name}</span>
             </div>
           </Button>
-          <Button onClick={() => fetchDeleteDB(element._id)}>
+          <Button
+            onClick={() => fetchDeleteDB(element._id)}
+            disabled={isEditMode}
+          >
             <img className="mr-2" src="/assets/bin_icon.svg" alt="bin icon" />
           </Button>
         </div>
@@ -110,7 +123,10 @@ function Sidebar({
   }
 
   return (
-    <div className="flex flex-col items-center min-w-[250px] p-2 bg-light-grey">
+    <div
+      className={`flex flex-col items-center min-w-[250px] p-2
+      ${isEditMode ? "bg-dark-grey" : "bg-light-grey"}`}
+    >
       <div className="flex flex-col w-full">
         <div className="flex h-10 ml-2 items-center">
           <img className="mr-2" src="/assets/DB_icon.svg" alt="DB icon" />
@@ -120,8 +136,10 @@ function Sidebar({
       </div>
       <div className="flex justify-center">
         <Button
-          className="flex justify-center w-48 text-sm items-center rounded-full text-white bg-black-bg hover:bg-dark-grey"
+          className={`flex justify-center w-48 text-sm items-center rounded-full text-white
+          ${isEditMode ? "hidden" : "bg-black-bg hover:bg-dark-grey"}`}
           onClick={() => setShowCreateDBModal(true)}
+          disabled={isEditMode}
         >
           <img
             className="flex justify-between items-center mr-2 w-4"
@@ -135,6 +153,7 @@ function Sidebar({
         <CreateDBModal
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
+          setCurrentDBName={setCurrentDBName}
         />
       )}
     </div>

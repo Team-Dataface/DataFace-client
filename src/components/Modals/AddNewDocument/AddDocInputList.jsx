@@ -6,9 +6,7 @@ import fetchData from "../../../utils/axios";
 
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
-import Label from "../SharedItems/Label";
 import InputWrapper from "../SharedItems/InputWrapper";
-import LabelArea from "../SharedItems/InputsArea";
 
 function AddDocInputList({ updateFieldValue, setFields }) {
   const { userId } = useContext(UserContext);

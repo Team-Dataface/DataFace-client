@@ -19,7 +19,7 @@ import Button from "../../shared/Button";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({ closeModal, setCurrentDBId }) {
+function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
@@ -109,6 +109,7 @@ function CreateDBModal({ closeModal, setCurrentDBId }) {
   const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
     onSuccess: result => {
       setCurrentDBId(result.data.newDatabase._id);
+      setCurrentDBName(result.data.newDatabase.name);
 
       queryClient.refetchQueries(["userDbList"]);
 

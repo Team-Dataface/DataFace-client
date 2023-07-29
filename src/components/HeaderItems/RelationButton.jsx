@@ -1,8 +1,12 @@
 import Button from "../shared/Button";
 
-function RelationButton() {
+function RelationButton({ isEditMode }) {
   return (
-    <Button className="flex flex-row items-center w-[160px] h-9 p-2 rounded-md bg-white hover:bg-yellow active:bg-yellow">
+    <Button
+      className={`flex flex-row items-center w-[160px] h-9 p-2 rounded-md
+      ${isEditMode ? "bg-dark-grey hover:none" : "bg-white hover:bg-yellow"}`}
+      disabled={isEditMode}
+    >
       <img
         className="ml-1"
         src="/assets/relation_icon.svg"
