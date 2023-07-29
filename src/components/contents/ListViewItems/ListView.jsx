@@ -8,6 +8,7 @@ import fetchData from "../../../utils/axios";
 
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
+import Loading from "../../shared/Loading";
 
 function ListView({
   isEditMode,
@@ -75,7 +76,7 @@ function ListView({
   });
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <Loading />;
   }
 
   if (!isEditMode && isOnSave) {

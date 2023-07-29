@@ -9,6 +9,7 @@ import CurrentDBIdContext from "../../context/CurrentDBIdContext";
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
+import Loading from "../shared/Loading";
 
 function DocHandlerButtons({
   isEditMode,
@@ -64,7 +65,7 @@ function DocHandlerButtons({
   );
 
   if (isLoading && currentDBId) {
-    return <h1>loading</h1>;
+    return <Loading />;
   }
 
   return (

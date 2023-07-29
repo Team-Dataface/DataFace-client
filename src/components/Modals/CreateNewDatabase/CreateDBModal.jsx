@@ -16,6 +16,7 @@ import InputsArea from "../SharedItems/InputsArea";
 import InputWrapper from "../SharedItems/InputWrapper";
 import CreateDBInputList from "./CreateDBInputList";
 import Button from "../../shared/Button";
+import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
@@ -106,21 +107,28 @@ function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
     return response;
   }
 
-  const { mutate: fetchDatabaseSave } = useMutation(handleClickSave, {
-    onSuccess: result => {
-      setCurrentDBId(result.data.newDatabase._id);
-      setCurrentDBName(result.data.newDatabase.name);
+  const { mutate: fetchDatabaseSave, isLoading } = useMutation(
+    handleClickSave,
+    {
+      onSuccess: result => {
+        setCurrentDBId(result.data.newDatabase._id);
+        setCurrentDBName(result.data.newDatabase.name);
 
-      queryClient.refetchQueries(["userDbList"]);
+        queryClient.refetchQueries(["userDbList"]);
 
-      navigate("/dashboard/listview");
+        navigate("/dashboard/listview");
 
-      closeModal();
+        closeModal();
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Modal onClick={closeModal}>

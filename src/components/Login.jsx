@@ -7,6 +7,7 @@ import fetchData from "../utils/axios";
 import { firebaseAuth } from "../app/firebaseAuth";
 
 import Button from "./shared/Button";
+import Loading from "./shared/Loading";
 
 function Login({ setUser }) {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Login({ setUser }) {
     return response;
   }
 
-  const { mutate: fetchLogin } = useMutation(handleGoogleLogin, {
+  const { mutate: fetchLogin, isLoading } = useMutation(handleGoogleLogin, {
     onSuccess: result => {
       const { data } = result;
 
@@ -36,6 +37,10 @@ function Login({ setUser }) {
       console.log("sending user to errorpage");
     },
   });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center h-full p-10">

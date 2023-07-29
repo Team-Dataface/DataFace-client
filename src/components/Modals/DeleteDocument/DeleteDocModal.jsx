@@ -11,6 +11,7 @@ import Button from "../../shared/Button";
 import Content from "../SharedItems/Content";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
+import Loading from "../../shared/Loading";
 
 function DeleteDocModal({
   closeModal,
@@ -37,16 +38,23 @@ function DeleteDocModal({
     );
   }
 
-  const { mutate: fetchDeleteDocument } = useMutation(deleteDocument, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList"]);
-      setCurrentDocIndex(0);
-      closeModal();
+  const { mutate: fetchDeleteDocument, isLoading } = useMutation(
+    deleteDocument,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries(["dbDocumentList"]);
+        setCurrentDocIndex(0);
+        closeModal();
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Modal onClick={closeModal}>

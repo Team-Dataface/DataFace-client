@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import fetchData from "../utils/axios";
 
 import UserContext from "../context/UserContext";
+import Loading from "./shared/Loading";
 
 function ContentsContainer() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function ContentsContainer() {
   });
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <Loading />;
   }
 
   return <Outlet />;

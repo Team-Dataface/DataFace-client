@@ -13,6 +13,7 @@ import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
 import RelationView from "../components/contents/RelationItems/RelationView";
+import Loading from "../components/shared/Loading";
 
 import CONSTANT from "../constants/constant";
 
@@ -49,7 +50,7 @@ function App() {
   });
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   return (

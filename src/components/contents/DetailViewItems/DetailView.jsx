@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import FieldList from "./FieldList";
+import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
@@ -82,7 +83,7 @@ function DetailView({
   });
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <Loading />;
   }
 
   if (!isEditMode && isOnSave) {

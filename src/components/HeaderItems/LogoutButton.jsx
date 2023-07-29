@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../utils/axios";
 
 import Button from "../shared/Button";
+import Loading from "../shared/Loading";
 
 function LogoutButton({ clickHandleLogout }) {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function LogoutButton({ clickHandleLogout }) {
     await fetchData("POST", "/auth/logout");
   }
 
-  const { mutate: fetchLogout } = useMutation(handleGoogleLogout, {
+  const { mutate: fetchLogout, isLoading } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
       clickHandleLogout("");
       queryClient.clear();
@@ -25,6 +26,10 @@ function LogoutButton({ clickHandleLogout }) {
       console.log("sending user to errorpage");
     },
   });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex justify-center w-20">
