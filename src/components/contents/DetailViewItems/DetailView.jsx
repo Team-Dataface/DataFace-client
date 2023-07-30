@@ -18,6 +18,7 @@ function DetailView({
   isEditMode,
   setIsEditMode,
   currentDocIndex,
+  setDocumentsIds,
   isOnSave,
   setIsOnSave,
 }) {
@@ -40,25 +41,17 @@ function DetailView({
   }
 
   const { data, isLoading } = useQuery(
-    ["dbDocumentList", currentDBId],
+    ["dbDocumentList", currentDBId, currentDocIndex],
     getDocumentsList,
     {
       enabled: !!userId,
       onSuccess: result => {
-        const receivedFields = result.documents[currentDocIndex].fields.map(
-          element => {
-            return {
-              fieldName: element.fieldName,
-              fieldType: element.fieldType,
-              fieldValue: element.fieldValue,
-              xCoordinate: element.xCoordinate,
-              yCoordinate: element.yCoordinate,
-              fieldId: element._id,
-            };
-          },
-        );
+        const documentsId = result.documents.map(document => {
+          return document._id;
+        });
 
-        setDocData(receivedFields);
+        setDocumentsIds(documentsId);
+        setDocData(result.documents);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -71,7 +64,7 @@ function DetailView({
     await fetchData(
       "PUT",
       `/users/${userId}/databases/${currentDBId}/documents/${data.documents[currentDocIndex]._id}`,
-      { fields: docData },
+      { fields: docData[currentDocIndex].fields },
     );
   }
 
@@ -100,25 +93,25 @@ function DetailView({
     if (isEditMode && isDragging) {
       const newArr = [...docData];
 
-      newArr[draggedElementIndex].xCoordinate =
+      newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
         event.clientX - X_DRAG_ADJUSTMENT;
-      newArr[draggedElementIndex].yCoordinate =
+      newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
         event.clientY - Y_DRAG_ADJUSTMENT;
 
       if (event.clientX - X_DRAG_ADJUSTMENT < -1) {
-        newArr[draggedElementIndex].xCoordinate = 0;
+        newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 0;
       }
 
       if (event.clientY - Y_DRAG_ADJUSTMENT < -1) {
-        newArr[draggedElementIndex].yCoordinate = 0;
+        newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
       }
 
       if (event.clientX - X_DRAG_ADJUSTMENT > 1101) {
-        newArr[draggedElementIndex].xCoordinate = 1100;
+        newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 1100;
       }
 
       if (event.clientY - Y_DRAG_ADJUSTMENT > 571) {
-        newArr[draggedElementIndex].yCoordinate = 570;
+        newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 570;
       }
 
       if (
@@ -147,7 +140,7 @@ function DetailView({
   function updateFieldValue(index, event) {
     const newArr = [...docData];
 
-    newArr[index].fieldValue = event.target.value;
+    newArr[currentDocIndex].fields[index].fieldValue = event.target.value;
 
     setDocData(newArr);
   }
@@ -162,15 +155,17 @@ function DetailView({
         onMouseMove={event => handleMouseMove(event)}
       >
         <div className="flex flex-col absolute w-[150px] h-10 ">
-          <FieldList
-            document={data.documents[currentDocIndex]}
-            isEditMode={isEditMode}
-            updateFieldValue={updateFieldValue}
-            setIsEditMode={setIsEditMode}
-            isDragging={isDragging}
-            startDragging={startDragging}
-            endDragging={endDragging}
-          />
+          {docData[currentDocIndex] && (
+            <FieldList
+              document={docData[currentDocIndex]}
+              isEditMode={isEditMode}
+              updateFieldValue={updateFieldValue}
+              setIsEditMode={setIsEditMode}
+              isDragging={isDragging}
+              startDragging={startDragging}
+              endDragging={endDragging}
+            />
+          )}
         </div>
       </div>
     </div>

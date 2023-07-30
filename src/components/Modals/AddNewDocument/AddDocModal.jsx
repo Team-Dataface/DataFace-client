@@ -55,11 +55,11 @@ function AddDocumentModal({
     handleClickSave,
     {
       onSuccess: result => {
-        queryClient.refetchQueries(["dbDocumentList"]);
-        closeModal();
-
         addNewDocumentId(result);
         setCurrentDocIndex(documentsIds.length);
+
+        queryClient.refetchQueries(["dbDocumentList"]);
+        closeModal();
       },
       onFailure: () => {
         console.log("sending user to errorpage");
