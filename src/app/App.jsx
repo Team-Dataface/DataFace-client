@@ -12,7 +12,7 @@ import DetailView from "../components/contents/DetailViewItems/DetailView";
 import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
-import RelationView from "../components/contents/RelationItems/RelationView";
+import Relationship from "../components/contents/Relationship/Relationship";
 import Loading from "../components/shared/Loading";
 
 import CONSTANT from "../constants/constant";
@@ -113,7 +113,7 @@ function App() {
                       />
                     }
                   />
-                  <Route path="relation" element={<RelationView />} />
+                  <Route path="relationship" element={<Relationship />} />
                   <Route
                     path="nodatabase"
                     element={

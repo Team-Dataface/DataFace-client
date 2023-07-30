@@ -8,6 +8,7 @@ function FieldList({
   startDragging,
   endDragging,
 }) {
+  console.log(document);
   return document.fields.map((element, index) => {
     return (
       <div

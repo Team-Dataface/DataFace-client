@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import RelationButton from "./RelationButton";
+import RelationshipButton from "./RelationshipButton";
 import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 
@@ -13,7 +13,7 @@ function Toolbar({
 }) {
   return (
     <div className="flex justify-between items-center w-full h-full mr-3 bg-black-bg">
-      <RelationButton isEditMode={isEditMode} />
+      <RelationshipButton isEditMode={isEditMode} />
       <DocHandlerButtons
         isEditMode={isEditMode}
         currentDocIndex={currentDocIndex}

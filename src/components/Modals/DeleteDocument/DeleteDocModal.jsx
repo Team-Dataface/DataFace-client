@@ -64,7 +64,7 @@ function DeleteDocModal({
             Are you sure you want to permanently delete this document?
           </Message>
         </Content>
-        <div className="flex justify-evenly items-center  w-full">
+        <div className="flex justify-evenly items-center w-full">
           <Button
             className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
             onClick={closeModal}

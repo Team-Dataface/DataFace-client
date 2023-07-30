@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchData from "../../../utils/axios";
@@ -8,10 +8,12 @@ import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import DatabaseFields from "./DatabaseFields";
 import Button from "../../shared/Button";
+import RelationshipModal from "../../Modals/Relationship/RelationshipModal";
 
-function RelationView() {
+function Relationship() {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
+  const [showRelationshipModal, setShowRelationshipModal] = useState(false);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -54,15 +56,20 @@ function RelationView() {
         </h1>
         <Button
           className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
-          // onClick={() => {
-          //   setShowCreateDBModal(true);
-          // }}
+          onClick={() => {
+            setShowRelationshipModal(true);
+          }}
         >
           Start making relation!
         </Button>
+        {showRelationshipModal && (
+          <RelationshipModal
+            closeModal={() => setShowRelationshipModal(false)}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-export default RelationView;
+export default Relationship;

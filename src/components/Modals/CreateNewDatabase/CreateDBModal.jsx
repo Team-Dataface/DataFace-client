@@ -133,11 +133,11 @@ function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
   return (
     <Modal onClick={closeModal}>
       <ContentWrapper>
-        <Title value="Create New Database" />
+        <Title>Create New Database</Title>
         <Content>
           <LabelArea>
-            <Label value="Database Name" />
-            <Label value="Fields Name" />
+            <Label>Database Name</Label>
+            <Label>Fields Name</Label>
           </LabelArea>
           <InputsArea>
             <InputWrapper>
