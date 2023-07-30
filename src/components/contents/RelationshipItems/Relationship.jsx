@@ -52,7 +52,7 @@ function Relationship() {
       />
       <div>
         <h1 className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
-          No Relation Yet.
+          No Relationship Yet.
         </h1>
         <Button
           className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
@@ -60,7 +60,7 @@ function Relationship() {
             setShowRelationshipModal(true);
           }}
         >
-          Start making relation!
+          Create Relationship
         </Button>
         {showRelationshipModal && (
           <RelationshipModal
