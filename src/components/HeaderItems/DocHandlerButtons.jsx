@@ -115,7 +115,6 @@ function DocHandlerButtons({
       {showAddDocumentModal && (
         <AddDocModal
           closeModal={() => setShowAddDocumentModal(false)}
-          currentDBId={currentDBId}
           documentsIds={documentsIds}
           setDocumentsIds={setDocumentsIds}
           currentDocIndex={currentDocIndex}
@@ -126,7 +125,6 @@ function DocHandlerButtons({
         <DeleteDocModal
           user={userId}
           closeModal={() => setShowDeleteDocumentModal(false)}
-          currentDBId={currentDBId}
           currentDocIndex={currentDocIndex}
           documentsIds={documentsIds}
           setCurrentDocIndex={setCurrentDocIndex}

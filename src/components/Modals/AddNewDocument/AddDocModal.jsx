@@ -74,12 +74,11 @@ function AddDocumentModal({
   return (
     <Modal onClick={closeModal}>
       <ContentWrapper>
-        <Title value="Add New Document" />
+        <Title>Add New Document</Title>
         <Content>
           <InputsArea>
             <AddDocInputList
               updateFieldValue={updateFieldValue}
-              currentDBId={currentDBId}
               setFields={setFields}
             />
           </InputsArea>
