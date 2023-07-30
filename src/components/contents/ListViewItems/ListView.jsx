@@ -5,9 +5,11 @@ import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import fetchData from "../../../utils/axios";
+import useLoading from "../../../utils/useLoading";
 
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
+import Loading from "../../shared/Loading";
 
 function ListView({
   isEditMode,
@@ -74,8 +76,10 @@ function ListView({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
-    return <h1>Loading</h1>;
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
+    return <Loading />;
   }
 
   if (!isEditMode && isOnSave) {

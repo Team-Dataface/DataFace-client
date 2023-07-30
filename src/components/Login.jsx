@@ -5,8 +5,10 @@ import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 import { firebaseAuth } from "../app/firebaseAuth";
+import useLoading from "../utils/useLoading";
 
 import Button from "./shared/Button";
+import Loading from "./shared/Loading";
 
 function Login({ setUser }) {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ function Login({ setUser }) {
     return response;
   }
 
-  const { mutate: fetchLogin } = useMutation(handleGoogleLogin, {
+  const { mutate: fetchLogin, isLoading } = useMutation(handleGoogleLogin, {
     onSuccess: result => {
       const { data } = result;
 
@@ -36,6 +38,12 @@ function Login({ setUser }) {
       console.log("sending user to errorpage");
     },
   });
+
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center h-full p-10">

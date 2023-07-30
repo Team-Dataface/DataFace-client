@@ -13,6 +13,7 @@ import AddDocInputList from "./AddDocInputList";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
+import Loading from "../../shared/Loading";
 
 function AddDocumentModal({
   closeModal,
@@ -50,18 +51,25 @@ function AddDocumentModal({
     return response.data.newDocument._id;
   }
 
-  const { mutate: fetchDocumentSave } = useMutation(handleClickSave, {
-    onSuccess: result => {
-      queryClient.refetchQueries(["dbDocumentList"]);
-      closeModal();
+  const { mutate: fetchDocumentSave, isLoading } = useMutation(
+    handleClickSave,
+    {
+      onSuccess: result => {
+        queryClient.refetchQueries(["dbDocumentList"]);
+        closeModal();
 
-      addNewDocumentId(result);
-      setCurrentDocIndex(documentsIds.length);
+        addNewDocumentId(result);
+        setCurrentDocIndex(documentsIds.length);
+      },
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Modal onClick={closeModal}>

@@ -7,6 +7,7 @@ import fetchData from "../../../utils/axios";
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import InputWrapper from "../SharedItems/InputWrapper";
+import Loading from "../../shared/Loading";
 
 function AddDocInputList({ updateFieldValue, setFields }) {
   const { userId } = useContext(UserContext);
@@ -33,7 +34,7 @@ function AddDocInputList({ updateFieldValue, setFields }) {
   });
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   return data.fields.map((element, index) => {

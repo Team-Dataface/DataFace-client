@@ -5,10 +5,12 @@ import PropTypes from "prop-types";
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import FieldList from "./FieldList";
+import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
 import fetchData from "../../../utils/axios";
+import useLoading from "../../../utils/useLoading";
 
 const { X_DRAG_ADJUSTMENT, Y_DRAG_ADJUSTMENT } = CONSTANT;
 
@@ -81,8 +83,10 @@ function DetailView({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
-    return <h1>Loading</h1>;
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
+    return <Loading />;
   }
 
   if (!isEditMode && isOnSave) {

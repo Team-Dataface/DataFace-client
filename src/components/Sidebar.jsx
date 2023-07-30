@@ -8,6 +8,7 @@ import UserContext from "../context/UserContext";
 import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
+import Loading from "./shared/Loading";
 
 function Sidebar({
   isEditMode,
@@ -71,7 +72,7 @@ function Sidebar({
   });
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <Loading />;
   }
 
   function renderDatabaseList() {
