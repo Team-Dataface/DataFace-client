@@ -54,8 +54,13 @@ function Sidebar({
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
     onSuccess: () => {
-      setCurrentDBId(databases[0]._id);
-      setCurrentDBName(databases[0].name);
+      if (databases.length === 1) {
+        setCurrentDocIndex(0);
+        setCurrentDBName("");
+      } else {
+        setCurrentDBId(databases[0]._id);
+        setCurrentDBName(databases[0].name);
+      }
 
       queryClient.refetchQueries(["dbDocumentList"]);
       queryClient.refetchQueries(["userDbList"]);

@@ -43,6 +43,7 @@ function ListView({
 
         const docs = result.documents.map(document => {
           documentsId.push(document._id);
+
           return { documentId: document._id, fields: [] };
         });
 

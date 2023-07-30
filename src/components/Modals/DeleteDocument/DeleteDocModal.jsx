@@ -12,12 +12,25 @@ import Content from "../SharedItems/Content";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
 
-function DeleteDocModal({ closeModal, currentDocIndex, documentsIds }) {
+function DeleteDocModal({
+  closeModal,
+  currentDocIndex,
+  documentsIds,
+  setCurrentDocIndex,
+}) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
   async function deleteDocument() {
+    if (documentsIds.length === 1) {
+      alert(
+        "Please ensure that the database contains at least one document before proceeding.",
+      );
+
+      return;
+    }
+
     await fetchData(
       "DELETE",
       `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
@@ -27,6 +40,8 @@ function DeleteDocModal({ closeModal, currentDocIndex, documentsIds }) {
   const { mutate: fetchDeleteDocument } = useMutation(deleteDocument, {
     onSuccess: () => {
       queryClient.refetchQueries(["dbDocumentList"]);
+      setCurrentDocIndex(0);
+      closeModal();
     },
     onFailure: () => {
       console.log("sending user to errorpage");

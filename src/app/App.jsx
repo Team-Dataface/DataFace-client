@@ -74,7 +74,6 @@ function App() {
               <Sidebar
                 isEditMode={isEditMode}
                 setCurrentDBId={setCurrentDBId}
-                setDocumentsIds={setDocumentsIds}
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
@@ -107,7 +106,6 @@ function App() {
                         setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
                         setCurrentDocIndex={setCurrentDocIndex}
-                        documentsIds={documentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
                       />
