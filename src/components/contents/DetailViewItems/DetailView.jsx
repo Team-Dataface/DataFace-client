@@ -36,25 +36,27 @@ function DetailView({
       `users/${userId}/databases/${currentDBId}`,
     );
 
-    return response.data.database.documents;
+    return response.data.database;
   }
 
-  const { data: document, isLoading } = useQuery(
+  const { data, isLoading } = useQuery(
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
       enabled: !!userId,
       onSuccess: result => {
-        const receivedFields = result[currentDocIndex].fields.map(element => {
-          return {
-            fieldName: element.fieldName,
-            fieldType: element.fieldType,
-            fieldValue: element.fieldValue,
-            xCoordinate: element.xCoordinate,
-            yCoordinate: element.yCoordinate,
-            fieldId: element._id,
-          };
-        });
+        const receivedFields = result.documents[currentDocIndex].fields.map(
+          element => {
+            return {
+              fieldName: element.fieldName,
+              fieldType: element.fieldType,
+              fieldValue: element.fieldValue,
+              xCoordinate: element.xCoordinate,
+              yCoordinate: element.yCoordinate,
+              fieldId: element._id,
+            };
+          },
+        );
 
         setDocData(receivedFields);
       },
@@ -68,7 +70,7 @@ function DetailView({
   async function handleClickSave() {
     await fetchData(
       "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents/${document[currentDocIndex]._id}`,
+      `/users/${userId}/databases/${currentDBId}/documents/${data.documents[currentDocIndex]._id}`,
       { fields: docData },
     );
   }
@@ -161,7 +163,7 @@ function DetailView({
       >
         <div className="flex flex-col absolute w-[150px] h-10 ">
           <FieldList
-            document={document[currentDocIndex]}
+            document={data.documents[currentDocIndex]}
             isEditMode={isEditMode}
             updateFieldValue={updateFieldValue}
             setIsEditMode={setIsEditMode}
