@@ -1,9 +1,64 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useState, useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import fetchData from "../../../utils/axios";
+
+import UserContext from "../../../context/UserContext";
+import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
+import Loading from "../../shared/Loading";
 
-function StepOne({ setRelationshipStep }) {
+function StepOne({
+  setRelationshipStep,
+  databaseName,
+  relationData,
+  setRelationData,
+}) {
+  const [targetDatabases, setTargetDatabases] = useState([]);
+  const [iseSelected, setIsSelected] = useState("");
+
+  const { userId } = useContext(UserContext);
+  const currentDBId = useContext(CurrentDBIdContext);
+
+  async function getDatabaseList() {
+    const response = await fetchData("GET", `users/${userId}/databases`);
+
+    return response.data.databases;
+  }
+
+  const { isLoading } = useQuery(["dbs"], getDatabaseList, {
+    enabled: !!userId,
+    onSuccess: result => {
+      const filteredDbs = result.filter(
+        database => database._id !== currentDBId,
+      );
+
+      setTargetDatabases(filteredDbs);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  function handleOnClick(id) {
+    setIsSelected(id);
+
+    setRelationData({
+      ...relationData,
+      foreignDbId: id,
+    });
+  }
+
   return (
     <>
       <Title>Step 1</Title>
@@ -11,8 +66,26 @@ function StepOne({ setRelationshipStep }) {
         <p>Please choose a database that you would like to link with DBNAME</p>
       </Message>
       <Content>
-        <div className="flex justify-center items-center h-60 w-60">
-          database card here
+        <div className="flex flex-col justify-around items-center h-auto w-60">
+          <div className="flex border-2 rounded-lg justify-center items-center w-full p-2">
+            <p>{databaseName}</p>
+          </div>
+          <div className="border border-blue border-dashed h-16"></div>
+          <div className="flex flex-col border-2 rounded-lg items-center w-full max-h-[190px] overflow-y-scroll">
+            <ul className="w-full h-auto text-center">
+              {targetDatabases.map((database, index) => (
+                <li
+                  className={`w-full py-1 border-b-2 border-grey
+                  ${iseSelected === database._id ? "bg-yellow" : ""}
+                  ${index === targetDatabases.length - 1 ? "border-b-0" : ""}`}
+                  key={database._id}
+                  onClick={() => handleOnClick(database._id)}
+                >
+                  {database.name}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Content>
       <div className="flex justify-end items-center w-full">
