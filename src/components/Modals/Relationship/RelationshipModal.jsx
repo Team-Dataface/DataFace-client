@@ -14,7 +14,8 @@ function RelationshipModal({ closeModal, databaseName }) {
     primaryFieldId: "",
     foreignDbId: "",
     foreignFieldId: "",
-    fieldsToDisplay: "",
+    fieldsToDisplay: [],
+    foreignDb: null,
   });
 
   return (

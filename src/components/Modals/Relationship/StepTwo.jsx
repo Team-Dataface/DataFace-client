@@ -60,6 +60,11 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
       return;
     }
 
+    setRelationData({
+      ...relationData,
+      foreignDb: databases.targetDb,
+    });
+
     setRelationshipStep("stepThree");
   }
 
@@ -81,7 +86,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
         </p>
       </Message>
       {databases && (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-start h-full">
           <FieldWizard
             fields={databases.baseDb.documents[0].fields}
             databaseName={databases.baseDb.name}
@@ -91,13 +96,15 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
             setFieldsName={setFieldsName}
             status="base"
           />
-          <div
-            className={`border border-dashed w-40 h-0 mb-10 ${
-              relationData.primaryFieldId && relationData.foreignFieldId
-                ? "border-blue"
-                : "border-white"
-            }`}
-          ></div>
+          <div className="flex items-center h-[160px] my-10">
+            <div
+              className={`border border-dashed w-40 h-0 mb-10 ${
+                relationData.primaryFieldId && relationData.foreignFieldId
+                  ? "border-blue"
+                  : "border-white"
+              }`}
+            ></div>
+          </div>
           <FieldWizard
             fields={databases.targetDb.documents[0].fields}
             databaseName={databases.targetDb.name}

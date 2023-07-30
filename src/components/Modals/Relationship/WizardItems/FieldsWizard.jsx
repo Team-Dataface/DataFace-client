@@ -13,8 +13,13 @@ function FieldWizard({
 }) {
   const [isSelected, setIsSelected] = useState("");
   const [updatedFields, setUpdatedFields] = useState(fields);
+  const [selectedFields, setSelectedFields] = useState([]);
 
   function moveToFirstIndex(id) {
+    if (status === "portal") {
+      return;
+    }
+
     const selectedFieldIndex = updatedFields.findIndex(
       field => field._id === id,
     );
@@ -39,6 +44,8 @@ function FieldWizard({
         ...fieldsName,
         primaryFieldName: name,
       });
+
+      setIsSelected(id);
     }
 
     if (status === "target") {
@@ -51,9 +58,32 @@ function FieldWizard({
         ...fieldsName,
         foreignFieldName: name,
       });
+
+      setIsSelected(id);
     }
 
-    setIsSelected(id);
+    if (status === "portal") {
+      setSelectedFields(prevSelectedFields =>
+        prevSelectedFields.includes(id)
+          ? prevSelectedFields.filter(selectedId => selectedId !== id)
+          : [...prevSelectedFields, id],
+      );
+
+      if (!relationData.fieldsToDisplay.includes(id)) {
+        setRelationData({
+          ...relationData,
+          fieldsToDisplay: [...relationData.fieldsToDisplay, id],
+        });
+      } else {
+        setRelationData({
+          ...relationData,
+          fieldsToDisplay: relationData.fieldsToDisplay.filter(
+            fieldId => fieldId !== id,
+          ),
+        });
+      }
+    }
+
     moveToFirstIndex(id);
   }
 
@@ -69,6 +99,7 @@ function FieldWizard({
               key={field._id}
               onClick={() => handleOnClick(field._id, field.fieldName)}
               className={`w-full py-1 border-b-2 border-grey
+              ${selectedFields.includes(field._id) ? "bg-yellow" : ""}
               ${isSelected === field._id ? "bg-yellow" : ""}
               ${index === updatedFields.length - 1 ? "border-b-0" : ""}`}
             >
