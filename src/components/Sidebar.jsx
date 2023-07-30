@@ -11,12 +11,14 @@ import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
 function Sidebar({
+  setIsListView,
   isEditMode,
   setCurrentDBId,
   isInitial,
   setIsInitial,
   setCurrentDocIndex,
   setCurrentDBName,
+  isRelationship,
 }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
@@ -143,7 +145,11 @@ function Sidebar({
       <div className="flex justify-center">
         <Button
           className={`flex justify-center w-48 text-sm items-center rounded-full text-white
-          ${isEditMode ? "hidden" : "bg-black-bg hover:bg-dark-grey"}`}
+          ${
+            isEditMode || isRelationship
+              ? "hidden"
+              : "bg-black-bg hover:bg-dark-grey"
+          }`}
           onClick={() => setShowCreateDBModal(true)}
           disabled={isEditMode}
         >
@@ -160,6 +166,7 @@ function Sidebar({
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
           setCurrentDBName={setCurrentDBName}
+          setIsListView={setIsListView}
         />
       )}
     </div>

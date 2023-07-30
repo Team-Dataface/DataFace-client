@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
-function NoDatabase({ setCurrentDBId, setCurrentDBName }) {
+function NoDatabase({
+  isListView,
+  setIsListView,
+  setCurrentDBId,
+  setCurrentDBName,
+}) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return (
@@ -27,6 +32,8 @@ function NoDatabase({ setCurrentDBId, setCurrentDBName }) {
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
           setCurrentDBName={setCurrentDBName}
+          isListView={isListView}
+          setIsListView={setIsListView}
         />
       )}
     </div>

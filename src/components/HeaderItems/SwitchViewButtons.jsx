@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../shared/Button";
 
-function SwitchViewButtons({ isEditMode }) {
-  const [isListView, setIsListView] = useState(true);
+function SwitchViewButtons({ isListView, setIsListView, isEditMode }) {
   const navigate = useNavigate();
 
   function switchToListView() {

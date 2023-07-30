@@ -12,18 +12,20 @@ import DetailView from "../components/contents/DetailViewItems/DetailView";
 import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
-import Relationship from "../components/contents/Relationship/Relationship";
+import Relationship from "../components/contents/RelationshipItems/Relationship";
 import Loading from "../components/shared/Loading";
 
 import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
+  const [isListView, setIsListView] = useState(true);
   const [currentDBId, setCurrentDBId] = useState("");
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isOnSave, setIsOnSave] = useState(false);
+  const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
   const [currentDBName, setCurrentDBName] = useState("");
 
@@ -68,6 +70,10 @@ function App() {
               setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
               currentDBName={currentDBName}
+              isRelationship={isRelationship}
+              setIsRelationship={setIsRelationship}
+              isListView={isListView}
+              setIsListView={setIsListView}
             />
           )}
           <div className="flex flex-1">
@@ -79,6 +85,8 @@ function App() {
                 setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
                 setCurrentDBName={setCurrentDBName}
+                isRelationship={isRelationship}
+                setIsListView={setIsListView}
               />
             )}
             <div className="flex grow justify-center">
@@ -120,6 +128,8 @@ function App() {
                       <NoDatabase
                         setCurrentDBId={setCurrentDBId}
                         setCurrentDBName={setCurrentDBName}
+                        isListView={isListView}
+                        setIsListView={setIsListView}
                       />
                     }
                   />

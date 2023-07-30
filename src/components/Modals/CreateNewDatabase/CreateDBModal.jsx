@@ -20,7 +20,12 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
+function CreateDBModal({
+  setIsListView,
+  closeModal,
+  setCurrentDBId,
+  setCurrentDBName,
+}) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
@@ -113,6 +118,7 @@ function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
       onSuccess: result => {
         setCurrentDBId(result.data.newDatabase._id);
         setCurrentDBName(result.data.newDatabase.name);
+        setIsListView(true);
 
         queryClient.refetchQueries(["userDbList"]);
 

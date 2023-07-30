@@ -5,6 +5,8 @@ import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
 function Header({
+  isListView,
+  setIsListView,
   clickHandleLogout,
   isEditMode,
   setIsEditMode,
@@ -14,6 +16,8 @@ function Header({
   setDocumentsIds,
   setIsOnSave,
   currentDBName,
+  isRelationship,
+  setIsRelationship,
 }) {
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
@@ -35,6 +39,10 @@ function Header({
             setCurrentDocIndex={setCurrentDocIndex}
             documentsIds={documentsIds}
             setDocumentsIds={setDocumentsIds}
+            isRelationship={isRelationship}
+            setIsRelationship={setIsRelationship}
+            isListView={isListView}
+            setIsListView={setIsListView}
           />
         )}
         {currentDBName && (
@@ -42,6 +50,7 @@ function Header({
             isEditMode={isEditMode}
             setIsEditMode={setIsEditMode}
             setIsOnSave={setIsOnSave}
+            isRelationship={isRelationship}
           />
         )}
       </div>
