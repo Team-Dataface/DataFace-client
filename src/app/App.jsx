@@ -107,6 +107,7 @@ function App() {
                         setIsEditMode={setIsEditMode}
                         currentDocIndex={currentDocIndex}
                         setCurrentDocIndex={setCurrentDocIndex}
+                        setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
                       />
