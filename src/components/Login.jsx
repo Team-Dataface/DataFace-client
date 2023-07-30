@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 import { firebaseAuth } from "../app/firebaseAuth";
+import useLoading from "../utils/useLoading";
 
 import Button from "./shared/Button";
 import Loading from "./shared/Loading";
@@ -38,7 +39,9 @@ function Login({ setUser }) {
     },
   });
 
-  if (isLoading) {
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
     return <Loading />;
   }
 

@@ -10,6 +10,7 @@ import Loading from "../../shared/Loading";
 import CONSTANT from "../../../constants/constant";
 
 import fetchData from "../../../utils/axios";
+import useLoading from "../../../utils/useLoading";
 
 const { X_DRAG_ADJUSTMENT, Y_DRAG_ADJUSTMENT } = CONSTANT;
 
@@ -82,7 +83,9 @@ function DetailView({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
     return <Loading />;
   }
 

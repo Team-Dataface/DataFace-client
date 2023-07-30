@@ -5,6 +5,7 @@ import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import fetchData from "../../../utils/axios";
+import useLoading from "../../../utils/useLoading";
 
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
@@ -75,7 +76,9 @@ function ListView({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
+  const loadingTimeout = useLoading(isLoading);
+
+  if (loadingTimeout) {
     return <Loading />;
   }
 
