@@ -20,7 +20,7 @@ function StepOne({
   setRelationData,
 }) {
   const [targetDatabases, setTargetDatabases] = useState([]);
-  const [iseSelected, setIsSelected] = useState("");
+  const [isSelected, setIsSelected] = useState("");
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -50,7 +50,17 @@ function StepOne({
     return <Loading />;
   }
 
-  function handleOnClick(id) {
+  function handleNextClick() {
+    if (!relationData.foreignDbId) {
+      alert("Please choose database to make relationship!");
+
+      return;
+    }
+
+    setRelationshipStep("stepTwo");
+  }
+
+  function handleDatabaseClick(id) {
     setIsSelected(id);
 
     setRelationData({
@@ -67,7 +77,7 @@ function StepOne({
       </Message>
       <Content>
         <div className="flex flex-col justify-around items-center h-auto w-60">
-          <div className="flex border-2 rounded-lg justify-center items-center w-full p-2">
+          <div className="flex border-2 rounded-lg justify-center items-center w-full p-2 bg-blue bg-opacity-50">
             <p>{databaseName}</p>
           </div>
           <div className="border border-blue border-dashed h-16"></div>
@@ -76,10 +86,10 @@ function StepOne({
               {targetDatabases.map((database, index) => (
                 <li
                   className={`w-full py-1 border-b-2 border-grey
-                  ${iseSelected === database._id ? "bg-yellow" : ""}
+                  ${isSelected === database._id ? "bg-yellow" : ""}
                   ${index === targetDatabases.length - 1 ? "border-b-0" : ""}`}
                   key={database._id}
-                  onClick={() => handleOnClick(database._id)}
+                  onClick={() => handleDatabaseClick(database._id)}
                 >
                   {database.name}
                 </li>
@@ -91,7 +101,7 @@ function StepOne({
       <div className="flex justify-end items-center w-full">
         <Button
           className="w-20 h-8 mt-5 rounded-md ring-2 ring-blue text-blue hover:bg-blue hover:text-white"
-          onClick={() => setRelationshipStep("stepTwo")}
+          onClick={handleNextClick}
         >
           Next
         </Button>
