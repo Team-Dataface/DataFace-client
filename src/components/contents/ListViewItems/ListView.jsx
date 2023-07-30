@@ -30,10 +30,10 @@ function ListView({
       `users/${userId}/databases/${currentDBId}`,
     );
 
-    return response.data.database.documents;
+    return response.data.database;
   }
 
-  const { data: documents, isLoading } = useQuery(
+  const { data, isLoading } = useQuery(
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
@@ -41,7 +41,7 @@ function ListView({
       onSuccess: result => {
         const documentsId = [];
 
-        const docs = result.map(document => {
+        const docs = result.documents.map(document => {
           documentsId.push(document._id);
           return { documentId: document._id, fields: [] };
         });
@@ -89,9 +89,9 @@ function ListView({
       ${isEditMode && "ring-4 ring-blue"}`}
       >
         <table className="border-collapse w-full max-h-20 overflow-y-auto">
-          <TableHead fields={documents[0].fields} />
+          <TableHead fields={data.documents[0].fields} />
           <TableBody
-            documents={documents}
+            documents={data.documents}
             currentDocIndex={currentDocIndex}
             setCurrentDocIndex={setCurrentDocIndex}
             changedDoc={changedDoc}

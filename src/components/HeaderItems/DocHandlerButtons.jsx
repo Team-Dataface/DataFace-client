@@ -44,7 +44,7 @@ function DocHandlerButtons({
       `users/${userId}/databases/${currentDBId}`,
     );
 
-    return response.data.database.documents;
+    return response.data.database;
   }
 
   const { isLoading } = useQuery(
@@ -54,7 +54,7 @@ function DocHandlerButtons({
       retry: false,
       enabled: !!userId && !!currentDBId,
       onSuccess: result => {
-        setDocumentsNum(result.length);
+        setDocumentsNum(result.documents.length);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
