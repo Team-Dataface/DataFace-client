@@ -35,7 +35,7 @@ function FieldList({
           {element.fieldType === "Text" ? (
             <div className="flex flex-col w-full">
               <textarea
-                className={`flex w-full mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-nonee ${
+                className={`flex w-full mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
                   isEditMode &&
                   !isDragging &&
                   "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"

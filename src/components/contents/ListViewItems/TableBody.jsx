@@ -12,7 +12,6 @@ function TableBody({
 }) {
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
-    console.log("worked");
   }
 
   useEffect(() => {
