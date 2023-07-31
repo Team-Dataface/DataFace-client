@@ -35,7 +35,7 @@ function ListView({
     return response.data.database;
   }
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading: isQueryLoading } = useQuery(
     ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
@@ -68,7 +68,7 @@ function ListView({
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
     onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList"]);
+      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -76,7 +76,7 @@ function ListView({
     refetchOnWindowFocus: false,
   });
 
-  const loadingTimeout = useLoading(isLoading);
+  const loadingTimeout = useLoading(isQueryLoading);
 
   if (loadingTimeout) {
     return <Loading />;

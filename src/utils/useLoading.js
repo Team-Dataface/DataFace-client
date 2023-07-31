@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useLoading(isReactQueryLoading, delay = 200) {
+function useLoading(isQueryLoading, delay = 1000) {
   const [isLoadingTimeout, setIsLoadingTimeout] = useState(false);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ function useLoading(isReactQueryLoading, delay = 200) {
     return () => clearTimeout(timeoutId);
   }, [delay]);
 
-  const isLoadingCombined = isReactQueryLoading || !isLoadingTimeout;
+  const isLoadingCombined = isQueryLoading || !isLoadingTimeout;
 
   return isLoadingCombined;
 }
