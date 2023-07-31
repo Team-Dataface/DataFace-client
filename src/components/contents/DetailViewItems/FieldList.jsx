@@ -5,8 +5,8 @@ function FieldList({
   updateFieldValue,
   setIsEditMode,
   isDragging,
-  startDragging,
-  endDragging,
+  startDraggingField,
+  endDraggingField,
 }) {
   return document.fields.map((element, index) => {
     return (
@@ -24,8 +24,8 @@ function FieldList({
           <span
             className={`flex justify-end mr-3 w-[100px] select-none
             ${isEditMode && "hover:cursor-move"}`}
-            onMouseDown={event => startDragging(index, event)}
-            onMouseUp={() => endDragging(index)}
+            onMouseDown={event => startDraggingField(index, event)}
+            onMouseUp={() => endDraggingField(index)}
           >
             {element.fieldName}
           </span>

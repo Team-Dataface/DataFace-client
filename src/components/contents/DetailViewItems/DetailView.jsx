@@ -6,13 +6,13 @@ import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import FieldList from "./FieldList";
 import Loading from "../../shared/Loading";
-
-import CONSTANT from "../../../constants/constant";
+import Portal from "./Portal";
 
 import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
-
-const { X_DRAG_ADJUSTMENT, Y_DRAG_ADJUSTMENT } = CONSTANT;
+import movePortal from "../../../utils/movePortal";
+import moveFields from "../../../utils/moveFields";
+import foreignDocuments from "./foreignDocuments";
 
 function DetailView({
   isEditMode,
@@ -25,6 +25,11 @@ function DetailView({
   const [docData, setDocData] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElementIndex, setDraggedElementIndex] = useState(null);
+  const [portalStyle, setPortalStyle] = useState({
+    xCoordinate: 0,
+    yCoordinate: 0,
+    size: 150,
+  });
 
   const queryClient = useQueryClient();
 
@@ -89,50 +94,12 @@ function DetailView({
     setIsOnSave(false);
   }
 
-  const handleMouseMove = event => {
-    if (isEditMode && isDragging) {
-      const newArr = [...docData];
-
-      newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-        event.clientX - X_DRAG_ADJUSTMENT;
-      newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-        event.clientY - Y_DRAG_ADJUSTMENT;
-
-      if (event.clientX - X_DRAG_ADJUSTMENT < -1) {
-        newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 0;
-      }
-
-      if (event.clientY - Y_DRAG_ADJUSTMENT < -1) {
-        newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
-      }
-
-      if (event.clientX - X_DRAG_ADJUSTMENT > 1101) {
-        newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 1100;
-      }
-
-      if (event.clientY - Y_DRAG_ADJUSTMENT > 571) {
-        newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 570;
-      }
-
-      if (
-        event.clientX - X_DRAG_ADJUSTMENT < -30 ||
-        event.clientX - X_DRAG_ADJUSTMENT > 1130 ||
-        event.clientY - Y_DRAG_ADJUSTMENT < -30 ||
-        event.clientY - Y_DRAG_ADJUSTMENT > 590
-      ) {
-        setIsDragging(false);
-      }
-
-      setDocData(newArr);
-    }
-  };
-
-  function startDragging(index) {
+  function startDraggingField(index) {
     setIsDragging(true);
     setDraggedElementIndex(index);
   }
 
-  function endDragging() {
+  function endDraggingField() {
     setIsDragging(false);
     setDraggedElementIndex(null);
   }
@@ -145,6 +112,40 @@ function DetailView({
     setDocData(newArr);
   }
 
+  function startDraggingPortal() {
+    setIsDragging(true);
+    setDraggedElementIndex("portal");
+  }
+
+  function endDraggingPortal() {
+    setIsDragging(false);
+    setDraggedElementIndex(null);
+  }
+
+  function handleMouseMove(event) {
+    if (draggedElementIndex !== "portal") {
+      moveFields(
+        event,
+        isEditMode,
+        isDragging,
+        docData,
+        currentDocIndex,
+        draggedElementIndex,
+        setIsDragging,
+        setDocData,
+      );
+    } else {
+      movePortal(
+        event,
+        isEditMode,
+        isDragging,
+        portalStyle,
+        setIsDragging,
+        setPortalStyle,
+      );
+    }
+  }
+
   return (
     <div className="flex w-full bg-grey">
       <div
@@ -154,7 +155,16 @@ function DetailView({
       `}
         onMouseMove={event => handleMouseMove(event)}
       >
-        <div className="flex flex-col absolute w-[150px] h-10 ">
+        <Portal
+          foreignDocuments={foreignDocuments}
+          isDragging={isDragging}
+          startDraggingPortal={startDraggingPortal}
+          endDraggingPortal={endDraggingPortal}
+          isEditMode={isEditMode}
+          portalStyle={portalStyle}
+          setPortalStyle={setPortalStyle}
+        />
+        <div className="flex flex-col absolute">
           {docData[currentDocIndex] && (
             <FieldList
               document={docData[currentDocIndex]}
@@ -162,8 +172,8 @@ function DetailView({
               updateFieldValue={updateFieldValue}
               setIsEditMode={setIsEditMode}
               isDragging={isDragging}
-              startDragging={startDragging}
-              endDragging={endDragging}
+              startDraggingField={startDraggingField}
+              endDraggingField={endDraggingField}
             />
           )}
         </div>
