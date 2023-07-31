@@ -58,7 +58,7 @@ function AddDocumentModal({
         addNewDocumentId(result);
         setCurrentDocIndex(documentsIds.length);
 
-        queryClient.refetchQueries(["dbDocumentList"]);
+        queryClient.refetchQueries(["dbDocumentList", currentDBId]);
         closeModal();
       },
       onFailure: () => {

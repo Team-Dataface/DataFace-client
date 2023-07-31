@@ -42,7 +42,7 @@ function DeleteDocModal({
     deleteDocument,
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["dbDocumentList"]);
+        queryClient.refetchQueries(["dbDocumentList", currentDBId]);
         setCurrentDocIndex(0);
         closeModal();
       },

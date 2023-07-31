@@ -75,7 +75,7 @@ function DetailView({
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
     onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList"]);
+      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
     },
     onFailure: () => {
       console.log("sending user to errorpage");

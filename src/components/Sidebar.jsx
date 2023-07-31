@@ -52,20 +52,24 @@ function Sidebar({
   );
 
   async function deleteDatabase(databaseId) {
-    await fetchData("DELETE", `/users/${userId}/databases/${databaseId}`);
+    const response = await fetchData(
+      "DELETE",
+      `/users/${userId}/databases/${databaseId}`,
+    );
+
+    return response.data.databases;
   }
 
   const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
-    onSuccess: () => {
+    onSuccess: result => {
       if (databases.length === 1) {
         setCurrentDocIndex(0);
         setCurrentDBName("");
       } else {
-        setCurrentDBId(databases[0]._id);
-        setCurrentDBName(databases[0].name);
+        setCurrentDBId(result[0]._id);
+        setCurrentDBName(result[0].name);
       }
 
-      queryClient.refetchQueries(["dbDocumentList"]);
       queryClient.refetchQueries(["userDbList"]);
     },
     onFailure: () => {
@@ -91,8 +95,7 @@ function Sidebar({
       setCurrentDBId(clickedDBId);
       setCurrentDBName(clickedDB);
 
-      queryClient.refetchQueries(["userDb", "dbDocumentList", "document"]);
-      queryClient.refetchQueries(["userDb", "dbDocumentList"]);
+      queryClient.refetchQueries(["userDbList"]);
     }
 
     return databases.map(element => {
