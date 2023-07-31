@@ -72,7 +72,7 @@ function StepThree({ setRelationshipStep, relationData, setRelationData }) {
             databaseName={targetDb.name}
             relationData={relationData}
             setRelationData={setRelationData}
-            status="portal"
+            databaseType="portal"
           />
         </div>
       </Content>
