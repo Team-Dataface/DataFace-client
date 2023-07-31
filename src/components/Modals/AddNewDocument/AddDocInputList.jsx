@@ -47,10 +47,18 @@ function AddDocInputList({ updateFieldValue, setFields }) {
           {element.fieldName}
         </span>
         <InputWrapper>
-          <textarea
-            className="flex w-full h-7 rounded-md text-center"
-            onChange={event => updateFieldValue(index, event)}
-          />
+          {element.fieldType === "Text" ? (
+            <textarea
+              className="flex w-full h-7 rounded-md text-center"
+              onChange={event => updateFieldValue(index, event)}
+            />
+          ) : (
+            <input
+              className="flex w-full h-7 rounded-md text-center"
+              type={element.fieldType}
+              onChange={event => updateFieldValue(index, event)}
+            />
+          )}
         </InputWrapper>
       </div>
     );

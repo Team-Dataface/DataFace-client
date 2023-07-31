@@ -27,7 +27,8 @@ function CreateDBInputList({
             />
             <Select
               options={FIELD_TYPES}
-              onChange={event => updateFieldType(index, event)}
+              updateFieldType={updateFieldType}
+              index={index}
             />
             <Button
               className="flex justify-center items-center"
