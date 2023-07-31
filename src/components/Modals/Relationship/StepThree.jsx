@@ -20,8 +20,8 @@ function StepThree({ setRelationshipStep, relationData, setRelationData }) {
 
   async function setRelationShip(updatedRelationData) {
     await fetchData(
-      "PUT",
-      `/users/${userId}/databases/${currentDBId}/relationships}`,
+      "POST",
+      `/users/${userId}/databases/${currentDBId}/relationships`,
       updatedRelationData,
     );
   }
@@ -36,7 +36,9 @@ function StepThree({ setRelationshipStep, relationData, setRelationData }) {
   function handleBackClick() {
     setRelationData({
       ...relationData,
-      fieldsToDisplay: [],
+      primaryFieldName: "",
+      foreignFieldName: "",
+      foreignFieldsToDisplay: [],
     });
 
     setRelationshipStep("stepTwo");

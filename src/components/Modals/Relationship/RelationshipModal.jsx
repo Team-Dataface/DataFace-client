@@ -11,10 +11,10 @@ import Done from "./Done";
 function RelationshipModal({ closeModal, databaseName }) {
   const [relationshipStep, setRelationshipStep] = useState("start");
   const [relationData, setRelationData] = useState({
-    primaryFieldId: "",
+    primaryFieldName: "",
     foreignDbId: "",
-    foreignFieldId: "",
-    fieldsToDisplay: [],
+    foreignFieldName: "",
+    foreignFieldsToDisplay: [],
     foreignDb: null,
   });
 

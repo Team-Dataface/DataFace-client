@@ -7,13 +7,11 @@ function FieldWizard({
   databaseName,
   relationData,
   setRelationData,
-  fieldsName,
-  setFieldsName,
   databaseType,
 }) {
   const [isSelected, setIsSelected] = useState("");
   const [updatedFields, setUpdatedFields] = useState(fields);
-  const [selectedFields, setSelectedFields] = useState([]);
+  const [selectedFieldNames, setSelectedFieldNames] = useState([]);
 
   function moveToFirstIndex(id) {
     if (databaseType === "portal") {
@@ -37,11 +35,6 @@ function FieldWizard({
     if (databaseType === "base") {
       setRelationData({
         ...relationData,
-        primaryFieldId: id,
-      });
-
-      setFieldsName({
-        ...fieldsName,
         primaryFieldName: name,
       });
 
@@ -51,11 +44,6 @@ function FieldWizard({
     if (databaseType === "target") {
       setRelationData({
         ...relationData,
-        foreignFieldId: id,
-      });
-
-      setFieldsName({
-        ...fieldsName,
         foreignFieldName: name,
       });
 
@@ -63,22 +51,25 @@ function FieldWizard({
     }
 
     if (databaseType === "portal") {
-      setSelectedFields(prevSelectedFields =>
-        prevSelectedFields.includes(id)
-          ? prevSelectedFields.filter(selectedId => selectedId !== id)
-          : [...prevSelectedFields, id],
+      setSelectedFieldNames(prevSelectedFields =>
+        prevSelectedFields.includes(name)
+          ? prevSelectedFields.filter(selectedField => selectedField !== name)
+          : [...prevSelectedFields, name],
       );
 
-      if (!relationData.fieldsToDisplay.includes(id)) {
+      if (!relationData.foreignFieldsToDisplay.includes(name)) {
         setRelationData({
           ...relationData,
-          fieldsToDisplay: [...relationData.fieldsToDisplay, id],
+          foreignFieldsToDisplay: [
+            ...relationData.foreignFieldsToDisplay,
+            name,
+          ],
         });
       } else {
         setRelationData({
           ...relationData,
-          fieldsToDisplay: relationData.fieldsToDisplay.filter(
-            fieldId => fieldId !== id,
+          foreignFieldsToDisplay: relationData.foreignFieldsToDisplay.filter(
+            fieldName => fieldName !== name,
           ),
         });
       }
@@ -99,7 +90,7 @@ function FieldWizard({
               key={field._id}
               onClick={() => handleOnClick(field._id, field.fieldName)}
               className={`w-full py-1 border-b-2 border-grey
-              ${selectedFields.includes(field._id) ? "bg-yellow" : ""}
+              ${selectedFieldNames.includes(field.fieldName) ? "bg-yellow" : ""}
               ${isSelected === field._id ? "bg-yellow" : ""}
               ${index === updatedFields.length - 1 ? "border-b-0" : ""}`}
             >
