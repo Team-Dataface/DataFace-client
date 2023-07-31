@@ -55,7 +55,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
 
   function handleNextClick() {
     if (!relationData.primaryFieldId || !relationData.foreignFieldId) {
-      alert("Please choose fields to make relationship!");
+      alert("Please choose fields to procceed");
 
       return;
     }
@@ -94,7 +94,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
             setRelationData={setRelationData}
             fieldsName={fieldsName}
             setFieldsName={setFieldsName}
-            status="base"
+            databaseType="base"
           />
           <div className="flex items-center h-[160px] my-10">
             <div
@@ -112,7 +112,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
             setRelationData={setRelationData}
             fieldsName={fieldsName}
             setFieldsName={setFieldsName}
-            status="target"
+            databaseType="target"
           />
         </div>
       )}

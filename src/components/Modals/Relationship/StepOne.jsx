@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,6 +10,7 @@ import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
 import Loading from "../../shared/Loading";
+import DatabasesWizard from "./WizardItems/DatabasesWizard";
 
 function StepOne({
   setRelationshipStep,
@@ -20,7 +19,6 @@ function StepOne({
   setRelationData,
 }) {
   const [targetDatabases, setTargetDatabases] = useState([]);
-  const [isSelected, setIsSelected] = useState("");
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -60,15 +58,6 @@ function StepOne({
     setRelationshipStep("stepTwo");
   }
 
-  function handleDatabaseClick(id) {
-    setIsSelected(id);
-
-    setRelationData({
-      ...relationData,
-      foreignDbId: id,
-    });
-  }
-
   return (
     <>
       <Title>Step 1</Title>
@@ -76,27 +65,12 @@ function StepOne({
         <p>Please choose a database that you would like to link with DBNAME</p>
       </Message>
       <Content>
-        <div className="flex flex-col justify-around items-center h-auto w-60">
-          <div className="flex border-2 rounded-lg justify-center items-center w-full p-2 bg-blue bg-opacity-50">
-            <p>{databaseName}</p>
-          </div>
-          <div className="border border-blue border-dashed h-16"></div>
-          <div className="flex flex-col border-2 rounded-lg items-center w-full max-h-[190px] overflow-y-scroll">
-            <ul className="w-full h-auto text-center">
-              {targetDatabases.map((database, index) => (
-                <li
-                  className={`w-full py-1 border-b-2 border-grey
-                  ${isSelected === database._id ? "bg-yellow" : ""}
-                  ${index === targetDatabases.length - 1 ? "border-b-0" : ""}`}
-                  key={database._id}
-                  onClick={() => handleDatabaseClick(database._id)}
-                >
-                  {database.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <DatabasesWizard
+          databaseName={databaseName}
+          targetDatabases={targetDatabases}
+          relationData={relationData}
+          setRelationData={setRelationData}
+        />
       </Content>
       <div className="flex justify-end items-center w-full">
         <Button

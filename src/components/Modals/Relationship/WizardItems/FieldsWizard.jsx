@@ -9,14 +9,14 @@ function FieldWizard({
   setRelationData,
   fieldsName,
   setFieldsName,
-  status,
+  databaseType,
 }) {
   const [isSelected, setIsSelected] = useState("");
   const [updatedFields, setUpdatedFields] = useState(fields);
   const [selectedFields, setSelectedFields] = useState([]);
 
   function moveToFirstIndex(id) {
-    if (status === "portal") {
+    if (databaseType === "portal") {
       return;
     }
 
@@ -34,7 +34,7 @@ function FieldWizard({
   }
 
   function handleOnClick(id, name) {
-    if (status === "base") {
+    if (databaseType === "base") {
       setRelationData({
         ...relationData,
         primaryFieldId: id,
@@ -48,7 +48,7 @@ function FieldWizard({
       setIsSelected(id);
     }
 
-    if (status === "target") {
+    if (databaseType === "target") {
       setRelationData({
         ...relationData,
         foreignFieldId: id,
@@ -62,7 +62,7 @@ function FieldWizard({
       setIsSelected(id);
     }
 
-    if (status === "portal") {
+    if (databaseType === "portal") {
       setSelectedFields(prevSelectedFields =>
         prevSelectedFields.includes(id)
           ? prevSelectedFields.filter(selectedId => selectedId !== id)
