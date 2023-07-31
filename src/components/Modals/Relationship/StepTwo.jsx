@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchData from "../../../utils/axios";
@@ -15,11 +15,6 @@ import FieldWizard from "./WizardItems/FieldsWizard";
 import Loading from "../../shared/Loading";
 
 function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
-  const [fieldsName, setFieldsName] = useState({
-    primaryFieldName: "",
-    foreignFieldName: "",
-  });
-
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
@@ -46,15 +41,16 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
   function handleBackClick() {
     setRelationData({
       ...relationData,
-      primaryFieldId: "",
-      foreignFieldId: "",
+      primaryFieldName: "",
+      foreignFieldName: "",
     });
 
     setRelationshipStep("stepOne");
   }
 
   function handleNextClick() {
-    if (!relationData.primaryFieldId || !relationData.foreignFieldId) {
+    console.log(relationData);
+    if (!relationData.primaryFieldName || !relationData.foreignFieldName) {
       alert("Please choose fields to procceed");
 
       return;
@@ -92,14 +88,12 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
             databaseName={databases.baseDb.name}
             relationData={relationData}
             setRelationData={setRelationData}
-            fieldsName={fieldsName}
-            setFieldsName={setFieldsName}
             databaseType="base"
           />
           <div className="flex items-center h-[160px] my-10">
             <div
               className={`border border-dashed w-40 h-0 mb-10 ${
-                relationData.primaryFieldId && relationData.foreignFieldId
+                relationData.primaryFieldName && relationData.foreignFieldName
                   ? "border-blue"
                   : "border-white"
               }`}
@@ -110,8 +104,6 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
             databaseName={databases.targetDb.name}
             relationData={relationData}
             setRelationData={setRelationData}
-            fieldsName={fieldsName}
-            setFieldsName={setFieldsName}
             databaseType="target"
           />
         </div>
@@ -120,7 +112,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
         <p>
           {`Documents within ${databases.targetDb.name} will be automatically queried and displayed`}
         </p>
-        <p>{`based on the match between the ${fieldsName.primaryFieldName} field and the ${fieldsName.foreignFieldName} field`}</p>
+        <p>{`based on the match between the ${relationData.primaryFieldName} field and the ${relationData.foreignFieldName} field`}</p>
       </Message>
       <div className="flex justify-between items-center w-full">
         <Button
