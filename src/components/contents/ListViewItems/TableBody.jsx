@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 function TableBody({
   documents,
   currentDocIndex,
@@ -8,6 +10,18 @@ function TableBody({
   setIsEditMode,
   isEditMode,
 }) {
+  function adjustTextareaHeight(event) {
+    event.target.style.height = `${event.target.scrollHeight}px`;
+  }
+
+  useEffect(() => {
+    const textareas = document.querySelectorAll(".auto-resize");
+
+    textareas.forEach(textarea => {
+      adjustTextareaHeight({ target: textarea });
+    });
+  }, [documents]);
+
   function handleOnChange(event, documentId) {
     const { id, value } = event.target;
     const newChangedDoc = [...changedDoc];
@@ -30,8 +44,7 @@ function TableBody({
     }
 
     setChangedDoc(newChangedDoc);
-
-    event.target.style.height = `${event.target.scrollHeight}px`;
+    adjustTextareaHeight(event);
   }
 
   return (
@@ -56,17 +69,33 @@ function TableBody({
               className="h-full border"
             >
               <div className="h-auto pt-2 px-3">
-                <textarea
-                  className={`w-full h-full rounded-md disabled: bg-inherit resize-none
-                  ${
-                    isEditMode &&
-                    "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
-                  }`}
-                  id={field._id}
-                  defaultValue={field.fieldValue}
-                  disabled={!isEditMode}
-                  onChange={event => handleOnChange(event, document._id)}
-                ></textarea>
+                {field.fieldType === "Text" ? (
+                  <textarea
+                    className={`w-full rounded-md disabled: bg-inherit resize-none auto-resize
+                    ${
+                      isEditMode &&
+                      "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
+                    }`}
+                    id={field._id}
+                    rows="1"
+                    defaultValue={field.fieldValue}
+                    disabled={!isEditMode}
+                    onChange={event => handleOnChange(event, document._id)}
+                  />
+                ) : (
+                  <input
+                    className={`w-full h-full rounded-md disabled: bg-inherit resize-none
+                    ${
+                      isEditMode &&
+                      "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
+                    }`}
+                    id={field._id}
+                    type={field.fieldType}
+                    defaultValue={field.fieldValue}
+                    disabled={!isEditMode}
+                    onChange={event => handleOnChange(event, document._id)}
+                  />
+                )}
               </div>
             </td>
           ))}

@@ -94,6 +94,7 @@ function Sidebar({
       setCurrentDocIndex(0);
       setCurrentDBId(clickedDBId);
       setCurrentDBName(clickedDB);
+      setIsListView(true);
 
       queryClient.refetchQueries(["userDbList"]);
     }

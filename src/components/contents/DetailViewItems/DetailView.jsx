@@ -112,6 +112,14 @@ function DetailView({
     setDocData(newArr);
   }
 
+  function updateFieldRows(index, value) {
+    const newArr = [...docData];
+
+    newArr[currentDocIndex].fields[index].rows = value;
+
+    setDocData(newArr);
+  }
+
   function startDraggingPortal() {
     setIsDragging(true);
     setDraggedElementIndex("portal");
@@ -170,6 +178,7 @@ function DetailView({
               document={docData[currentDocIndex]}
               isEditMode={isEditMode}
               updateFieldValue={updateFieldValue}
+              updateFieldRows={updateFieldRows}
               setIsEditMode={setIsEditMode}
               isDragging={isDragging}
               startDraggingField={startDraggingField}

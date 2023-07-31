@@ -28,10 +28,17 @@ function AddDocumentModal({
 
   const [fields, setFields] = useState([]);
 
+  function adjustTextareaHeight(event) {
+    event.target.style.height = `${event.target.scrollHeight}px`;
+  }
+
   function updateFieldValue(index, event) {
     const newArr = [...fields];
+
     newArr[index].fieldValue = event.target.value;
+
     setFields(newArr);
+    adjustTextareaHeight(event);
   }
 
   function addNewDocumentId(newId) {

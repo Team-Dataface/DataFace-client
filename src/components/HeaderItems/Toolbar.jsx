@@ -21,6 +21,7 @@ function Toolbar({
 
   function clickHandelBackButton() {
     setIsRelationship(false);
+    setIsListView(true);
     navigate("/dashboard/listview");
   }
 
