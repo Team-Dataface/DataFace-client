@@ -8,9 +8,15 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import Done from "./Done";
 
-function RelationshipModal({ closeModal }) {
+function RelationshipModal({ closeModal, databaseName }) {
   const [relationshipStep, setRelationshipStep] = useState("start");
-  // const [relationData, setRelationData] = useState(null); //일련의 과정 중 모이는 데이터를 store
+  const [relationData, setRelationData] = useState({
+    primaryFieldId: "",
+    foreignDbId: "",
+    foreignFieldId: "",
+    fieldsToDisplay: [],
+    foreignDb: null,
+  });
 
   return (
     <Modal onClick={closeModal}>
@@ -19,13 +25,26 @@ function RelationshipModal({ closeModal }) {
           <Start setRelationshipStep={setRelationshipStep} />
         )}
         {relationshipStep === "stepOne" && (
-          <StepOne setRelationshipStep={setRelationshipStep} />
+          <StepOne
+            setRelationshipStep={setRelationshipStep}
+            databaseName={databaseName}
+            relationData={relationData}
+            setRelationData={setRelationData}
+          />
         )}
         {relationshipStep === "stepTwo" && (
-          <StepTwo setRelationshipStep={setRelationshipStep} />
+          <StepTwo
+            setRelationshipStep={setRelationshipStep}
+            relationData={relationData}
+            setRelationData={setRelationData}
+          />
         )}
         {relationshipStep === "stepThree" && (
-          <StepThree setRelationshipStep={setRelationshipStep} />
+          <StepThree
+            setRelationshipStep={setRelationshipStep}
+            relationData={relationData}
+            setRelationData={setRelationData}
+          />
         )}
         {relationshipStep === "Done" && (
           <Done

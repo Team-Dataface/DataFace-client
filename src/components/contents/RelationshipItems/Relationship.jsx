@@ -9,11 +9,13 @@ import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import DatabaseFields from "./DatabaseFields";
 import Button from "../../shared/Button";
 import RelationshipModal from "../../Modals/Relationship/RelationshipModal";
+import Loading from "../../shared/Loading";
 
 function Relationship() {
+  const [showRelationshipModal, setShowRelationshipModal] = useState(false);
+
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
-  const [showRelationshipModal, setShowRelationshipModal] = useState(false);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -40,8 +42,8 @@ function Relationship() {
     },
   );
 
-  if (isLoading && currentDBId) {
-    return <h1>loading</h1>;
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -50,7 +52,7 @@ function Relationship() {
         fields={data.documents[0].fields}
         databaseName={data.name}
       />
-      <div>
+      <div className="flex flex-col items-center">
         <h1 className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
           No Relationship Yet.
         </h1>
@@ -65,6 +67,7 @@ function Relationship() {
         {showRelationshipModal && (
           <RelationshipModal
             closeModal={() => setShowRelationshipModal(false)}
+            databaseName={data.name}
           />
         )}
       </div>
