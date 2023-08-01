@@ -31,18 +31,23 @@ function Portal({
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
+
     docData[currentDocIndex].fields.forEach(element => {
       if (primaryField[relationshipsIndex] === element.fieldName) {
-        queryValue = element.fieldValue;
+        queryValue = element.fieldValue.trim();
       }
     });
 
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[relationshipsIndex]._id}?primaryFieldValue=${queryValue}`,
-    );
+    if (relationshipsData[relationshipsIndex]) {
+      const response = await fetchData(
+        "GET",
+        `users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[relationshipsIndex]._id}?primaryFieldValue=${queryValue}`,
+      );
 
-    return response.data;
+      return response.data;
+    }
+
+    return [];
   }
 
   const [portal1, portal2] = useQueries({
@@ -79,8 +84,6 @@ function Portal({
   if (portal1.isLoading || portal2.isLoading) {
     return <Loading />;
   }
-
-  console.log(portal2.data.displayedDocuments);
 
   return (
     <div
@@ -121,7 +124,11 @@ function Portal({
         )}
       </div>
       {isEditMode && (
-        <PortalFooter setRelationshipsData={setRelationshipsData} />
+        <PortalFooter
+          relationshipsData={relationshipsData}
+          setRelationshipsData={setRelationshipsData}
+          index={index}
+        />
       )}
     </div>
   );

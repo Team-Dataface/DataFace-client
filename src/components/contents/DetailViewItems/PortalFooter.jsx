@@ -1,30 +1,32 @@
 import Button from "../../shared/Button";
 
-function PortalFooter({ setRelationshipsData }) {
+function PortalFooter({ relationshipsData, setRelationshipsData, index }) {
+  function handleClickSize(size) {
+    const newArr = [...relationshipsData];
+
+    newArr[index].portalSize = size;
+
+    setRelationshipsData(newArr);
+  }
+
   return (
     <div className="flex justify-between w-auto h-auto p-1 bg-black-bg">
       <div className="flex">
         <Button
           className="flex items-center w-auto h-4 mr-1 p-2 bg-white text-xs"
-          onClick={() =>
-            setRelationshipsData(prev => ({ ...prev, portalSize: 100 }))
-          }
+          onClick={() => handleClickSize(80)}
         >
           small
         </Button>
         <Button
           className="flex items-center w-auto h-4 mr-1 p-2 bg-white text-xs"
-          onClick={() =>
-            setRelationshipsData(prev => ({ ...prev, portalSize: 150 }))
-          }
+          onClick={() => handleClickSize(150)}
         >
           medium
         </Button>
         <Button
           className="flex items-center w-auto h-4 mr-1 p-2 bg-white text-xs"
-          onClick={() =>
-            setRelationshipsData(prev => ({ ...prev, portalSize: 200 }))
-          }
+          onClick={() => handleClickSize(260)}
         >
           large
         </Button>

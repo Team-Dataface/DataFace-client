@@ -4,7 +4,7 @@ function PortalTable({
   relationship,
   foreignDocuments,
 }) {
-  if (foreignDocuments.length === 0) {
+  if (!foreignDocuments) {
     return null;
   }
 
@@ -45,10 +45,10 @@ function PortalTable({
             })}
           </tr>
         ) : (
-          foreignDocuments.map(element => {
+          foreignDocuments.map((element, index) => {
             return (
               <tr
-                key={element._id}
+                key={element.fields[index]._id}
                 className="w-[130px] h-10 border border-dark-grey text-center"
               >
                 {element.fields.map(field => {

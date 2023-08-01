@@ -28,6 +28,10 @@ function moveFields(
       newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
     }
 
+    console.log(
+      newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate,
+    );
+
     if (
       event.clientX - X_DRAG_ADJUSTMENT < -30 ||
       event.clientY - Y_DRAG_ADJUSTMENT < -30

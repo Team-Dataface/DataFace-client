@@ -128,7 +128,6 @@ function DetailView({
   }
 
   function startDraggingField(index) {
-    console.log(index);
     setIsDragging(true);
     setDraggedElementIndex(index);
   }
@@ -197,9 +196,10 @@ function DetailView({
         }
       `}
         onMouseMove={event => {
-          if (isEditMode && isDragging && draggedElementIndex) {
+          if (isEditMode && isDragging && draggedElementIndex !== null) {
             handleMouseFieldMove(event);
-          } else {
+          }
+          if (isEditMode && isDragging && draggedPortalIndex !== null) {
             handleMousePortalMove(event);
           }
         }}
