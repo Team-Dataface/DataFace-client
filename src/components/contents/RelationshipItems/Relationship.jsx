@@ -112,9 +112,9 @@ function Relationship() {
       </div>
       <div className="flex flex-col items-center">
         {documents.length === 1 && (
-          <h1 className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
+          <span className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
             No Relationship Yet.
-          </h1>
+          </span>
         )}
         <Button
           className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"

@@ -49,7 +49,6 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
   }
 
   function handleNextClick() {
-    console.log(relationData);
     if (!relationData.primaryFieldName || !relationData.foreignFieldName) {
       alert("Please choose fields to procceed");
 
