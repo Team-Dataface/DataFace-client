@@ -19,6 +19,7 @@ function Sidebar({
   setCurrentDocIndex,
   setCurrentDBName,
   isRelationship,
+  currentDocIndex,
 }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
@@ -98,6 +99,16 @@ function Sidebar({
 
       queryClient.refetchQueries(["userDb"]);
       queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+      queryClient.refetchQueries([
+        "foreignDocuments1",
+        currentDBId,
+        currentDocIndex,
+      ]);
+      queryClient.refetchQueries([
+        "foreignDocuments2",
+        currentDBId,
+        currentDocIndex,
+      ]);
     }
 
     return databases.map(element => {

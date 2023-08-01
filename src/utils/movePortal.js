@@ -6,34 +6,33 @@ function movePortal(
   event,
   isEditMode,
   isDragging,
-  portalStyle,
   setIsDragging,
-  setPortalStyle,
+  relationshipsData,
+  setRelationshipsData,
+  draggedPortalIndex,
 ) {
   if (isEditMode && isDragging) {
-    const newData = { ...portalStyle };
+    const newArr = [...relationshipsData];
 
-    newData.xCoordinate = event.clientX - X_DRAG_ADJUSTMENT;
-    newData.yCoordinate = event.clientY - Y_DRAG_ADJUSTMENT;
+    newArr[draggedPortalIndex].xCoordinate = event.clientX - X_DRAG_ADJUSTMENT;
+    newArr[draggedPortalIndex].yCoordinate = event.clientY - Y_DRAG_ADJUSTMENT;
 
     if (event.clientX - X_DRAG_ADJUSTMENT < -1) {
-      newData.xCoordinate.xCoordinate = 0;
+      newArr[draggedPortalIndex].xCoordinate = 0;
     }
 
     if (event.clientY - Y_DRAG_ADJUSTMENT < -1) {
-      newData.yCoordinate.yCoordinate = 0;
+      newArr[draggedPortalIndex].yCoordinate = 0;
     }
 
     if (
       event.clientX - X_DRAG_ADJUSTMENT < -30 ||
-      event.clientX - X_DRAG_ADJUSTMENT > 1130 ||
-      event.clientY - Y_DRAG_ADJUSTMENT < -30 ||
-      event.clientY - Y_DRAG_ADJUSTMENT > 590
+      event.clientY - Y_DRAG_ADJUSTMENT < -30
     ) {
       setIsDragging(false);
     }
 
-    setPortalStyle(newData);
+    setRelationshipsData(newArr);
   }
 }
 

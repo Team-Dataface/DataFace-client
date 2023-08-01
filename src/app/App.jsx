@@ -87,6 +87,7 @@ function App() {
                 setCurrentDBName={setCurrentDBName}
                 isRelationship={isRelationship}
                 setIsListView={setIsListView}
+                currentDocIndex={currentDocIndex}
               />
             )}
             <div className="flex grow justify-center">

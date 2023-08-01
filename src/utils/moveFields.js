@@ -6,11 +6,11 @@ function moveFields(
   event,
   isEditMode,
   isDragging,
+  setIsDragging,
   docData,
+  setDocData,
   currentDocIndex,
   draggedElementIndex,
-  setIsDragging,
-  setDocData,
 ) {
   if (isEditMode && isDragging) {
     const newArr = [...docData];
@@ -28,19 +28,13 @@ function moveFields(
       newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
     }
 
-    if (event.clientX - X_DRAG_ADJUSTMENT > 1101) {
-      newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 1100;
-    }
-
-    if (event.clientY - Y_DRAG_ADJUSTMENT > 571) {
-      newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 570;
-    }
+    console.log(
+      newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate,
+    );
 
     if (
       event.clientX - X_DRAG_ADJUSTMENT < -30 ||
-      event.clientX - X_DRAG_ADJUSTMENT > 1130 ||
-      event.clientY - Y_DRAG_ADJUSTMENT < -30 ||
-      event.clientY - Y_DRAG_ADJUSTMENT > 590
+      event.clientY - Y_DRAG_ADJUSTMENT < -30
     ) {
       setIsDragging(false);
     }
