@@ -96,7 +96,8 @@ function Sidebar({
       setCurrentDBName(clickedDB);
       setIsListView(true);
 
-      queryClient.refetchQueries(["userDbList"]);
+      queryClient.refetchQueries(["userDb"]);
+      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
     }
 
     return databases.map(element => {
