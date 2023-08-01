@@ -100,7 +100,8 @@ function Portal({
       }}
     >
       <div
-        className={`h-[${relationship.portalSize}px] overflow-y-scroll border`}
+        className="overflow-y-scroll border"
+        style={{ height: `${relationship.portalSize}px` }}
         onDoubleClick={() => setIsEditMode(true)}
       >
         <PortalTable
