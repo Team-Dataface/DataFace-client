@@ -38,7 +38,7 @@ function Relationship() {
   }
 
   // eslint-disable-next-line consistent-return
-  function sortDatabses(array) {
+  function sortDatabases(array) {
     const { length } = array;
     const primaryDbIndex = array.findIndex(item => item._id === currentDBId);
 
@@ -81,7 +81,7 @@ function Relationship() {
     if (documentQuery.data && relationQuery.data) {
       const newDb = [documentQuery.data, ...relationQuery.data];
 
-      setDocs(sortDatabses(newDb));
+      setDocs(sortDatabases(newDb));
     }
   }, [documentQuery.data, relationQuery.data]);
 
