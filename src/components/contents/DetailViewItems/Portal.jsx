@@ -32,16 +32,16 @@ function Portal({
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
 
-    docData[currentDocIndex].fields.forEach(element => {
+    docData[currentDocIndex]?.fields.forEach(element => {
       if (primaryField[relationshipsIndex] === element.fieldName) {
         queryValue = element.fieldValue.trim();
       }
     });
 
-    if (relationshipsData[relationshipsIndex]) {
+    if (relationship._id) {
       const response = await fetchData(
         "GET",
-        `users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[relationshipsIndex]._id}?primaryFieldValue=${queryValue}`,
+        `users/${userId}/databases/${currentDBId}/relationships/${relationship._id}?primaryFieldValue=${queryValue}`,
       );
 
       return response.data;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useLoading(isQueryLoading, delay = 1000) {
+function useLoading(isQueryLoading, delay = 300) {
   const [isLoadingTimeout, setIsLoadingTimeout] = useState(false);
 
   useEffect(() => {

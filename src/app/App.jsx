@@ -28,6 +28,7 @@ function App() {
   const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
   const [currentDBName, setCurrentDBName] = useState("");
+  const [relationshipsData, setRelationshipsData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -88,6 +89,7 @@ function App() {
                 isRelationship={isRelationship}
                 setIsListView={setIsListView}
                 currentDocIndex={currentDocIndex}
+                setRelationshipsData={setRelationshipsData}
               />
             )}
             <div className="flex grow justify-center">
@@ -119,6 +121,8 @@ function App() {
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
+                        relationshipsData={relationshipsData}
+                        setRelationshipsData={setRelationshipsData}
                       />
                     }
                   />

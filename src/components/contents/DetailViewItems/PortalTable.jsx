@@ -4,7 +4,7 @@ function PortalTable({
   relationship,
   foreignDocuments,
 }) {
-  if (!foreignDocuments) {
+  if (!foreignDocuments || foreignDocuments.length === 0) {
     return null;
   }
 
