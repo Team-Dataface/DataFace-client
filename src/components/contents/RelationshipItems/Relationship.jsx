@@ -13,6 +13,8 @@ import Loading from "../../shared/Loading";
 
 function Relationship() {
   const [showRelationshipModal, setShowRelationshipModal] = useState(false);
+  const [docs, setDocs] = useState([]);
+  const [relationships, setRelationships] = useState([]);
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -62,6 +64,9 @@ function Relationship() {
         queryFn: getDocumentsList,
         enabled: !!userId && !!currentDBId,
         refetchOnWindowFocus: false,
+        onSuccess: result => {
+          setRelationships(result.relationships);
+        },
       },
       {
         queryKey: ["dbRelationShips", currentDBId],
@@ -72,21 +77,25 @@ function Relationship() {
   });
 
   // eslint-disable-next-line consistent-return
-  const documents = useMemo(() => {
+  useMemo(() => {
+    console.log(123444);
     if (documentQuery.data && relationQuery.data) {
       const newDb = [documentQuery.data, ...relationQuery.data];
-      return sortDatabses(newDb);
+
+      setDocs(sortDatabses(newDb));
     }
   }, [documentQuery.data, relationQuery.data]);
 
-  if (documentQuery.isLoading || relationQuery.isLoading) {
+  if (documentQuery.isLoading) {
     return <Loading />;
   }
+
+  // console.log(documents);
 
   return (
     <div className="flex flex-col w-full justify-center items-center">
       <div className="flex flex-row w-full justify-center items-start">
-        {documents?.map((database, index) => (
+        {docs?.map((database, index) => (
           <div className="flex flex-row mb-10" key={database._id}>
             <DatabaseFields
               key={crypto.randomUUID()}
@@ -95,12 +104,12 @@ function Relationship() {
               primaryDbId={currentDBId}
               databaseId={database._id}
               dbIndex={index}
-              relationships={documentQuery.data.relationships}
+              relationships={relationships}
             />
-            {documents.length === 2 && index === 0 && (
+            {docs.length === 2 && index === 0 && (
               <div className="border border-dashed w-80 h-0 mt-16 border-blue"></div>
             )}
-            {documents.length === 3 && (index === 0 || index === 1) && (
+            {docs.length === 3 && (index === 0 || index === 1) && (
               <div
                 className={`border border-dashed w-80 h-0 border-blue ${
                   index === 0 ? "mt-24" : "mt-16"
@@ -111,7 +120,7 @@ function Relationship() {
         ))}
       </div>
       <div className="flex flex-col items-center">
-        {documents.length === 1 && (
+        {docs.length === 1 && (
           <span className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
             No Relationship Yet.
           </span>
