@@ -27,7 +27,7 @@ function Header({
           src="/assets/dataface_logo.png"
           alt="dataface logo"
         />
-        <h1 className="text-white">{currentDBName}</h1>
+        <span className="text-white">{currentDBName}</span>
         <LogoutButton clickHandleLogout={clickHandleLogout} />
       </div>
 
