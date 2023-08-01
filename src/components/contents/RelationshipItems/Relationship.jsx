@@ -78,7 +78,6 @@ function Relationship() {
 
   // eslint-disable-next-line consistent-return
   useMemo(() => {
-    console.log(123444);
     if (documentQuery.data && relationQuery.data) {
       const newDb = [documentQuery.data, ...relationQuery.data];
 
@@ -89,8 +88,6 @@ function Relationship() {
   if (documentQuery.isLoading) {
     return <Loading />;
   }
-
-  // console.log(documents);
 
   return (
     <div className="flex flex-col w-full justify-center items-center">
