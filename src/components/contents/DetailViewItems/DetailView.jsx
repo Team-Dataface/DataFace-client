@@ -1,5 +1,10 @@
 import { useState, useContext } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueries,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import UserContext from "../../../context/UserContext";
@@ -9,10 +14,8 @@ import Loading from "../../shared/Loading";
 import Portal from "./Portal";
 
 import fetchData from "../../../utils/axios";
-import useLoading from "../../../utils/useLoading";
 import movePortal from "../../../utils/movePortal";
 import moveFields from "../../../utils/moveFields";
-import foreignDocuments from "./foreignDocuments";
 
 function DetailView({
   isEditMode,
@@ -25,11 +28,9 @@ function DetailView({
   const [docData, setDocData] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElementIndex, setDraggedElementIndex] = useState(null);
-  const [portalStyle, setPortalStyle] = useState({
-    xCoordinate: 0,
-    yCoordinate: 0,
-    size: 150,
-  });
+  const [draggedPortalIndex, setDraggedPortalIndex] = useState(null);
+  const [relationshipsData, setRelationshipsData] = useState(null);
+  const [primaryField, setPrimaryField] = useState(null);
 
   const queryClient = useQueryClient();
 
@@ -45,32 +46,49 @@ function DetailView({
     return response.data.database;
   }
 
-  const { data, isLoading } = useQuery(
-    ["dbDocumentList", currentDBId, currentDocIndex],
+  const { isLoading: gettingAllDocument } = useQuery(
+    ["dbDocumentList", currentDBId],
     getDocumentsList,
     {
-      enabled: !!userId,
+      enabled: !!userId && !!currentDBId,
+      refetchOnWindowFocus: false,
       onSuccess: result => {
         const documentsId = result.documents.map(document => {
           return document._id;
         });
-
         setDocumentsIds(documentsId);
         setDocData(result.documents);
+
+        if (result.relationships.length) {
+          setRelationshipsData(result.relationships);
+
+          const primaryFieldsList = result.relationships.map(element => {
+            return element.primaryFieldName;
+          });
+
+          setPrimaryField(primaryFieldsList);
+        }
       },
       onFailure: () => {
         console.log("sending user to errorpage");
       },
-      refetchOnWindowFocus: false,
     },
   );
 
   async function handleClickSave() {
     await fetchData(
       "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents/${data.documents[currentDocIndex]._id}`,
+      `/users/${userId}/databases/${currentDBId}/documents/${docData[currentDocIndex]._id}`,
       { fields: docData[currentDocIndex].fields },
     );
+
+    if (relationshipsData.length) {
+      await fetchData(
+        "PUT",
+        `/users/${userId}/databases/${currentDBId}/relationships`,
+        relationshipsData,
+      );
+    }
   }
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
@@ -83,9 +101,24 @@ function DetailView({
     refetchOnWindowFocus: false,
   });
 
-  const loadingTimeout = useLoading(isLoading);
+  async function deleteRelationship(index) {
+    await fetchData(
+      "DELETE",
+      `/users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[index]._id}`,
+    );
+  }
 
-  if (loadingTimeout) {
+  const { mutate: fetchDeleteRelationship } = useMutation(deleteRelationship, {
+    onSuccess: () => {
+      setRelationshipsData(null);
+      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
+
+  if (gettingAllDocument) {
     return <Loading />;
   }
 
@@ -95,6 +128,7 @@ function DetailView({
   }
 
   function startDraggingField(index) {
+    console.log(index);
     setIsDragging(true);
     setDraggedElementIndex(index);
   }
@@ -120,38 +154,39 @@ function DetailView({
     setDocData(newArr);
   }
 
-  function startDraggingPortal() {
+  function startDraggingPortal(index) {
     setIsDragging(true);
-    setDraggedElementIndex("portal");
+    setDraggedPortalIndex(index);
   }
 
   function endDraggingPortal() {
     setIsDragging(false);
-    setDraggedElementIndex(null);
+    setDraggedPortalIndex(null);
   }
 
-  function handleMouseMove(event) {
-    if (draggedElementIndex !== "portal") {
-      moveFields(
-        event,
-        isEditMode,
-        isDragging,
-        docData,
-        currentDocIndex,
-        draggedElementIndex,
-        setIsDragging,
-        setDocData,
-      );
-    } else {
-      movePortal(
-        event,
-        isEditMode,
-        isDragging,
-        portalStyle,
-        setIsDragging,
-        setPortalStyle,
-      );
-    }
+  function handleMouseFieldMove(event) {
+    moveFields(
+      event,
+      isEditMode,
+      isDragging,
+      setIsDragging,
+      docData,
+      setDocData,
+      currentDocIndex,
+      draggedElementIndex,
+    );
+  }
+
+  function handleMousePortalMove(event) {
+    movePortal(
+      event,
+      isEditMode,
+      isDragging,
+      setIsDragging,
+      relationshipsData,
+      setRelationshipsData,
+      draggedPortalIndex,
+    );
   }
 
   return (
@@ -161,26 +196,44 @@ function DetailView({
           isEditMode ? "ring-4 ring-blue" : null
         }
       `}
-        onMouseMove={event => handleMouseMove(event)}
+        onMouseMove={event => {
+          if (isEditMode && isDragging && draggedElementIndex) {
+            handleMouseFieldMove(event);
+          } else {
+            handleMousePortalMove(event);
+          }
+        }}
       >
-        <Portal
-          foreignDocuments={foreignDocuments}
-          isDragging={isDragging}
-          startDraggingPortal={startDraggingPortal}
-          endDraggingPortal={endDraggingPortal}
-          isEditMode={isEditMode}
-          portalStyle={portalStyle}
-          setPortalStyle={setPortalStyle}
-        />
+        {relationshipsData &&
+          relationshipsData.map((relationship, index) => {
+            return (
+              <Portal
+                index={index}
+                key={relationship._id}
+                relationship={relationship}
+                setRelationshipsData={setRelationshipsData}
+                isEditMode={isEditMode}
+                setIsEditMode={setIsEditMode}
+                isDragging={isDragging}
+                startDraggingPortal={startDraggingPortal}
+                endDraggingPortal={endDraggingPortal}
+                handleClickDelete={fetchDeleteRelationship}
+                docData={docData}
+                currentDocIndex={currentDocIndex}
+                primaryField={primaryField}
+                relationshipsData={relationshipsData}
+              />
+            );
+          })}
         <div className="flex flex-col absolute">
           {docData[currentDocIndex] && (
             <FieldList
               document={docData[currentDocIndex]}
+              isDragging={isDragging}
               isEditMode={isEditMode}
               updateFieldValue={updateFieldValue}
               updateFieldRows={updateFieldRows}
               setIsEditMode={setIsEditMode}
-              isDragging={isDragging}
               startDraggingField={startDraggingField}
               endDraggingField={endDraggingField}
             />

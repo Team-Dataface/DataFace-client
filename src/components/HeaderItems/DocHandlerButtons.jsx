@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../utils/axios";
@@ -25,17 +25,29 @@ function DocHandlerButtons({
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
   const [documentsNum, setDocumentsNum] = useState(0);
 
+  const queryClient = useQueryClient();
+
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
   function navigateDown() {
     if (currentDocIndexShownToUser !== 1) {
       setCurrentDocIndex(prev => prev - 1);
+      queryClient.refetchQueries([
+        "foreignDocuments",
+        currentDBId,
+        currentDocIndex,
+      ]);
     }
   }
 
   function navigateUp() {
     if (currentDocIndexShownToUser !== documentsNum) {
       setCurrentDocIndex(prev => prev + 1);
+      queryClient.refetchQueries([
+        "foreignDocuments",
+        currentDBId,
+        currentDocIndex,
+      ]);
     }
   }
 

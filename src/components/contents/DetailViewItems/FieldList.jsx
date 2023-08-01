@@ -27,8 +27,8 @@ function FieldList({
           <span
             className={`flex justify-end mr-3 w-[100px] select-none
             ${isEditMode && "hover:cursor-move"}`}
-            onMouseDown={event => startDraggingField(index, event)}
-            onMouseUp={() => endDraggingField(index)}
+            onMouseDown={() => startDraggingField(index)}
+            onMouseUp={() => endDraggingField()}
           >
             {element.fieldName}
           </span>
