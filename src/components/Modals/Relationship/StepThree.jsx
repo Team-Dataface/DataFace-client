@@ -48,7 +48,6 @@ function StepThree({ setRelationshipStep, relationData, setRelationData }) {
     const { foreignDb, ...updatedRelationData } = relationData;
 
     fetchRelationshipUpdate(updatedRelationData);
-
     setRelationshipStep("Done");
   }
 
