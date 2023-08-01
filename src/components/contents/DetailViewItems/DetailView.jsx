@@ -1,10 +1,5 @@
 import { useState, useContext } from "react";
-import {
-  useQuery,
-  useQueries,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import UserContext from "../../../context/UserContext";
@@ -16,6 +11,7 @@ import Portal from "./Portal";
 import fetchData from "../../../utils/axios";
 import movePortal from "../../../utils/movePortal";
 import moveFields from "../../../utils/moveFields";
+import useLoading from "../../../utils/useLoading";
 
 function DetailView({
   isEditMode,
@@ -24,12 +20,13 @@ function DetailView({
   setDocumentsIds,
   isOnSave,
   setIsOnSave,
+  relationshipsData,
+  setRelationshipsData,
 }) {
   const [docData, setDocData] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElementIndex, setDraggedElementIndex] = useState(null);
   const [draggedPortalIndex, setDraggedPortalIndex] = useState(null);
-  const [relationshipsData, setRelationshipsData] = useState(null);
   const [primaryField, setPrimaryField] = useState(null);
 
   const queryClient = useQueryClient();
@@ -59,7 +56,7 @@ function DetailView({
         setDocumentsIds(documentsId);
         setDocData(result.documents);
 
-        if (result.relationships.length) {
+        if (result.relationships?.length) {
           setRelationshipsData(result.relationships);
 
           const primaryFieldsList = result.relationships.map(element => {
@@ -67,7 +64,11 @@ function DetailView({
           });
 
           setPrimaryField(primaryFieldsList);
+
+          return;
         }
+
+        setRelationshipsData(null);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -118,7 +119,9 @@ function DetailView({
     },
   });
 
-  if (gettingAllDocument) {
+  const loadingTimeout = useLoading(gettingAllDocument);
+
+  if (loadingTimeout) {
     return <Loading />;
   }
 
