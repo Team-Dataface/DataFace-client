@@ -51,7 +51,7 @@ function Relationship() {
       return newDatabases;
     }
     if (length === 3) {
-      const newDatabases = [array[1], array[primaryDbIndex], array[2]];
+      const newDatabases = [array[2], array[primaryDbIndex], array[1]];
 
       return newDatabases;
     }

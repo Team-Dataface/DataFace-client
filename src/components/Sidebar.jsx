@@ -49,6 +49,7 @@ function Sidebar({
         console.log("sending user to errorpage");
       },
       refetchOnWindowFocus: false,
+      staleTime: Infinity,
     },
   );
 
@@ -96,7 +97,6 @@ function Sidebar({
       setCurrentDBId(clickedDBId);
       setCurrentDBName(clickedDB);
       setRelationshipsData(null);
-      setIsListView(true);
 
       queryClient.refetchQueries(["userDb"]);
       queryClient.refetchQueries(["dbDocumentList", currentDBId]);

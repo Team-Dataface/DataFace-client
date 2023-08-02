@@ -83,7 +83,7 @@ function DetailView({
       { fields: docData[currentDocIndex].fields },
     );
 
-    if (relationshipsData.length) {
+    if (relationshipsData?.length) {
       await fetchData(
         "PUT",
         `/users/${userId}/databases/${currentDBId}/relationships`,

@@ -31,6 +31,7 @@ function ContentsContainer() {
       console.log("sending user to errorpage");
     },
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 
   if (isLoading) {
