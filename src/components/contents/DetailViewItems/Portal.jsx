@@ -59,7 +59,12 @@ function Portal({
           currentDocIndex !== undefined &&
           !!relationshipsData,
         refetchOnWindowFocus: false,
-        queryKey: ["foreignDocuments1", currentDBId, currentDocIndex],
+        queryKey: [
+          "foreignDocuments1",
+          currentDBId,
+          currentDocIndex,
+          relationship._id,
+        ],
         queryFn: () => getForeignDocuments(0),
         onFailure: () => {
           console.log("sending user to errorpage");
@@ -72,7 +77,12 @@ function Portal({
           currentDocIndex !== undefined &&
           !!relationshipsData,
         refetchOnWindowFocus: false,
-        queryKey: ["foreignDocuments2", currentDBId, currentDocIndex],
+        queryKey: [
+          "foreignDocuments2",
+          currentDBId,
+          currentDocIndex,
+          relationship._id,
+        ],
         queryFn: () => getForeignDocuments(1),
         onFailure: () => {
           console.log("sending user to errorpage");
