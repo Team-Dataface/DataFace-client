@@ -40,6 +40,7 @@ function ListView({
     getDocumentsList,
     {
       enabled: !!userId,
+      staleTime: Infinity,
       onSuccess: result => {
         const documentsId = [];
 
