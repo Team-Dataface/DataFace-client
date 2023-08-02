@@ -97,7 +97,6 @@ function Sidebar({
       setCurrentDBId(clickedDBId);
       setCurrentDBName(clickedDB);
       setRelationshipsData(null);
-      setIsListView(true);
 
       queryClient.refetchQueries(["userDb"]);
       queryClient.refetchQueries(["dbDocumentList", currentDBId]);
