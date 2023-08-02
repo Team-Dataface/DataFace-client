@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import PortalFooter from "./PortalFooter";
 import PortalTable from "./PortalTable";
