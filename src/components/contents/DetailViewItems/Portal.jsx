@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import PortalFooter from "./PortalFooter";
 import PortalTable from "./PortalTable";
@@ -50,38 +50,23 @@ function Portal({
     return [];
   }
 
-  const [portal1, portal2] = useQueries({
-    queries: [
-      {
-        enabled:
-          !!userId &&
-          !!currentDBId &&
-          currentDocIndex !== undefined &&
-          !!relationshipsData,
-        refetchOnWindowFocus: false,
-        queryKey: ["foreignDocuments1", currentDBId, currentDocIndex],
-        queryFn: () => getForeignDocuments(0),
-        onFailure: () => {
-          console.log("sending user to errorpage");
-        },
+  const { data: foreignDocuments, isLoading } = useQuery(
+    ["foreignDocuments1", currentDBId, currentDocIndex, relationship._id],
+    () => getForeignDocuments(index),
+    {
+      enabled:
+        !!userId &&
+        !!currentDBId &&
+        currentDocIndex !== undefined &&
+        !!relationshipsData,
+      refetchOnWindowFocus: false,
+      onFailure: () => {
+        console.log("sending user to errorpage");
       },
-      {
-        enabled:
-          !!userId &&
-          !!currentDBId &&
-          currentDocIndex !== undefined &&
-          !!relationshipsData,
-        refetchOnWindowFocus: false,
-        queryKey: ["foreignDocuments2", currentDBId, currentDocIndex],
-        queryFn: () => getForeignDocuments(1),
-        onFailure: () => {
-          console.log("sending user to errorpage");
-        },
-      },
-    ],
-  });
+    },
+  );
 
-  if (portal1.isLoading || portal2.isLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -109,11 +94,7 @@ function Portal({
           isEditMode={isEditMode}
           isDragging={isDragging}
           relationship={relationship}
-          foreignDocuments={
-            index === 0
-              ? portal1.data.displayedDocuments
-              : portal2.data.displayedDocuments
-          }
+          foreignDocuments={foreignDocuments.displayedDocuments}
         />
         {isEditMode && (
           <Button
