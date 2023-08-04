@@ -108,7 +108,7 @@ function Relationship() {
             )}
             {docs.length === 3 && (index === 0 || index === 1) && (
               <div
-                className={`border border-dashed w-80 h-0 border-blue ${
+                className={`border border-dashed w-40 h-0 border-blue ${
                   index === 0 ? "mt-24" : "mt-16"
                 }`}
               ></div>
@@ -122,14 +122,16 @@ function Relationship() {
             No Relationship Yet.
           </span>
         )}
-        <Button
-          className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
-          onClick={() => {
-            setShowRelationshipModal(true);
-          }}
-        >
-          Create Relationship
-        </Button>
+        {docs.length < 3 && (
+          <Button
+            className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
+            onClick={() => {
+              setShowRelationshipModal(true);
+            }}
+          >
+            Create Relationship
+          </Button>
+        )}
         {showRelationshipModal && (
           <RelationshipModal
             closeModal={() => setShowRelationshipModal(false)}
