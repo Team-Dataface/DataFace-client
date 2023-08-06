@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchData from "../../../utils/axios";
@@ -17,6 +17,7 @@ import Loading from "../../shared/Loading";
 function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
+  const [isNotSelected, setIsNotSelected] = useState(false);
 
   const databases = {};
 
@@ -50,7 +51,7 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
 
   function handleNextClick() {
     if (!relationData.primaryFieldName || !relationData.foreignFieldName) {
-      alert("Please choose fields to procceed");
+      setIsNotSelected(true);
 
       return;
     }
@@ -113,6 +114,9 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
         </p>
         <p>{`based on the match between the ${relationData.primaryFieldName} field and the ${relationData.foreignFieldName} field`}</p>
       </Message>
+      {isNotSelected && (
+        <p className="mt-2 text-red text-sm">Please choose fields to proceed</p>
+      )}
       <div className="flex justify-between items-center w-full">
         <Button
           className="w-20 h-8 mt-5 rounded-md bg-dark-grey text-white hover:bg-grey"

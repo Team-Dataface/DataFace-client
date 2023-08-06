@@ -38,10 +38,17 @@ function CreateDBModal({
       fieldType: "Text",
     },
   ]);
+  const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
+  const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
+  const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
 
   function updateFieldName(index, event) {
     const newArr = [...fields];
     newArr[index].fieldName = event.target.value;
+
+    setIsDBNameEmpty(false);
+    setIsFieldNameEmpty(false);
+    setIsFieldNameDuplicate(false);
 
     setFields(newArr);
   }
@@ -75,34 +82,7 @@ function CreateDBModal({
     setFields(newArr);
   }
 
-  async function handleClickSave() {
-    const names = [];
-
-    if (!dbName) {
-      alert("Database's name cannot be empty");
-    }
-
-    fields.forEach(element => {
-      names.push(element.fieldName);
-
-      if (!element.fieldName) {
-        alert("Field's name cannot be empty");
-      }
-    });
-
-    const fieldsSet = new Set(names);
-
-    if (fields.length !== fieldsSet.size) {
-      alert("Field's name cannot be same");
-
-      return null;
-    }
-
-    const newDatabase = {
-      dbName,
-      fields,
-    };
-
+  async function fetchDatabase(newDatabase) {
     const response = await fetchData(
       "POST",
       `/users/${userId}/databases`,
@@ -112,25 +92,69 @@ function CreateDBModal({
     return response;
   }
 
-  const { mutate: fetchDatabaseSave, isLoading } = useMutation(
-    handleClickSave,
-    {
-      onSuccess: result => {
-        setCurrentDBId(result.data.newDatabase._id);
-        setCurrentDBName(result.data.newDatabase.name);
-        setIsListView(true);
+  const { mutate: fetchDatabaseSave, isLoading } = useMutation(fetchDatabase, {
+    onSuccess: result => {
+      setCurrentDBId(result.data.newDatabase._id);
+      setCurrentDBName(result.data.newDatabase.name);
+      setIsListView(true);
 
-        queryClient.refetchQueries(["userDbList"]);
+      queryClient.refetchQueries(["userDbList"]);
 
-        navigate("/dashboard/listview");
+      navigate("/dashboard/listview");
 
-        closeModal();
-      },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
+      closeModal();
     },
-  );
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
+
+  function handleClickSave() {
+    const names = [];
+    let allNamesFilled = true;
+
+    if (!dbName) {
+      setIsDBNameEmpty(true);
+      allNamesFilled = false;
+
+      return;
+    }
+
+    fields.forEach(element => {
+      if (!element.fieldName) {
+        setIsFieldNameEmpty(true);
+
+        allNamesFilled = false;
+      }
+
+      names.push(element.fieldName);
+    });
+
+    if (allNamesFilled) {
+      const fieldsSet = new Set(names);
+
+      if (fields.length !== fieldsSet.size) {
+        setIsFieldNameDuplicate(true);
+
+        return;
+      }
+
+      const newDatabase = {
+        dbName,
+        fields,
+      };
+
+      fetchDatabaseSave(newDatabase);
+    }
+  }
+
+  function handleOnDBNameChange(event) {
+    setIsDBNameEmpty(false);
+    setIsFieldNameEmpty(false);
+    setIsFieldNameDuplicate(false);
+
+    setdbName(event.target.value);
+  }
 
   if (isLoading) {
     return <Loading />;
@@ -150,15 +174,28 @@ function CreateDBModal({
               <input
                 className="flex w-full h-7 rounded-lg text-center"
                 maxLength={CONSTANT.MAX_DATABASE_NAME_LENGTH}
-                onChange={event => setdbName(event.target.value)}
+                onChange={event => handleOnDBNameChange(event)}
               />
             </InputWrapper>
+            {isDBNameEmpty && (
+              <p className="text-red text-sm">
+                {`Database's name cannot be empty.`}
+              </p>
+            )}
             <CreateDBInputList
               fields={fields}
               updateFieldName={updateFieldName}
               updateFieldType={updateFieldType}
               handleClickDeleteField={handleClickDeleteField}
             />
+            {isFieldNameEmpty && (
+              <p className="text-red text-sm">{`Field's name cannot be empty.`}</p>
+            )}
+            {isFieldNameDuplicate && (
+              <p className="text-red text-sm">
+                {`Field's name cannot be same.`}
+              </p>
+            )}
             <InputWrapper>
               <Button
                 className="flex justify-center items-center h-7 p-2"
@@ -171,7 +208,7 @@ function CreateDBModal({
         </Content>
         <Button
           className="w-20 h-8 mt-5 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-          onClick={fetchDatabaseSave}
+          onClick={handleClickSave}
         >
           Submit
         </Button>
