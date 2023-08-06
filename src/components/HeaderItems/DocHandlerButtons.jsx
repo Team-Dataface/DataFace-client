@@ -24,6 +24,7 @@ function DocHandlerButtons({
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
   const [documentsNum, setDocumentsNum] = useState(0);
+  const [isLastDocument, setIsLastDocument] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -49,6 +50,14 @@ function DocHandlerButtons({
         currentDocIndex,
       ]);
     }
+  }
+
+  function clickHandleDelete() {
+    if (documentsIds.length === 1) {
+      setIsLastDocument(true);
+    }
+
+    setShowDeleteDocumentModal(true);
   }
 
   async function getDocumentsList() {
@@ -120,7 +129,7 @@ function DocHandlerButtons({
       <Button
         className={`flex justify-center items-center w-8 h-8 rounded-md
         ${isEditMode ? "bg-dark-grey hover:none" : "bg-white hover:bg-yellow"}`}
-        onClick={() => setShowDeleteDocumentModal(true)}
+        onClick={clickHandleDelete}
         disabled={isEditMode}
       >
         <img src="/assets/minus_icon.svg" alt="minus icon" />
@@ -141,6 +150,8 @@ function DocHandlerButtons({
           currentDocIndex={currentDocIndex}
           documentsIds={documentsIds}
           setCurrentDocIndex={setCurrentDocIndex}
+          isLastDocument={isLastDocument}
+          setIsLastDocument={setIsLastDocument}
         />
       )}
     </div>
