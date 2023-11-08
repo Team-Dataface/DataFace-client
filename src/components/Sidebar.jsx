@@ -107,7 +107,7 @@ function Sidebar({
         <div
           key={element._id}
           className={`
-            flex justify-between items-center w-ful
+            flex justify-between items-center w-full
             ${isActive(element._id) && !isEditMode && "bg-yellow"}
             ${!isEditMode && "hover:bg-yellow"}
             `}

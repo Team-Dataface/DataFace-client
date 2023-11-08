@@ -192,56 +192,53 @@ function DetailView({
   }
 
   return (
-    <div className="flex w-full bg-grey">
-      <div
-        className={`flex w-full m-2 p-5 bg-white drop-shadow-md ${
-          isEditMode ? "ring-4 ring-blue" : null
+    <div
+      className={`flex w-[1150px] h-[610px] p-3 bg-white drop-shadow-md
+        ${isEditMode ? "ring-4 ring-blue" : null}
+    `}
+      onMouseMove={event => {
+        if (isEditMode && isDragging && draggedElementIndex !== null) {
+          handleMouseFieldMove(event);
         }
-      `}
-        onMouseMove={event => {
-          if (isEditMode && isDragging && draggedElementIndex !== null) {
-            handleMouseFieldMove(event);
-          }
-          if (isEditMode && isDragging && draggedPortalIndex !== null) {
-            handleMousePortalMove(event);
-          }
-        }}
-      >
-        {relationshipsData &&
-          relationshipsData.map((relationship, index) => {
-            return (
-              <Portal
-                index={index}
-                key={relationship._id}
-                relationship={relationship}
-                setRelationshipsData={setRelationshipsData}
-                isEditMode={isEditMode}
-                setIsEditMode={setIsEditMode}
-                isDragging={isDragging}
-                startDraggingPortal={startDraggingPortal}
-                endDraggingPortal={endDraggingPortal}
-                handleClickDelete={fetchDeleteRelationship}
-                docData={docData}
-                currentDocIndex={currentDocIndex}
-                primaryField={primaryField}
-                relationshipsData={relationshipsData}
-              />
-            );
-          })}
-        <div className="flex flex-col absolute">
-          {docData[currentDocIndex] && (
-            <FieldList
-              document={docData[currentDocIndex]}
-              isDragging={isDragging}
+        if (isEditMode && isDragging && draggedPortalIndex !== null) {
+          handleMousePortalMove(event);
+        }
+      }}
+    >
+      {relationshipsData &&
+        relationshipsData.map((relationship, index) => {
+          return (
+            <Portal
+              index={index}
+              key={relationship._id}
+              relationship={relationship}
+              setRelationshipsData={setRelationshipsData}
               isEditMode={isEditMode}
-              updateFieldValue={updateFieldValue}
-              updateFieldRows={updateFieldRows}
               setIsEditMode={setIsEditMode}
-              startDraggingField={startDraggingField}
-              endDraggingField={endDraggingField}
+              isDragging={isDragging}
+              startDraggingPortal={startDraggingPortal}
+              endDraggingPortal={endDraggingPortal}
+              handleClickDelete={fetchDeleteRelationship}
+              docData={docData}
+              currentDocIndex={currentDocIndex}
+              primaryField={primaryField}
+              relationshipsData={relationshipsData}
             />
-          )}
-        </div>
+          );
+        })}
+      <div className="flex flex-col absolute">
+        {docData[currentDocIndex] && (
+          <FieldList
+            document={docData[currentDocIndex]}
+            isDragging={isDragging}
+            isEditMode={isEditMode}
+            updateFieldValue={updateFieldValue}
+            updateFieldRows={updateFieldRows}
+            setIsEditMode={setIsEditMode}
+            startDraggingField={startDraggingField}
+            endDraggingField={endDraggingField}
+          />
+        )}
       </div>
     </div>
   );

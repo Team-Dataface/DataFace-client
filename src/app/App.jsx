@@ -80,7 +80,7 @@ function App() {
                 setIsListView={setIsListView}
               />
             )}
-            <div className="flex flex-1">
+            <div className="flex flex-1 overflow-y-auto">
               {user && (
                 <Sidebar
                   isEditMode={isEditMode}

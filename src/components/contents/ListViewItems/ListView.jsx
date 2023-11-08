@@ -89,25 +89,23 @@ function ListView({
   }
 
   return (
-    <div className="flex bg-grey w-full h-full">
-      <div
-        className={`relative flex bg-white w-full m-2 p-5 drop-shadow-md
+    <div
+      className={`relative flex w-full h-[calc(100vh-145px)] p-3 bg-white drop-shadow-md overflow-y-auto
       ${isEditMode && "ring-4 ring-blue"}`}
-      >
-        <table className="border-collapse w-full max-h-20 overflow-y-auto">
-          <TableHead fields={data.documents[0].fields} />
-          <TableBody
-            documents={data.documents}
-            currentDocIndex={currentDocIndex}
-            setCurrentDocIndex={setCurrentDocIndex}
-            changedDoc={changedDoc}
-            setChangedDoc={setChangedDoc}
-            setIsOnSave={setIsOnSave}
-            setIsEditMode={setIsEditMode}
-            isEditMode={isEditMode}
-          />
-        </table>
-      </div>
+    >
+      <table className="border-collapse w-full max-h-20 overflow-y-auto">
+        <TableHead fields={data.documents[0].fields} />
+        <TableBody
+          documents={data.documents}
+          currentDocIndex={currentDocIndex}
+          setCurrentDocIndex={setCurrentDocIndex}
+          changedDoc={changedDoc}
+          setChangedDoc={setChangedDoc}
+          setIsOnSave={setIsOnSave}
+          setIsEditMode={setIsEditMode}
+          isEditMode={isEditMode}
+        />
+      </table>
     </div>
   );
 }
