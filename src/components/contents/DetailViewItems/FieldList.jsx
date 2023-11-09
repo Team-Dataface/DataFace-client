@@ -16,7 +16,7 @@ function FieldList({
       <div
         key={element.fieldName}
         className={`absolute w-[350px]
-          ${isEditMode && draggingElement && "drop-shadow-md"}
+          ${isEditMode && draggingElement && "drop-shadow-md ring-2 opacity-80"}
         `}
         style={{
           top: `${element.yCoordinate}px`,
@@ -44,7 +44,7 @@ function FieldList({
           {element.fieldType === "Text" ? (
             <div className="flex flex-col w-full">
               <textarea
-                className={`flex w-full mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
+                className={`flex w-full mr-3 ring-2 rounded-md ring-light-grey text-center resize-none focus:outline-none peer ${
                   isEditMode &&
                   !draggingElement &&
                   "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
@@ -55,9 +55,14 @@ function FieldList({
                 value={element.fieldValue}
                 readOnly={!isEditMode}
               />
-              {isEditMode && (
-                <FieldFooter index={index} updateFieldRows={updateFieldRows} />
-              )}
+              <div className="hidden peer-hover:flex hover:flex">
+                {isEditMode && !draggingElement && (
+                  <FieldFooter
+                    index={index}
+                    updateFieldRows={updateFieldRows}
+                  />
+                )}
+              </div>
             </div>
           ) : (
             <input

@@ -72,7 +72,9 @@ function Portal({
 
   return (
     <div
-      className={`absolute w-auto m-5 ${isEditMode && "hover:cursor-move"}`}
+      className={`absolute w-auto m-5 group ${
+        isEditMode && "hover:cursor-move"
+      }`}
       style={{
         top: `${relationship.yCoordinate}px`,
         left: `${relationship.xCoordinate}px`,
@@ -110,13 +112,15 @@ function Portal({
           </Button>
         )}
       </div>
-      {isEditMode && (
-        <PortalFooter
-          relationshipsData={relationshipsData}
-          setRelationshipsData={setRelationshipsData}
-          index={index}
-        />
-      )}
+      <div className="hidden group-hover:flex hover:flex">
+        {isEditMode && (
+          <PortalFooter
+            relationshipsData={relationshipsData}
+            setRelationshipsData={setRelationshipsData}
+            index={index}
+          />
+        )}
+      </div>
     </div>
   );
 }
