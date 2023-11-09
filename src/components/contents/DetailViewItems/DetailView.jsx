@@ -1,17 +1,17 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
-import FieldList from "./FieldList";
 import Loading from "../../shared/Loading";
-import Portal from "./Portal";
+import Elements from "./Elements";
 
 import fetchData from "../../../utils/axios";
-import movePortal from "../../../utils/movePortal";
-import moveFields from "../../../utils/moveFields";
 import useLoading from "../../../utils/useLoading";
+import moveField from "../../../utils/moveField";
+import movePortal from "../../../utils/movePortal";
+import CONSTANT from "../../../constants/constant";
 
 function DetailView({
   isEditMode,
@@ -23,16 +23,23 @@ function DetailView({
   relationshipsData,
   setRelationshipsData,
 }) {
+  const canvasRef = useRef(null);
+  const canvasElement = canvasRef.current;
+  let canvasRect = null;
+
   const [docData, setDocData] = useState([]);
-  const [isDragging, setIsDragging] = useState(false);
-  const [draggedElementIndex, setDraggedElementIndex] = useState(null);
-  const [draggedPortalIndex, setDraggedPortalIndex] = useState(null);
   const [primaryField, setPrimaryField] = useState(null);
+  const [draggingElement, setDraggingElement] = useState(null);
+  const [elementScale, setElementScale] = useState([]);
 
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
+
+  if (canvasElement) {
+    canvasRect = canvasElement.getBoundingClientRect();
+  }
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -130,16 +137,6 @@ function DetailView({
     setIsOnSave(false);
   }
 
-  function startDraggingField(index) {
-    setIsDragging(true);
-    setDraggedElementIndex(index);
-  }
-
-  function endDraggingField() {
-    setIsDragging(false);
-    setDraggedElementIndex(null);
-  }
-
   function updateFieldValue(index, event) {
     const newArr = [...docData];
 
@@ -156,90 +153,65 @@ function DetailView({
     setDocData(newArr);
   }
 
-  function startDraggingPortal(index) {
-    setIsDragging(true);
-    setDraggedPortalIndex(index);
+  function handleMouseUp() {
+    setDraggingElement(null);
   }
 
-  function endDraggingPortal() {
-    setIsDragging(false);
-    setDraggedPortalIndex(null);
-  }
+  function handleMouseMove(event) {
+    if (draggingElement.includes("field")) {
+      moveField(
+        canvasRect,
+        event,
+        docData,
+        setDocData,
+        currentDocIndex,
+        draggingElement,
+        elementScale,
+      );
+    }
 
-  function handleMouseFieldMove(event) {
-    moveFields(
-      event,
-      isEditMode,
-      isDragging,
-      setIsDragging,
-      docData,
-      setDocData,
-      currentDocIndex,
-      draggedElementIndex,
-    );
-  }
-
-  function handleMousePortalMove(event) {
-    movePortal(
-      event,
-      isEditMode,
-      isDragging,
-      setIsDragging,
-      relationshipsData,
-      setRelationshipsData,
-      draggedPortalIndex,
-    );
+    if (draggingElement.includes("portal")) {
+      movePortal(
+        canvasRect,
+        event,
+        relationshipsData,
+        setRelationshipsData,
+        draggingElement,
+        elementScale,
+      );
+    }
   }
 
   return (
     <div
-      className={`flex w-[1150px] h-[610px] p-3 bg-white drop-shadow-md
+      className={`flex p-3 bg-white drop-shadow-md
         ${isEditMode ? "ring-4 ring-blue" : null}
     `}
-      onMouseMove={event => {
-        if (isEditMode && isDragging && draggedElementIndex !== null) {
-          handleMouseFieldMove(event);
-        }
-        if (isEditMode && isDragging && draggedPortalIndex !== null) {
-          handleMousePortalMove(event);
-        }
+      style={{
+        width: `${CONSTANT.CANVAS_W}px`,
+        height: `${CONSTANT.CANVAS_H}px`,
       }}
+      role="presentation"
+      onMouseMove={isEditMode && draggingElement ? handleMouseMove : null}
+      onMouseUp={handleMouseUp}
+      ref={canvasRef}
     >
-      {relationshipsData &&
-        relationshipsData.map((relationship, index) => {
-          return (
-            <Portal
-              index={index}
-              key={relationship._id}
-              relationship={relationship}
-              setRelationshipsData={setRelationshipsData}
-              isEditMode={isEditMode}
-              setIsEditMode={setIsEditMode}
-              isDragging={isDragging}
-              startDraggingPortal={startDraggingPortal}
-              endDraggingPortal={endDraggingPortal}
-              handleClickDelete={fetchDeleteRelationship}
-              docData={docData}
-              currentDocIndex={currentDocIndex}
-              primaryField={primaryField}
-              relationshipsData={relationshipsData}
-            />
-          );
-        })}
-      <div className="flex flex-col absolute">
-        {docData[currentDocIndex] && (
-          <FieldList
-            document={docData[currentDocIndex]}
-            isDragging={isDragging}
-            isEditMode={isEditMode}
-            updateFieldValue={updateFieldValue}
-            updateFieldRows={updateFieldRows}
-            setIsEditMode={setIsEditMode}
-            startDraggingField={startDraggingField}
-            endDraggingField={endDraggingField}
-          />
-        )}
-      </div>
+      <Elements
+        handleMouseUp={handleMouseUp}
+        draggingElement={draggingElement}
+        setDraggingElement={setDraggingElement}
+        relationshipsData={relationshipsData}
+        setRelationshipsData={setRelationshipsData}
+        isEditMode={isEditMode}
+        setIsEditMode={setIsEditMode}
+        fetchDeleteRelationship={fetchDeleteRelationship}
+        docData={docData}
+        currentDocIndex={currentDocIndex}
+        primaryField={primaryField}
+        updateFieldValue={updateFieldValue}
+        updateFieldRows={updateFieldRows}
+        setElementScale={setElementScale}
+      />
     </div>
   );
 }

@@ -14,7 +14,7 @@ function PortalFooter({ relationshipsData, setRelationshipsData, index }) {
       <div className="flex">
         <Button
           className="flex items-center w-auto h-4 mr-1 p-2 bg-white text-xs"
-          onClick={() => handleClickSize(80)}
+          onClick={() => handleClickSize(83)}
         >
           small
         </Button>
