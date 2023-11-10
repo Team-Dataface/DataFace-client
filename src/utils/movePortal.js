@@ -12,94 +12,68 @@ function movePortal(
   const canvasY = canvasRect.top;
   const cursorX = event.clientX;
   const cursorY = event.clientY;
-  const currentXBasedOnCanvasArea = cursorX - canvasX - 50;
+  const currentXBasedOnCanvasArea = cursorX - canvasX - 30;
   const currentYBasedOnCanvasArea = cursorY - canvasY - 30;
   const draggedPortalIndex = Number(draggingElement.split("-")[1]);
+
   const elementWidth = elementScale[0];
-  const elementHeight = elementScale[1];
+  const elementHeight = elementScale[1] + 10;
 
   const newArr = [...relationshipsData];
 
-  // 좌측상단꼭지점
-  if (currentYBasedOnCanvasArea < 0 && currentXBasedOnCanvasArea < 0) {
-    newArr[draggedPortalIndex].xCoordinate = 0;
-    newArr[draggedPortalIndex].yCoordinate = 0;
+  const isAboveCanvas = currentYBasedOnCanvasArea < 0;
+  const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
+  const isRightOfCanvas =
+    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - elementWidth;
+  const isBelowCanvas =
+    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
+
+  function setCoordinates(x, y) {
+    newArr[draggedPortalIndex].xCoordinate = x;
+    newArr[draggedPortalIndex].yCoordinate = y;
     setRelationshipsData(newArr);
+  }
+
+  if (isAboveCanvas && isLeftOfCanvas) {
+    setCoordinates(0, 0);
     return;
   }
 
-  // 우측상단꼭지점
-  if (
-    currentYBasedOnCanvasArea < 0 &&
-    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - elementWidth
-  ) {
-    newArr[draggedPortalIndex].xCoordinate = CONSTANT.CANVAS_W - elementWidth;
-    newArr[draggedPortalIndex].yCoordinate = 0;
-    setRelationshipsData(newArr);
+  if (isAboveCanvas && isRightOfCanvas) {
+    setCoordinates(CONSTANT.CANVAS_W - elementWidth, 0);
     return;
   }
 
-  // 좌측하단꼭지점
-  if (
-    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40 &&
-    currentXBasedOnCanvasArea < 0
-  ) {
-    newArr[draggedPortalIndex].xCoordinate = 0;
-    newArr[draggedPortalIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setRelationshipsData(newArr);
+  if (isBelowCanvas && isLeftOfCanvas) {
+    setCoordinates(0, CONSTANT.CANVAS_H - elementHeight);
     return;
   }
 
-  // 우측하단꼭지점
-  if (
-    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40 &&
-    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - elementWidth
-  ) {
-    newArr[draggedPortalIndex].xCoordinate = CONSTANT.CANVAS_W - elementWidth;
-    newArr[draggedPortalIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setRelationshipsData(newArr);
+  if (isBelowCanvas && isRightOfCanvas) {
+    setCoordinates(
+      CONSTANT.CANVAS_W - elementWidth,
+      CONSTANT.CANVAS_H - elementHeight,
+    );
+
     return;
   }
 
-  // top 제한
-  if (currentYBasedOnCanvasArea < 0) {
-    newArr[draggedPortalIndex].xCoordinate = currentXBasedOnCanvasArea;
-    newArr[draggedPortalIndex].yCoordinate = 0;
-    setRelationshipsData(newArr);
+  if (isAboveCanvas || isLeftOfCanvas || isRightOfCanvas || isBelowCanvas) {
+    setCoordinates(
+      Math.max(
+        0,
+        Math.min(currentXBasedOnCanvasArea, CONSTANT.CANVAS_W - elementWidth),
+      ),
+      Math.max(
+        0,
+        Math.min(currentYBasedOnCanvasArea, CONSTANT.CANVAS_H - elementHeight),
+      ),
+    );
+
     return;
   }
 
-  // left 제한
-  if (currentXBasedOnCanvasArea < 0) {
-    newArr[draggedPortalIndex].xCoordinate = 0;
-    newArr[draggedPortalIndex].yCoordinate = currentYBasedOnCanvasArea;
-    setRelationshipsData(newArr);
-    return;
-  }
-
-  // right 제한
-  if (currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - elementWidth) {
-    newArr[draggedPortalIndex].xCoordinate = CONSTANT.CANVAS_W - elementWidth;
-    newArr[draggedPortalIndex].yCoordinate = currentYBasedOnCanvasArea;
-    setRelationshipsData(newArr);
-    return;
-  }
-
-  // bottom 제한
-  if (currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40) {
-    newArr[draggedPortalIndex].xCoordinate = currentXBasedOnCanvasArea;
-    newArr[draggedPortalIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setRelationshipsData(newArr);
-    return;
-  }
-
-  // 중앙 자유이동
-  newArr[draggedPortalIndex].xCoordinate = currentXBasedOnCanvasArea;
-  newArr[draggedPortalIndex].yCoordinate = currentYBasedOnCanvasArea;
-  setRelationshipsData(newArr);
+  setCoordinates(currentXBasedOnCanvasArea, currentYBasedOnCanvasArea);
 }
 
 export default movePortal;

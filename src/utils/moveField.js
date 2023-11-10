@@ -16,99 +16,63 @@ function moveField(
   const currentXBasedOnCanvasArea = cursorX - canvasX - 70;
   const currentYBasedOnCanvasArea = cursorY - canvasY - 30;
   const draggedElementIndex = Number(draggingElement.split("-")[1]);
-  const elementHeight = elementScale[1];
+
+  const elementWidth = 370;
+  const elementHeight = elementScale[1] + 40;
 
   const newArr = [...docData];
 
-  // 좌측상단꼭지점
-  if (currentYBasedOnCanvasArea < 0 && currentXBasedOnCanvasArea < 0) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 0;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
+  const isAboveCanvas = currentYBasedOnCanvasArea < 0;
+  const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
+  const isRightOfCanvas =
+    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - elementWidth;
+  const isBelowCanvas =
+    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
+
+  function setCoordinates(x, y) {
+    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = x;
+    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = y;
     setDocData(newArr);
+  }
+
+  if (isAboveCanvas && isLeftOfCanvas) {
+    setCoordinates(0, 0);
     return;
   }
 
-  // 우측상단꼭지점
-  if (
-    currentYBasedOnCanvasArea < 0 &&
-    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - 370
-  ) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-      CONSTANT.CANVAS_W - 370;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
-    setDocData(newArr);
+  if (isAboveCanvas && isRightOfCanvas) {
+    setCoordinates(CONSTANT.CANVAS_W - elementWidth, 0);
     return;
   }
 
-  // 좌측하단꼭지점
-  if (
-    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40 &&
-    currentXBasedOnCanvasArea < 0
-  ) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 0;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setDocData(newArr);
+  if (isBelowCanvas && isLeftOfCanvas) {
+    setCoordinates(0, CONSTANT.CANVAS_H - elementHeight);
     return;
   }
 
-  // 우측하단꼭지점
-  if (
-    currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40 &&
-    currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - 370
-  ) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-      CONSTANT.CANVAS_W - 370;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setDocData(newArr);
+  if (isBelowCanvas && isRightOfCanvas) {
+    setCoordinates(
+      CONSTANT.CANVAS_W - elementWidth,
+      CONSTANT.CANVAS_H - elementHeight,
+    );
     return;
   }
 
-  // top 제한
-  if (currentYBasedOnCanvasArea < 0) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-      currentXBasedOnCanvasArea;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = 0;
-    setDocData(newArr);
+  if (isAboveCanvas || isLeftOfCanvas || isRightOfCanvas || isBelowCanvas) {
+    setCoordinates(
+      Math.max(
+        0,
+        Math.min(currentXBasedOnCanvasArea, CONSTANT.CANVAS_W - elementWidth),
+      ),
+      Math.max(
+        0,
+        Math.min(currentYBasedOnCanvasArea, CONSTANT.CANVAS_H - elementHeight),
+      ),
+    );
     return;
   }
 
-  // left 제한
-  if (currentXBasedOnCanvasArea < 0) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = 0;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-      currentYBasedOnCanvasArea;
-    setDocData(newArr);
-    return;
-  }
-
-  // right 제한
-  if (currentXBasedOnCanvasArea > CONSTANT.CANVAS_W - 370) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-      CONSTANT.CANVAS_W - 370;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-      currentYBasedOnCanvasArea;
-    setDocData(newArr);
-    return;
-  }
-
-  // bottom 제한
-  if (currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight - 40) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-      currentXBasedOnCanvasArea;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-      CONSTANT.CANVAS_H - elementHeight - 40;
-    setDocData(newArr);
-    return;
-  }
-
-  // 중앙 자유이동
-  newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate =
-    currentXBasedOnCanvasArea;
-  newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate =
-    currentYBasedOnCanvasArea;
-  setDocData(newArr);
+  setCoordinates(currentXBasedOnCanvasArea, currentYBasedOnCanvasArea);
 }
 
 export default moveField;
