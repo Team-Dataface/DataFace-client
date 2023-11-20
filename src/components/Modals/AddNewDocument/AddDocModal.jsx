@@ -33,19 +33,19 @@ function AddDocumentModal({
   }
 
   function updateFieldValue(index, event) {
-    const newArr = [...fields];
+    const newFields = [...fields];
 
-    newArr[index].fieldValue = event.target.value;
+    newFields[index].fieldValue = event.target.value;
 
-    setFields(newArr);
+    setFields(newFields);
     adjustTextareaHeight(event);
   }
 
   function addNewDocumentId(newId) {
-    const newArr = [...documentsIds];
+    const newFields = [...documentsIds];
 
-    newArr.push(newId);
-    setDocumentsIds(newArr);
+    newFields.push(newId);
+    setDocumentsIds(newFields);
   }
 
   async function handleClickSave() {

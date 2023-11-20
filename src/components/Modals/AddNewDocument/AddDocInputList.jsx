@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
+import getTodaysDate from "../../../utils/getTodaysDate";
 
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
@@ -57,6 +58,16 @@ function AddDocInputList({ updateFieldValue, setFields }) {
               className="flex w-full h-7 rounded-md text-center"
               type={element.fieldType}
               onChange={event => updateFieldValue(index, event)}
+              defaultValue={
+                element.fieldType === "Date modified" ||
+                element.fieldType === "Date created"
+                  ? getTodaysDate()
+                  : ""
+              }
+              disabled={
+                element.fieldType === "Date modified" ||
+                element.fieldType === "Date created"
+              }
             />
           )}
         </InputWrapper>

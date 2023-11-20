@@ -20,7 +20,7 @@ function moveField(
   const elementWidth = 370;
   const elementHeight = elementScale[1] + 40;
 
-  const newArr = [...docData];
+  const newDocData = [...docData];
 
   const isAboveCanvas = currentYBasedOnCanvasArea < 0;
   const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
@@ -30,9 +30,9 @@ function moveField(
     currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
 
   function setCoordinates(x, y) {
-    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = x;
-    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = y;
-    setDocData(newArr);
+    newDocData[currentDocIndex].fields[draggedElementIndex].xCoordinate = x;
+    newDocData[currentDocIndex].fields[draggedElementIndex].yCoordinate = y;
+    setDocData(newDocData);
   }
 
   if (isAboveCanvas && isLeftOfCanvas) {
