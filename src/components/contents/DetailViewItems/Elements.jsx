@@ -10,8 +10,6 @@ function Elements({
   setDraggingElement,
   relationshipsData,
   setRelationshipsData,
-  isEditMode,
-  setIsEditMode,
   fetchDeleteRelationship,
   docData,
   primaryField,
@@ -32,8 +30,6 @@ function Elements({
               relationship={relationship}
               setRelationshipsData={setRelationshipsData}
               setDraggingElement={setDraggingElement}
-              isEditMode={isEditMode}
-              setIsEditMode={setIsEditMode}
               handleClickDelete={fetchDeleteRelationship}
               docData={docData}
               primaryField={primaryField}
@@ -48,10 +44,8 @@ function Elements({
             document={docData[currentDocIndex]}
             draggingElement={draggingElement}
             setDraggingElement={setDraggingElement}
-            isEditMode={isEditMode}
             updateFieldValue={updateFieldValue}
             updateFieldRows={updateFieldRows}
-            setIsEditMode={setIsEditMode}
             setElementScale={setElementScale}
           />
         )}

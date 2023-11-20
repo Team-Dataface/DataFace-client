@@ -3,17 +3,11 @@ import { useAtom } from "jotai";
 
 import getTodaysDate from "../../../utils/getTodaysDate";
 
-import { currentDocIndexAtom } from "../../../atoms/atoms";
+import { currentDocIndexAtom, isEditModeAtom } from "../../../atoms/atoms";
 
-function TableBody({
-  documents,
-  changedDoc,
-  setChangedDoc,
-  setIsOnSave,
-  setIsEditMode,
-  isEditMode,
-}) {
+function TableBody({ documents, changedDoc, setChangedDoc, setIsOnSave }) {
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
+  const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;

@@ -1,9 +1,12 @@
+import { useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 
+import { isEditModeAtom } from "../../atoms/atoms";
 import Button from "../shared/Button";
 
-function RelationshipButton({ isEditMode, isRelationship, setIsRelationship }) {
+function RelationshipButton({ isRelationship, setIsRelationship }) {
   const navigate = useNavigate();
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   function clickHandleRelationship() {
     setIsRelationship(true);

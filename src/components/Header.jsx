@@ -9,8 +9,6 @@ import SaveButton from "./HeaderItems/SaveButton";
 
 function Header({
   clickHandleLogout,
-  isEditMode,
-  setIsEditMode,
   documentsIds,
   setDocumentsIds,
   setIsOnSave,
@@ -34,7 +32,6 @@ function Header({
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
         {currentDBName && (
           <Toolbar
-            isEditMode={isEditMode}
             documentsIds={documentsIds}
             setDocumentsIds={setDocumentsIds}
             isRelationship={isRelationship}
@@ -43,8 +40,6 @@ function Header({
         )}
         {currentDBName && (
           <SaveButton
-            isEditMode={isEditMode}
-            setIsEditMode={setIsEditMode}
             setIsOnSave={setIsOnSave}
             isRelationship={isRelationship}
           />
@@ -56,8 +51,6 @@ function Header({
 
 Header.propTypes = {
   clickHandleLogout: PropTypes.func.isRequired,
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
 };
 
 export default Header;

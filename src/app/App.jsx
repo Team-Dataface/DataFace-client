@@ -21,7 +21,6 @@ import CONSTANT from "../constants/constant";
 function App() {
   const [user, setUser] = useState("");
   const [documentsIds, setDocumentsIds] = useState([]);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [isOnSave, setIsOnSave] = useState(false);
   const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
@@ -60,8 +59,6 @@ function App() {
           {user && (
             <Header
               clickHandleLogout={setUser}
-              isEditMode={isEditMode}
-              setIsEditMode={setIsEditMode}
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
@@ -72,7 +69,6 @@ function App() {
           <div className="flex flex-1 overflow-y-auto">
             {user && (
               <Sidebar
-                isEditMode={isEditMode}
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
                 isRelationship={isRelationship}
@@ -87,8 +83,6 @@ function App() {
                     path="listview"
                     element={
                       <ListView
-                        isEditMode={isEditMode}
-                        setIsEditMode={setIsEditMode}
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
@@ -99,8 +93,6 @@ function App() {
                     path="detailview"
                     element={
                       <DetailView
-                        isEditMode={isEditMode}
-                        setIsEditMode={setIsEditMode}
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}

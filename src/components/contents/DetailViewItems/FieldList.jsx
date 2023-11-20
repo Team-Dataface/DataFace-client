@@ -1,16 +1,20 @@
+import { useAtom } from "jotai";
+
+import { isEditModeAtom } from "../../../atoms/atoms";
+
 import FieldFooter from "./FieldFooter";
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 function FieldList({
   document,
-  isEditMode,
   updateFieldValue,
-  setIsEditMode,
   draggingElement,
   setDraggingElement,
   updateFieldRows,
   setElementScale,
 }) {
+  const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+
   return document.fields.map((element, index) => {
     return (
       <div

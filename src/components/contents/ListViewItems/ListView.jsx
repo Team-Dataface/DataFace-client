@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
+import { currentDBIdAtom, isEditModeAtom } from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
 
@@ -14,18 +14,14 @@ import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import Loading from "../../shared/Loading";
 
-function ListView({
-  isEditMode,
-  setIsEditMode,
-  setDocumentsIds,
-  isOnSave,
-  setIsOnSave,
-}) {
+function ListView({ setDocumentsIds, isOnSave, setIsOnSave }) {
   const queryClient = useQueryClient();
-  const { userId } = useContext(UserContext);
-  const currentDBId = useAtomValue(currentDBIdAtom);
 
   const [changedDoc, setChangedDoc] = useState([]);
+
+  const { userId } = useContext(UserContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -101,8 +97,6 @@ function ListView({
           changedDoc={changedDoc}
           setChangedDoc={setChangedDoc}
           setIsOnSave={setIsOnSave}
-          setIsEditMode={setIsEditMode}
-          isEditMode={isEditMode}
         />
       </table>
     </div>
@@ -110,8 +104,6 @@ function ListView({
 }
 
 ListView.propTypes = {
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
   setDocumentsIds: PropTypes.func.isRequired,
 };
 

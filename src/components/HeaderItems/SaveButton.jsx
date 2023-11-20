@@ -1,13 +1,12 @@
-import PropTypes from "prop-types";
+import { useAtom } from "jotai";
+
+import { isEditModeAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 
-function SaveButton({
-  isEditMode,
-  setIsEditMode,
-  setIsOnSave,
-  isRelationship,
-}) {
+function SaveButton({ setIsOnSave, isRelationship }) {
+  const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+
   return (
     <div
       className={`flex w-20 justify-center items-center
@@ -26,10 +25,5 @@ function SaveButton({
     </div>
   );
 }
-
-SaveButton.propTypes = {
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
-};
 
 export default SaveButton;

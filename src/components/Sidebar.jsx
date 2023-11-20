@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import fetchData from "../utils/axios";
 
@@ -8,6 +8,7 @@ import {
   currentDBIdAtom,
   currentDBNameAtom,
   currentDocIndexAtom,
+  isEditModeAtom,
 } from "../atoms/atoms";
 import UserContext from "../context/UserContext";
 
@@ -16,7 +17,6 @@ import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
 function Sidebar({
-  isEditMode,
   isInitial,
   setIsInitial,
   isRelationship,
@@ -29,6 +29,7 @@ function Sidebar({
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);

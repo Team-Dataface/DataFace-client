@@ -1,9 +1,10 @@
-function PortalTable({
-  isEditMode,
-  draggingElement,
-  relationship,
-  foreignDocuments,
-}) {
+import { useAtomValue } from "jotai";
+
+import { isEditModeAtom } from "../../../atoms/atoms";
+
+function PortalTable({ draggingElement, relationship, foreignDocuments }) {
+  const isEditMode = useAtomValue(isEditModeAtom);
+
   if (!foreignDocuments || foreignDocuments.length === 0) {
     return null;
   }

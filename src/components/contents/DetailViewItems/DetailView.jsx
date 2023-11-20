@@ -1,9 +1,12 @@
 import { useState, useContext, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
 import { useAtomValue } from "jotai";
 
-import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  isEditModeAtom,
+} from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Loading from "../../shared/Loading";
 import Elements from "./Elements";
@@ -16,8 +19,6 @@ import getTodaysDate from "../../../utils/getTodaysDate";
 import CONSTANT from "../../../constants/constant";
 
 function DetailView({
-  isEditMode,
-  setIsEditMode,
   setDocumentsIds,
   isOnSave,
   setIsOnSave,
@@ -38,6 +39,7 @@ function DetailView({
   const { userId } = useContext(UserContext);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();
@@ -216,8 +218,6 @@ function DetailView({
         setDraggingElement={setDraggingElement}
         relationshipsData={relationshipsData}
         setRelationshipsData={setRelationshipsData}
-        isEditMode={isEditMode}
-        setIsEditMode={setIsEditMode}
         fetchDeleteRelationship={fetchDeleteRelationship}
         docData={docData}
         primaryField={primaryField}
@@ -228,10 +228,5 @@ function DetailView({
     </div>
   );
 }
-
-DetailView.propTypes = {
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
-};
 
 export default DetailView;

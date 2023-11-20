@@ -4,18 +4,23 @@ import { useAtom, useAtomValue } from "jotai";
 
 import fetchData from "../../utils/axios";
 
-import { currentDBIdAtom, currentDocIndexAtom } from "../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  isEditModeAtom,
+} from "../../atoms/atoms";
 import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
-function DocHandlerButtons({ isEditMode, documentsIds, setDocumentsIds }) {
+function DocHandlerButtons({ documentsIds, setDocumentsIds }) {
   const { userId } = useContext(UserContext);
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
