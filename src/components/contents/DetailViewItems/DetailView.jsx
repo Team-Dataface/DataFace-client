@@ -1,11 +1,12 @@
 import { useState, useContext, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import {
   currentDBIdAtom,
   currentDocIndexAtom,
   isEditModeAtom,
+  isOnSaveAtom,
 } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Loading from "../../shared/Loading";
@@ -20,8 +21,6 @@ import CONSTANT from "../../../constants/constant";
 
 function DetailView({
   setDocumentsIds,
-  isOnSave,
-  setIsOnSave,
   relationshipsData,
   setRelationshipsData,
 }) {
@@ -37,6 +36,7 @@ function DetailView({
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
+  const [isOnSave, setIsOnSave] = useAtom(isOnSaveAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const isEditMode = useAtomValue(isEditModeAtom);

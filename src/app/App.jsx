@@ -21,7 +21,6 @@ import CONSTANT from "../constants/constant";
 function App() {
   const [user, setUser] = useState("");
   const [documentsIds, setDocumentsIds] = useState([]);
-  const [isOnSave, setIsOnSave] = useState(false);
   const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
   const [relationshipsData, setRelationshipsData] = useState(null);
@@ -61,7 +60,6 @@ function App() {
               clickHandleLogout={setUser}
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
-              setIsOnSave={setIsOnSave}
               isRelationship={isRelationship}
               setIsRelationship={setIsRelationship}
             />
@@ -81,21 +79,13 @@ function App() {
                 <Route path="/dashboard" element={<ContentsContainer />}>
                   <Route
                     path="listview"
-                    element={
-                      <ListView
-                        setDocumentsIds={setDocumentsIds}
-                        isOnSave={isOnSave}
-                        setIsOnSave={setIsOnSave}
-                      />
-                    }
+                    element={<ListView setDocumentsIds={setDocumentsIds} />}
                   />
                   <Route
                     path="detailview"
                     element={
                       <DetailView
                         setDocumentsIds={setDocumentsIds}
-                        isOnSave={isOnSave}
-                        setIsOnSave={setIsOnSave}
                         relationshipsData={relationshipsData}
                         setRelationshipsData={setRelationshipsData}
                       />

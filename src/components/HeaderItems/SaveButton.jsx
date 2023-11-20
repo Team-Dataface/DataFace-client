@@ -1,11 +1,12 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
-import { isEditModeAtom } from "../../atoms/atoms";
+import { isEditModeAtom, isOnSaveAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 
-function SaveButton({ setIsOnSave, isRelationship }) {
+function SaveButton({ isRelationship }) {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const setIsOnSave = useSetAtom(isOnSaveAtom);
 
   return (
     <div

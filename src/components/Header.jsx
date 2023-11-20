@@ -11,7 +11,6 @@ function Header({
   clickHandleLogout,
   documentsIds,
   setDocumentsIds,
-  setIsOnSave,
   isRelationship,
   setIsRelationship,
 }) {
@@ -38,12 +37,7 @@ function Header({
             setIsRelationship={setIsRelationship}
           />
         )}
-        {currentDBName && (
-          <SaveButton
-            setIsOnSave={setIsOnSave}
-            isRelationship={isRelationship}
-          />
-        )}
+        {currentDBName && <SaveButton isRelationship={isRelationship} />}
       </div>
     </div>
   );

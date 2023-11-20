@@ -1,13 +1,18 @@
 import { useEffect } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 import getTodaysDate from "../../../utils/getTodaysDate";
 
-import { currentDocIndexAtom, isEditModeAtom } from "../../../atoms/atoms";
+import {
+  currentDocIndexAtom,
+  isEditModeAtom,
+  isOnSaveAtom,
+} from "../../../atoms/atoms";
 
-function TableBody({ documents, changedDoc, setChangedDoc, setIsOnSave }) {
+function TableBody({ documents, changedDoc, setChangedDoc }) {
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const setIsOnSave = useSetAtom(isOnSaveAtom);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
