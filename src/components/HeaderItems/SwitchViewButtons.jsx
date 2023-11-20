@@ -1,9 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+
+import isListViewAtom from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 
-function SwitchViewButtons({ isListView, setIsListView, isEditMode }) {
+function SwitchViewButtons({ isEditMode }) {
   const navigate = useNavigate();
+
+  const [isListView, setIsListView] = useAtom(isListViewAtom);
 
   function switchToListView() {
     setIsListView(true);

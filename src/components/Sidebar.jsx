@@ -11,7 +11,6 @@ import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
 function Sidebar({
-  setIsListView,
   isEditMode,
   setCurrentDBId,
   isInitial,
@@ -173,7 +172,6 @@ function Sidebar({
           closeModal={() => setShowCreateDBModal(false)}
           setCurrentDBId={setCurrentDBId}
           setCurrentDBName={setCurrentDBName}
-          setIsListView={setIsListView}
         />
       )}
     </div>

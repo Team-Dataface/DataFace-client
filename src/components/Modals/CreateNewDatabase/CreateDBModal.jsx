@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetAtom } from "jotai";
 import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
+import isListViewAtom from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
@@ -20,12 +22,7 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({
-  setIsListView,
-  closeModal,
-  setCurrentDBId,
-  setCurrentDBName,
-}) {
+function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
@@ -41,6 +38,8 @@ function CreateDBModal({
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
   const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
+
+  const setIsListView = useSetAtom(isListViewAtom);
 
   function updateFieldName(index, event) {
     const newFields = [...fields];

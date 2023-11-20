@@ -5,8 +5,6 @@ import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
 function Header({
-  isListView,
-  setIsListView,
   clickHandleLogout,
   isEditMode,
   setIsEditMode,
@@ -41,8 +39,6 @@ function Header({
             setDocumentsIds={setDocumentsIds}
             isRelationship={isRelationship}
             setIsRelationship={setIsRelationship}
-            isListView={isListView}
-            setIsListView={setIsListView}
           />
         )}
         {currentDBName && (

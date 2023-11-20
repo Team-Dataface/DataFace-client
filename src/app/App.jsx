@@ -21,7 +21,6 @@ import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
-  const [isListView, setIsListView] = useState(true);
   const [currentDBId, setCurrentDBId] = useState("");
   const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
@@ -76,8 +75,6 @@ function App() {
                 currentDBName={currentDBName}
                 isRelationship={isRelationship}
                 setIsRelationship={setIsRelationship}
-                isListView={isListView}
-                setIsListView={setIsListView}
               />
             )}
             <div className="flex flex-1 overflow-y-auto">
@@ -90,7 +87,6 @@ function App() {
                   setCurrentDocIndex={setCurrentDocIndex}
                   setCurrentDBName={setCurrentDBName}
                   isRelationship={isRelationship}
-                  setIsListView={setIsListView}
                   currentDocIndex={currentDocIndex}
                   setRelationshipsData={setRelationshipsData}
                 />
@@ -136,8 +132,6 @@ function App() {
                         <NoDatabase
                           setCurrentDBId={setCurrentDBId}
                           setCurrentDBName={setCurrentDBName}
-                          isListView={isListView}
-                          setIsListView={setIsListView}
                         />
                       }
                     />
