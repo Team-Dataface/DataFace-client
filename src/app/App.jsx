@@ -22,7 +22,6 @@ function App() {
   const [user, setUser] = useState("");
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isInitial, setIsInitial] = useState(true);
-  const [relationshipsData, setRelationshipsData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -63,11 +62,7 @@ function App() {
           )}
           <div className="flex flex-1 overflow-y-auto">
             {user && (
-              <Sidebar
-                isInitial={isInitial}
-                setIsInitial={setIsInitial}
-                setRelationshipsData={setRelationshipsData}
-              />
+              <Sidebar isInitial={isInitial} setIsInitial={setIsInitial} />
             )}
             <div className="flex grow justify-center">
               <Routes>
@@ -79,13 +74,7 @@ function App() {
                   />
                   <Route
                     path="detailview"
-                    element={
-                      <DetailView
-                        setDocumentsIds={setDocumentsIds}
-                        relationshipsData={relationshipsData}
-                        setRelationshipsData={setRelationshipsData}
-                      />
-                    }
+                    element={<DetailView setDocumentsIds={setDocumentsIds} />}
                   />
                   <Route path="relationship" element={<Relationship />} />
                   <Route path="nodatabase" element={<NoDatabase />} />

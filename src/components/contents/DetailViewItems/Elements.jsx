@@ -1,6 +1,9 @@
 import { useAtomValue } from "jotai";
 
-import { currentDocIndexAtom } from "../../../atoms/atoms";
+import {
+  currentDocIndexAtom,
+  relationshipsDataAtom,
+} from "../../../atoms/atoms";
 
 import FieldList from "./FieldList";
 import Portal from "./Portal";
@@ -8,8 +11,6 @@ import Portal from "./Portal";
 function Elements({
   draggingElement,
   setDraggingElement,
-  relationshipsData,
-  setRelationshipsData,
   fetchDeleteRelationship,
   docData,
   primaryField,
@@ -18,6 +19,7 @@ function Elements({
   setElementScale,
 }) {
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   return (
     <>
@@ -28,12 +30,10 @@ function Elements({
               index={index}
               key={relationship._id}
               relationship={relationship}
-              setRelationshipsData={setRelationshipsData}
               setDraggingElement={setDraggingElement}
               handleClickDelete={fetchDeleteRelationship}
               docData={docData}
               primaryField={primaryField}
-              relationshipsData={relationshipsData}
               setElementScale={setElementScale}
             />
           );

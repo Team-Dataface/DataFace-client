@@ -7,6 +7,7 @@ import {
   currentDBIdAtom,
   currentDocIndexAtom,
   isEditModeAtom,
+  relationshipsDataAtom,
 } from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
@@ -20,19 +21,19 @@ import Button from "../../shared/Button";
 function Portal({
   index,
   relationship,
-  setRelationshipsData,
   draggingElement,
   setDraggingElement,
   handleClickDelete,
   docData,
   primaryField,
-  relationshipsData,
   setElementScale,
 }) {
   const { userId } = useContext(UserContext);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
@@ -117,13 +118,7 @@ function Portal({
         )}
       </div>
       <div className="hidden group-hover:flex hover:flex">
-        {isEditMode && (
-          <PortalFooter
-            relationshipsData={relationshipsData}
-            setRelationshipsData={setRelationshipsData}
-            index={index}
-          />
-        )}
+        {isEditMode && <PortalFooter index={index} />}
       </div>
     </div>
   );

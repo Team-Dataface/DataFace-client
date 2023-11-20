@@ -7,6 +7,7 @@ import {
   currentDocIndexAtom,
   isEditModeAtom,
   isOnSaveAtom,
+  relationshipsDataAtom,
 } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Loading from "../../shared/Loading";
@@ -19,11 +20,7 @@ import movePortal from "../../../utils/movePortal";
 import getTodaysDate from "../../../utils/getTodaysDate";
 import CONSTANT from "../../../constants/constant";
 
-function DetailView({
-  setDocumentsIds,
-  relationshipsData,
-  setRelationshipsData,
-}) {
+function DetailView({ setDocumentsIds }) {
   const canvasRef = useRef(null);
   const canvasElement = canvasRef.current;
   let canvasRect = null;
@@ -36,7 +33,12 @@ function DetailView({
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
+
   const [isOnSave, setIsOnSave] = useAtom(isOnSaveAtom);
+  const [relationshipsData, setRelationshipsData] = useAtom(
+    relationshipsDataAtom,
+  );
+
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
@@ -216,8 +218,6 @@ function DetailView({
         handleMouseUp={handleMouseUp}
         draggingElement={draggingElement}
         setDraggingElement={setDraggingElement}
-        relationshipsData={relationshipsData}
-        setRelationshipsData={setRelationshipsData}
         fetchDeleteRelationship={fetchDeleteRelationship}
         docData={docData}
         primaryField={primaryField}
