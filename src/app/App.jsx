@@ -20,7 +20,6 @@ import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
-  const [isInitial, setIsInitial] = useState(true);
 
   const navigate = useNavigate();
 
@@ -54,9 +53,7 @@ function App() {
         <div className="flex flex-col h-screen">
           {user && <Header clickHandleLogout={setUser} />}
           <div className="flex flex-1 overflow-y-auto">
-            {user && (
-              <Sidebar isInitial={isInitial} setIsInitial={setIsInitial} />
-            )}
+            {user && <Sidebar />}
             <div className="flex grow justify-center">
               <Routes>
                 <Route path="/login" element={<Login setUser={setUser} />} />

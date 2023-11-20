@@ -11,6 +11,7 @@ import {
   isEditModeAtom,
   isRelationshipAtom,
   relationshipsDataAtom,
+  isInitialAtom,
 } from "../atoms/atoms";
 import UserContext from "../context/UserContext";
 
@@ -18,12 +19,13 @@ import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
-function Sidebar({ isInitial, setIsInitial }) {
+function Sidebar() {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   const { userId, username } = useContext(UserContext);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
+  const [isInitial, setIsInitial] = useAtom(isInitialAtom);
 
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
