@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
@@ -18,20 +18,14 @@ function DeleteDocModal({
   currentDocIndex,
   documentsIds,
   setCurrentDocIndex,
+  isLastDocument,
+  setIsLastDocument,
 }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
 
   async function deleteDocument() {
-    if (documentsIds.length === 1) {
-      alert(
-        "Please ensure that the database contains at least one document before proceeding.",
-      );
-
-      return;
-    }
-
     await fetchData(
       "DELETE",
       `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
@@ -52,6 +46,11 @@ function DeleteDocModal({
     },
   );
 
+  function clickHandleCancel() {
+    closeModal();
+    setIsLastDocument(false);
+  }
+
   if (isLoading) {
     return <Loading />;
   }
@@ -61,22 +60,26 @@ function DeleteDocModal({
       <ContentWrapper>
         <Content>
           <Message>
-            Are you sure you want to permanently delete this document?
+            {!isLastDocument
+              ? "Are you sure you want to permanently delete this document?"
+              : "Please ensure that the database contains at least one document before proceeding"}
           </Message>
         </Content>
         <div className="flex justify-evenly items-center w-full">
           <Button
             className="w-20 h-8 rounded-md bg-black-bg text-white hover:bg-dark-grey"
-            onClick={closeModal}
+            onClick={clickHandleCancel}
           >
             Cancel
           </Button>
-          <Button
-            className="w-20 h-8 rounded-md bg-red text-white hover:bg-red-hover"
-            onClick={fetchDeleteDocument}
-          >
-            Delete
-          </Button>
+          {!isLastDocument && (
+            <Button
+              className="w-20 h-8 rounded-md bg-red text-white hover:bg-red-hover"
+              onClick={fetchDeleteDocument}
+            >
+              Delete
+            </Button>
+          )}
         </div>
       </ContentWrapper>
     </Modal>

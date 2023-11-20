@@ -19,6 +19,7 @@ function StepOne({
   setRelationData,
 }) {
   const [targetDatabases, setTargetDatabases] = useState([]);
+  const [isNotSelected, setIsNotSelected] = useState(false);
 
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -50,7 +51,7 @@ function StepOne({
 
   function handleNextClick() {
     if (!relationData.foreignDbId) {
-      alert("Please choose database to make relationship!");
+      setIsNotSelected(true);
 
       return;
     }
@@ -72,6 +73,11 @@ function StepOne({
           setRelationData={setRelationData}
         />
       </Content>
+      {isNotSelected && (
+        <p className="mt-2 text-red text-sm">
+          Please choose database to proceed
+        </p>
+      )}
       <div className="flex justify-end items-center w-full">
         <Button
           className="w-20 h-8 mt-5 rounded-md ring-2 ring-blue text-blue hover:bg-blue hover:text-white"

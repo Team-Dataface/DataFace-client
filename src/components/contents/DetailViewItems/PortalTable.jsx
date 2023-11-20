@@ -1,6 +1,6 @@
 function PortalTable({
   isEditMode,
-  isDragging,
+  draggingElement,
   relationship,
   foreignDocuments,
 }) {
@@ -14,7 +14,7 @@ function PortalTable({
         className={`border border-dark-grey
         ${
           isEditMode &&
-          isDragging &&
+          draggingElement &&
           "rounded-md drop-shadow-md cursor-move select-none"
         }
         `}

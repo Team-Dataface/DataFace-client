@@ -10,11 +10,11 @@ function PortalFooter({ relationshipsData, setRelationshipsData, index }) {
   }
 
   return (
-    <div className="flex justify-between w-auto h-auto p-1 bg-black-bg">
+    <div className="flex justify-between w-full h-auto p-1 bg-black-bg">
       <div className="flex">
         <Button
           className="flex items-center w-auto h-4 mr-1 p-2 bg-white text-xs"
-          onClick={() => handleClickSize(80)}
+          onClick={() => handleClickSize(83)}
         >
           small
         </Button>

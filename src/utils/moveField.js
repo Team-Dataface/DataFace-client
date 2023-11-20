@@ -1,10 +1,11 @@
 import CONSTANT from "../constants/constant";
 
-function movePortal(
+function moveField(
   canvasRect,
   event,
-  relationshipsData,
-  setRelationshipsData,
+  docData,
+  setDocData,
+  currentDocIndex,
   draggingElement,
   elementScale,
 ) {
@@ -12,14 +13,14 @@ function movePortal(
   const canvasY = canvasRect.top;
   const cursorX = event.clientX;
   const cursorY = event.clientY;
-  const currentXBasedOnCanvasArea = cursorX - canvasX - 30;
+  const currentXBasedOnCanvasArea = cursorX - canvasX - 70;
   const currentYBasedOnCanvasArea = cursorY - canvasY - 30;
-  const draggedPortalIndex = Number(draggingElement.split("-")[1]);
+  const draggedElementIndex = Number(draggingElement.split("-")[1]);
 
-  const elementWidth = elementScale[0];
-  const elementHeight = elementScale[1] + 10;
+  const elementWidth = 370;
+  const elementHeight = elementScale[1] + 40;
 
-  const newArr = [...relationshipsData];
+  const newArr = [...docData];
 
   const isAboveCanvas = currentYBasedOnCanvasArea < 0;
   const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
@@ -29,9 +30,9 @@ function movePortal(
     currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
 
   function setCoordinates(x, y) {
-    newArr[draggedPortalIndex].xCoordinate = x;
-    newArr[draggedPortalIndex].yCoordinate = y;
-    setRelationshipsData(newArr);
+    newArr[currentDocIndex].fields[draggedElementIndex].xCoordinate = x;
+    newArr[currentDocIndex].fields[draggedElementIndex].yCoordinate = y;
+    setDocData(newArr);
   }
 
   if (isAboveCanvas && isLeftOfCanvas) {
@@ -54,7 +55,6 @@ function movePortal(
       CONSTANT.CANVAS_W - elementWidth,
       CONSTANT.CANVAS_H - elementHeight,
     );
-
     return;
   }
 
@@ -69,11 +69,10 @@ function movePortal(
         Math.min(currentYBasedOnCanvasArea, CONSTANT.CANVAS_H - elementHeight),
       ),
     );
-
     return;
   }
 
   setCoordinates(currentXBasedOnCanvasArea, currentYBasedOnCanvasArea);
 }
 
-export default movePortal;
+export default moveField;

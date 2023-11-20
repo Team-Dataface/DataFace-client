@@ -99,7 +99,7 @@ function Sidebar({
       setRelationshipsData(null);
 
       queryClient.refetchQueries(["userDb"]);
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+      queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
     }
 
     return databases.map(element => {
@@ -107,7 +107,7 @@ function Sidebar({
         <div
           key={element._id}
           className={`
-            flex justify-between items-center w-ful
+            flex justify-between items-center w-full
             ${isActive(element._id) && !isEditMode && "bg-yellow"}
             ${!isEditMode && "hover:bg-yellow"}
             `}

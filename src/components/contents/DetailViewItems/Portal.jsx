@@ -15,9 +15,8 @@ function Portal({
   index,
   relationship,
   setRelationshipsData,
-  isDragging,
-  startDraggingPortal,
-  endDraggingPortal,
+  draggingElement,
+  setDraggingElement,
   isEditMode,
   setIsEditMode,
   handleClickDelete,
@@ -25,6 +24,7 @@ function Portal({
   currentDocIndex,
   primaryField,
   relationshipsData,
+  setElementScale,
 }) {
   const { userId } = useContext(UserContext);
   const currentDBId = useContext(CurrentDBIdContext);
@@ -72,16 +72,23 @@ function Portal({
 
   return (
     <div
-      className="absolute w-auto m-5"
+      className={`absolute w-auto m-5 group ${
+        isEditMode && "hover:cursor-move"
+      }`}
       style={{
         top: `${relationship.yCoordinate}px`,
         left: `${relationship.xCoordinate}px`,
       }}
-      onMouseDown={() => {
-        startDraggingPortal(index);
+      onMouseDown={event => {
+        setDraggingElement(`portal-${index}`);
+        setElementScale([
+          event.currentTarget.clientWidth,
+          event.currentTarget.clientHeight,
+        ]);
       }}
       onMouseUp={() => {
-        endDraggingPortal(index);
+        setDraggingElement(null);
+        setElementScale([]);
       }}
     >
       <div
@@ -92,7 +99,7 @@ function Portal({
         <PortalTable
           index={index}
           isEditMode={isEditMode}
-          isDragging={isDragging}
+          draggingElement={draggingElement}
           relationship={relationship}
           foreignDocuments={foreignDocuments.displayedDocuments}
         />
@@ -105,13 +112,15 @@ function Portal({
           </Button>
         )}
       </div>
-      {isEditMode && (
-        <PortalFooter
-          relationshipsData={relationshipsData}
-          setRelationshipsData={setRelationshipsData}
-          index={index}
-        />
-      )}
+      <div className="hidden group-hover:flex hover:flex">
+        {isEditMode && (
+          <PortalFooter
+            relationshipsData={relationshipsData}
+            setRelationshipsData={setRelationshipsData}
+            index={index}
+          />
+        )}
+      </div>
     </div>
   );
 }
