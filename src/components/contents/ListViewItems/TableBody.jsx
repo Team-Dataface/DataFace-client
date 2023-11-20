@@ -22,6 +22,38 @@ function TableBody({
     });
   }, [documents]);
 
+  function updateDateModified(newChangedDoc, documentIndex) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const todaysDate = `${year}-${month}-${day}`;
+
+    const dateModifiedFieldIndex = documents[documentIndex].fields.findIndex(
+      field => field.fieldType === "Date modified",
+    );
+
+    if (dateModifiedFieldIndex !== -1) {
+      const dateModifiedFieldId =
+        documents[documentIndex].fields[dateModifiedFieldIndex]._id;
+
+      const dateModifiedIndexInsideChangedDoc = changedDoc[
+        documentIndex
+      ].fields.findIndex(field => field.fieldId === dateModifiedFieldId);
+
+      if (dateModifiedIndexInsideChangedDoc === -1) {
+        newChangedDoc[documentIndex].fields.push({
+          fieldId: dateModifiedFieldId,
+          fieldValue: todaysDate,
+        });
+      } else {
+        newChangedDoc[documentIndex].fields[
+          dateModifiedIndexInsideChangedDoc
+        ].fieldValue = todaysDate;
+      }
+    }
+  }
+
   function handleOnChange(event, documentId) {
     const { id, value } = event.target;
     const newChangedDoc = [...changedDoc];
@@ -43,6 +75,7 @@ function TableBody({
       newChangedDoc[documentIndex].fields[fieldIndex].fieldValue = value;
     }
 
+    updateDateModified(newChangedDoc, documentIndex);
     setChangedDoc(newChangedDoc);
     adjustTextareaHeight(event);
   }
@@ -92,7 +125,11 @@ function TableBody({
                     id={field._id}
                     type={field.fieldType}
                     defaultValue={field.fieldValue}
-                    disabled={!isEditMode}
+                    disabled={
+                      field.fieldType === "Date modified" ||
+                      field.fieldType === "Date created" ||
+                      !isEditMode
+                    }
                     onChange={event => handleOnChange(event, document._id)}
                   />
                 )}
