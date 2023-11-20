@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import getTodaysDate from "../../../utils/getTodaysDate";
 
 function TableBody({
   documents,
@@ -23,12 +24,6 @@ function TableBody({
   }, [documents]);
 
   function updateDateModified(newChangedDoc, documentIndex) {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const todaysDate = `${year}/${month}/${day}`;
-
     const dateModifiedFieldIndex = documents[documentIndex].fields.findIndex(
       field => field.fieldType === "Date modified",
     );
@@ -44,12 +39,12 @@ function TableBody({
       if (dateModifiedIndexInsideChangedDoc === -1) {
         newChangedDoc[documentIndex].fields.push({
           fieldId: dateModifiedFieldId,
-          fieldValue: todaysDate,
+          fieldValue: getTodaysDate(),
         });
       } else {
         newChangedDoc[documentIndex].fields[
           dateModifiedIndexInsideChangedDoc
-        ].fieldValue = todaysDate;
+        ].fieldValue = getTodaysDate();
       }
     }
   }

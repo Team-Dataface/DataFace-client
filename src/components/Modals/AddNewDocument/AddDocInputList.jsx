@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
+import getTodaysDate from "../../../utils/getTodaysDate";
 
 import UserContext from "../../../context/UserContext";
 import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
@@ -37,15 +38,6 @@ function AddDocInputList({ updateFieldValue, setFields }) {
     return <Loading />;
   }
 
-  function updateDateModified() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-
-    return `${year}/${month}/${day}`;
-  }
-
   return data.fields.map((element, index) => {
     return (
       <div key={element._id} className="flex w-[500px]">
@@ -69,7 +61,7 @@ function AddDocInputList({ updateFieldValue, setFields }) {
               defaultValue={
                 element.fieldType === "Date modified" ||
                 element.fieldType === "Date created"
-                  ? updateDateModified()
+                  ? getTodaysDate()
                   : ""
               }
               disabled={

@@ -12,6 +12,7 @@ import useLoading from "../../../utils/useLoading";
 import moveField from "../../../utils/moveField";
 import movePortal from "../../../utils/movePortal";
 import CONSTANT from "../../../constants/constant";
+import getTodaysDate from "../../../utils/getTodaysDate";
 
 function DetailView({
   isEditMode,
@@ -138,19 +139,13 @@ function DetailView({
   }
 
   function updateDateModified(newArr, fields) {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const todaysDate = `${year}/${month}/${day}`;
-
     const dateModifiedFieldIndex = fields.findIndex(
       field => field.fieldType === "Date modified",
     );
 
     if (dateModifiedFieldIndex !== -1) {
       newArr[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
-        todaysDate;
+        getTodaysDate();
     }
   }
 
