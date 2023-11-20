@@ -86,7 +86,7 @@ function DatabaseFields({
 
   return (
     <div
-      className={`relative group flex flex-col justify-center items-center w-72 mb-20
+      className={`relative group flex flex-col justify-center items-center w-64 mb-20
       ${primaryDbId === databaseId ? "rounded-md p-1" : ""}
       ${primaryDbId === databaseId ? "ring-4 ring-blue" : ""}
       ${primaryDbId !== databaseId ? "hover:rounded-md p-1" : ""}
