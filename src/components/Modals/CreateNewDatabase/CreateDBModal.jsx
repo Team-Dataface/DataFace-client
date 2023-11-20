@@ -43,21 +43,21 @@ function CreateDBModal({
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
 
   function updateFieldName(index, event) {
-    const newArr = [...fields];
-    newArr[index].fieldName = event.target.value;
+    const newFields = [...fields];
+    newFields[index].fieldName = event.target.value;
 
     setIsDBNameEmpty(false);
     setIsFieldNameEmpty(false);
     setIsFieldNameDuplicate(false);
 
-    setFields(newArr);
+    setFields(newFields);
   }
 
   function updateFieldType(index, event) {
-    const newArr = [...fields];
-    newArr[index].fieldType = event.target.value;
+    const newFields = [...fields];
+    newFields[index].fieldType = event.target.value;
 
-    setFields(newArr);
+    setFields(newFields);
   }
 
   function handleClickAddField() {
@@ -76,10 +76,10 @@ function CreateDBModal({
       return;
     }
 
-    const newArr = [...fields];
-    newArr.splice(index, 1);
+    const newFields = [...fields];
+    newFields.splice(index, 1);
 
-    setFields(newArr);
+    setFields(newFields);
   }
 
   async function fetchDatabase(newDatabase) {

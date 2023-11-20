@@ -2,11 +2,11 @@ import Button from "../../shared/Button";
 
 function PortalFooter({ relationshipsData, setRelationshipsData, index }) {
   function handleClickSize(size) {
-    const newArr = [...relationshipsData];
+    const newRelationshipData = [...relationshipsData];
 
-    newArr[index].portalSize = size;
+    newRelationshipData[index].portalSize = size;
 
-    setRelationshipsData(newArr);
+    setRelationshipsData(newRelationshipData);
   }
 
   return (

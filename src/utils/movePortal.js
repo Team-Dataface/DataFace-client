@@ -19,7 +19,7 @@ function movePortal(
   const elementWidth = elementScale[0];
   const elementHeight = elementScale[1] + 10;
 
-  const newArr = [...relationshipsData];
+  const newRelationshipData = [...relationshipsData];
 
   const isAboveCanvas = currentYBasedOnCanvasArea < 0;
   const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
@@ -29,9 +29,9 @@ function movePortal(
     currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
 
   function setCoordinates(x, y) {
-    newArr[draggedPortalIndex].xCoordinate = x;
-    newArr[draggedPortalIndex].yCoordinate = y;
-    setRelationshipsData(newArr);
+    newRelationshipData[draggedPortalIndex].xCoordinate = x;
+    newRelationshipData[draggedPortalIndex].yCoordinate = y;
+    setRelationshipsData(newRelationshipData);
   }
 
   if (isAboveCanvas && isLeftOfCanvas) {

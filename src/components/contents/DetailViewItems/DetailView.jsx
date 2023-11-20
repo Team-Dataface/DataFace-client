@@ -11,8 +11,8 @@ import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
 import moveField from "../../../utils/moveField";
 import movePortal from "../../../utils/movePortal";
-import CONSTANT from "../../../constants/constant";
 import getTodaysDate from "../../../utils/getTodaysDate";
+import CONSTANT from "../../../constants/constant";
 
 function DetailView({
   isEditMode,
@@ -138,32 +138,32 @@ function DetailView({
     setIsOnSave(false);
   }
 
-  function updateDateModified(newArr, fields) {
+  function updateDateModified(newDocData, fields) {
     const dateModifiedFieldIndex = fields.findIndex(
       field => field.fieldType === "Date modified",
     );
 
     if (dateModifiedFieldIndex !== -1) {
-      newArr[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
+      newDocData[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
         getTodaysDate();
     }
   }
 
   function updateFieldValue(index, event) {
-    const newArr = [...docData];
+    const newDocData = [...docData];
 
-    newArr[currentDocIndex].fields[index].fieldValue = event.target.value;
+    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
 
-    updateDateModified(newArr, newArr[currentDocIndex].fields);
-    setDocData(newArr);
+    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
+    setDocData(newDocData);
   }
 
   function updateFieldRows(index, value) {
-    const newArr = [...docData];
+    const newDocData = [...docData];
 
-    newArr[currentDocIndex].fields[index].rows = value;
+    newDocData[currentDocIndex].fields[index].rows = value;
 
-    setDocData(newArr);
+    setDocData(newDocData);
   }
 
   function handleMouseUp() {
