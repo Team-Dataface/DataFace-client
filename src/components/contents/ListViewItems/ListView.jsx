@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useQuery } from "@tanstack/react-query";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import {
   currentDBIdAtom,
   isEditModeAtom,
-  isOnSaveAtom,
   documentsIdsAtom,
   userAtom,
+  changedDocAtom,
 } from "../../../atoms/atoms";
 
 import fetchData from "../../../utils/axios";
@@ -18,17 +17,12 @@ import TableBody from "./TableBody";
 import Loading from "../../shared/Loading";
 
 function ListView() {
-  const queryClient = useQueryClient();
-
-  const [changedDoc, setChangedDoc] = useState([]);
-
-  const [isOnSave, setIsOnSave] = useAtom(isOnSaveAtom);
-
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
+  const setChangedDoc = useSetAtom(changedDocAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -63,33 +57,10 @@ function ListView() {
     },
   );
 
-  async function handleClickSave() {
-    await fetchData(
-      "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents`,
-      changedDoc,
-    );
-  }
-
-  const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
   const loadingTimeout = useLoading(isQueryLoading);
 
   if (loadingTimeout) {
     return <Loading />;
-  }
-
-  if (!isEditMode && isOnSave) {
-    fetchDocumentUpdate();
-    setIsOnSave(false);
   }
 
   return (
@@ -99,11 +70,7 @@ function ListView() {
     >
       <table className="border-collapse w-full max-h-20 overflow-y-auto">
         <TableHead fields={data.documents[0].fields} />
-        <TableBody
-          documents={data.documents}
-          changedDoc={changedDoc}
-          setChangedDoc={setChangedDoc}
-        />
+        <TableBody documents={data.documents} />
       </table>
     </div>
   );

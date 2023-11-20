@@ -7,11 +7,13 @@ import {
   currentDocIndexAtom,
   isEditModeAtom,
   isOnSaveAtom,
+  changedDocAtom,
 } from "../../../atoms/atoms";
 
-function TableBody({ documents, changedDoc, setChangedDoc }) {
+function TableBody({ documents }) {
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const [changedDoc, setChangedDoc] = useAtom(changedDocAtom);
   const setIsOnSave = useSetAtom(isOnSaveAtom);
 
   function adjustTextareaHeight(event) {

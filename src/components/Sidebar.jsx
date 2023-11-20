@@ -109,8 +109,6 @@ function Sidebar() {
       queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
     }
 
-    console.log("this is DB!!", databases);
-
     return databases.map(element => {
       return (
         <div
