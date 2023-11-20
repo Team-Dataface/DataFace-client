@@ -1,4 +1,7 @@
+import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
+
+import { currentDBNameAtom } from "../atoms/atoms";
 
 import LogoutButton from "./HeaderItems/LogoutButton";
 import Toolbar from "./HeaderItems/Toolbar";
@@ -13,10 +16,11 @@ function Header({
   documentsIds,
   setDocumentsIds,
   setIsOnSave,
-  currentDBName,
   isRelationship,
   setIsRelationship,
 }) {
+  const currentDBName = useAtomValue(currentDBNameAtom);
+
   return (
     <div className="flex flex-col w-full h-min-[120px] bg-black-bg">
       <div className="flex flex-row justify-between items-center h-[50px] p-3 bg-black-bg">

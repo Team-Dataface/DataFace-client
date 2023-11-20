@@ -1,10 +1,10 @@
 import { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 import fetchData from "../utils/axios";
 
-import { currentDBIdAtom } from "../atoms/atoms";
+import { currentDBIdAtom, currentDBNameAtom } from "../atoms/atoms";
 import UserContext from "../context/UserContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
@@ -15,7 +15,6 @@ function Sidebar({
   isInitial,
   setIsInitial,
   setCurrentDocIndex,
-  setCurrentDBName,
   isRelationship,
   setRelationshipsData,
 }) {
@@ -24,6 +23,7 @@ function Sidebar({
 
   const { userId, username } = useContext(UserContext);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
+  const setCurrentDBName = useSetAtom(currentDBNameAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -167,11 +167,7 @@ function Sidebar({
         </Button>
       </div>
       {showCreateDBModal && (
-        <CreateDBModal
-          closeModal={() => setShowCreateDBModal(false)}
-          setCurrentDBId={setCurrentDBId}
-          setCurrentDBName={setCurrentDBName}
-        />
+        <CreateDBModal closeModal={() => setShowCreateDBModal(false)} />
       )}
     </div>
   );

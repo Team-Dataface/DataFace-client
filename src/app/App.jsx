@@ -26,7 +26,6 @@ function App() {
   const [isOnSave, setIsOnSave] = useState(false);
   const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
-  const [currentDBName, setCurrentDBName] = useState("");
   const [relationshipsData, setRelationshipsData] = useState(null);
 
   const navigate = useNavigate();
@@ -69,7 +68,6 @@ function App() {
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
-              currentDBName={currentDBName}
               isRelationship={isRelationship}
               setIsRelationship={setIsRelationship}
             />
@@ -81,7 +79,6 @@ function App() {
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
                 setCurrentDocIndex={setCurrentDocIndex}
-                setCurrentDBName={setCurrentDBName}
                 isRelationship={isRelationship}
                 currentDocIndex={currentDocIndex}
                 setRelationshipsData={setRelationshipsData}
@@ -122,10 +119,7 @@ function App() {
                     }
                   />
                   <Route path="relationship" element={<Relationship />} />
-                  <Route
-                    path="nodatabase"
-                    element={<NoDatabase setCurrentDBName={setCurrentDBName} />}
-                  />
+                  <Route path="nodatabase" element={<NoDatabase />} />
                 </Route>
                 <Route path="/" element={<Navigate replace to="/login" />} />
               </Routes>

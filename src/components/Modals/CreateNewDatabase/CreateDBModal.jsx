@@ -5,7 +5,11 @@ import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
-import { currentDBIdAtom, isListViewAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  isListViewAtom,
+  currentDBNameAtom,
+} from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
@@ -22,7 +26,7 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({ closeModal, setCurrentDBName }) {
+function CreateDBModal({ closeModal }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
@@ -41,6 +45,7 @@ function CreateDBModal({ closeModal, setCurrentDBName }) {
 
   const setIsListView = useSetAtom(isListViewAtom);
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
+  const setCurrentDBName = useSetAtom(currentDBNameAtom);
 
   function updateFieldName(index, event) {
     const newFields = [...fields];

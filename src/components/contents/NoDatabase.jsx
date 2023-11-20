@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
-function NoDatabase({ setCurrentDBName }) {
+function NoDatabase() {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return (
@@ -22,10 +22,7 @@ function NoDatabase({ setCurrentDBName }) {
         </Button>
       </div>
       {showCreateDBModal && (
-        <CreateDBModal
-          closeModal={() => setShowCreateDBModal(false)}
-          setCurrentDBName={setCurrentDBName}
-        />
+        <CreateDBModal closeModal={() => setShowCreateDBModal(false)} />
       )}
     </div>
   );
