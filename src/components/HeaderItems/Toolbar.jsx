@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { useSetAtom } from "jotai";
 
 import { isListViewAtom } from "../../atoms/atoms";
@@ -11,8 +10,6 @@ import Button from "../shared/Button";
 
 function Toolbar({
   isEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
   documentsIds,
   setDocumentsIds,
   isRelationship,
@@ -49,8 +46,6 @@ function Toolbar({
         />
         <DocHandlerButtons
           isEditMode={isEditMode}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
           documentsIds={documentsIds}
           setDocumentsIds={setDocumentsIds}
         />
@@ -59,10 +54,5 @@ function Toolbar({
     </>
   );
 }
-
-Toolbar.propTypes = {
-  currentDocIndex: PropTypes.number.isRequired,
-  setCurrentDocIndex: PropTypes.func.isRequired,
-};
 
 export default Toolbar;

@@ -1,3 +1,7 @@
+import { useAtomValue } from "jotai";
+
+import { currentDocIndexAtom } from "../../../atoms/atoms";
+
 import FieldList from "./FieldList";
 import Portal from "./Portal";
 
@@ -10,12 +14,13 @@ function Elements({
   setIsEditMode,
   fetchDeleteRelationship,
   docData,
-  currentDocIndex,
   primaryField,
   updateFieldValue,
   updateFieldRows,
   setElementScale,
 }) {
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+
   return (
     <>
       {relationshipsData &&
@@ -31,7 +36,6 @@ function Elements({
               setIsEditMode={setIsEditMode}
               handleClickDelete={fetchDeleteRelationship}
               docData={docData}
-              currentDocIndex={currentDocIndex}
               primaryField={primaryField}
               relationshipsData={relationshipsData}
               setElementScale={setElementScale}

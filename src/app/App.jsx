@@ -20,7 +20,6 @@ import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
-  const [currentDocIndex, setCurrentDocIndex] = useState(0);
   const [documentsIds, setDocumentsIds] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isOnSave, setIsOnSave] = useState(false);
@@ -63,8 +62,6 @@ function App() {
               clickHandleLogout={setUser}
               isEditMode={isEditMode}
               setIsEditMode={setIsEditMode}
-              currentDocIndex={currentDocIndex}
-              setCurrentDocIndex={setCurrentDocIndex}
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
               setIsOnSave={setIsOnSave}
@@ -78,9 +75,7 @@ function App() {
                 isEditMode={isEditMode}
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
-                setCurrentDocIndex={setCurrentDocIndex}
                 isRelationship={isRelationship}
-                currentDocIndex={currentDocIndex}
                 setRelationshipsData={setRelationshipsData}
               />
             )}
@@ -94,8 +89,6 @@ function App() {
                       <ListView
                         isEditMode={isEditMode}
                         setIsEditMode={setIsEditMode}
-                        currentDocIndex={currentDocIndex}
-                        setCurrentDocIndex={setCurrentDocIndex}
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}
@@ -108,8 +101,6 @@ function App() {
                       <DetailView
                         isEditMode={isEditMode}
                         setIsEditMode={setIsEditMode}
-                        currentDocIndex={currentDocIndex}
-                        setCurrentDocIndex={setCurrentDocIndex}
                         setDocumentsIds={setDocumentsIds}
                         isOnSave={isOnSave}
                         setIsOnSave={setIsOnSave}

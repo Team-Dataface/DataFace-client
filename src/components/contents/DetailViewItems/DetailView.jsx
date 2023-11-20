@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import { useAtomValue } from "jotai";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
+import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Loading from "../../shared/Loading";
 import Elements from "./Elements";
@@ -18,7 +18,6 @@ import CONSTANT from "../../../constants/constant";
 function DetailView({
   isEditMode,
   setIsEditMode,
-  currentDocIndex,
   setDocumentsIds,
   isOnSave,
   setIsOnSave,
@@ -38,6 +37,7 @@ function DetailView({
 
   const { userId } = useContext(UserContext);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();
@@ -220,7 +220,6 @@ function DetailView({
         setIsEditMode={setIsEditMode}
         fetchDeleteRelationship={fetchDeleteRelationship}
         docData={docData}
-        currentDocIndex={currentDocIndex}
         primaryField={primaryField}
         updateFieldValue={updateFieldValue}
         updateFieldRows={updateFieldRows}

@@ -4,8 +4,13 @@ import { useAtom, useSetAtom } from "jotai";
 
 import fetchData from "../utils/axios";
 
-import { currentDBIdAtom, currentDBNameAtom } from "../atoms/atoms";
+import {
+  currentDBIdAtom,
+  currentDBNameAtom,
+  currentDocIndexAtom,
+} from "../atoms/atoms";
 import UserContext from "../context/UserContext";
+
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
@@ -14,7 +19,6 @@ function Sidebar({
   isEditMode,
   isInitial,
   setIsInitial,
-  setCurrentDocIndex,
   isRelationship,
   setRelationshipsData,
 }) {
@@ -24,6 +28,7 @@ function Sidebar({
   const { userId, username } = useContext(UserContext);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
+  const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);

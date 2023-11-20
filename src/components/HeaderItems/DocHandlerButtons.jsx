@@ -1,25 +1,20 @@
 import { useState, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
-import PropTypes from "prop-types";
+import { useAtom, useAtomValue } from "jotai";
 
 import fetchData from "../../utils/axios";
 
-import { currentDBIdAtom } from "../../atoms/atoms";
+import { currentDBIdAtom, currentDocIndexAtom } from "../../atoms/atoms";
 import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
-function DocHandlerButtons({
-  isEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
-  documentsIds,
-  setDocumentsIds,
-}) {
+function DocHandlerButtons({ isEditMode, documentsIds, setDocumentsIds }) {
   const { userId } = useContext(UserContext);
+
+  const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
@@ -140,17 +135,13 @@ function DocHandlerButtons({
           closeModal={() => setShowAddDocumentModal(false)}
           documentsIds={documentsIds}
           setDocumentsIds={setDocumentsIds}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
         />
       )}
       {showDeleteDocumentModal && (
         <DeleteDocModal
           user={userId}
           closeModal={() => setShowDeleteDocumentModal(false)}
-          currentDocIndex={currentDocIndex}
           documentsIds={documentsIds}
-          setCurrentDocIndex={setCurrentDocIndex}
           isLastDocument={isLastDocument}
           setIsLastDocument={setIsLastDocument}
         />
@@ -158,10 +149,5 @@ function DocHandlerButtons({
     </div>
   );
 }
-
-DocHandlerButtons.propTypes = {
-  currentDocIndex: PropTypes.number.isRequired,
-  setCurrentDocIndex: PropTypes.func.isRequired,
-};
 
 export default DocHandlerButtons;

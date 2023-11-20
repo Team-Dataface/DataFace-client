@@ -17,8 +17,6 @@ import Loading from "../../shared/Loading";
 function ListView({
   isEditMode,
   setIsEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
   setDocumentsIds,
   isOnSave,
   setIsOnSave,
@@ -100,8 +98,6 @@ function ListView({
         <TableHead fields={data.documents[0].fields} />
         <TableBody
           documents={data.documents}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
           changedDoc={changedDoc}
           setChangedDoc={setChangedDoc}
           setIsOnSave={setIsOnSave}
@@ -116,7 +112,6 @@ function ListView({
 ListView.propTypes = {
   isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
-  currentDocIndex: PropTypes.number.isRequired,
   setDocumentsIds: PropTypes.func.isRequired,
 };
 

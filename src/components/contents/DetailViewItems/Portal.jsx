@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { useAtomValue } from "jotai";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
+import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
 import fetchData from "../../../utils/axios";
@@ -23,13 +23,13 @@ function Portal({
   setIsEditMode,
   handleClickDelete,
   docData,
-  currentDocIndex,
   primaryField,
   relationshipsData,
   setElementScale,
 }) {
   const { userId } = useContext(UserContext);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";

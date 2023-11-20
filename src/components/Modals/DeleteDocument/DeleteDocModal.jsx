@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
+import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
@@ -16,14 +16,14 @@ import Loading from "../../shared/Loading";
 
 function DeleteDocModal({
   closeModal,
-  currentDocIndex,
   documentsIds,
-  setCurrentDocIndex,
   isLastDocument,
   setIsLastDocument,
 }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
+
+  const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function deleteDocument() {
@@ -89,7 +89,6 @@ function DeleteDocModal({
 
 DeleteDocModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  currentDocIndex: PropTypes.number.isRequired,
 };
 
 export default DeleteDocModal;

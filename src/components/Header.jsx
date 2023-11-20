@@ -11,8 +11,6 @@ function Header({
   clickHandleLogout,
   isEditMode,
   setIsEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
   documentsIds,
   setDocumentsIds,
   setIsOnSave,
@@ -37,8 +35,6 @@ function Header({
         {currentDBName && (
           <Toolbar
             isEditMode={isEditMode}
-            currentDocIndex={currentDocIndex}
-            setCurrentDocIndex={setCurrentDocIndex}
             documentsIds={documentsIds}
             setDocumentsIds={setDocumentsIds}
             isRelationship={isRelationship}
@@ -62,8 +58,6 @@ Header.propTypes = {
   clickHandleLogout: PropTypes.func.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   setIsEditMode: PropTypes.func.isRequired,
-  currentDocIndex: PropTypes.number.isRequired,
-  setCurrentDocIndex: PropTypes.func.isRequired,
 };
 
 export default Header;
