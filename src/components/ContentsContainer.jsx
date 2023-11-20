@@ -14,7 +14,7 @@ function ContentsContainer() {
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
 
-    return response;
+    return response.data.databases;
   }
 
   const { isLoading } = useQuery(["userDbList"], getDatabaseList, {
