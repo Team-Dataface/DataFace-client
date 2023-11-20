@@ -1,11 +1,16 @@
 import { useState, useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSetAtom, useAtomValue } from "jotai";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  documentsIdsAtom,
+} from "../../../atoms/atoms";
+
 import UserContext from "../../../context/UserContext";
 import Button from "../../shared/Button";
 import Modal from "../../shared/Modal";
@@ -16,14 +21,17 @@ import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
 import Loading from "../../shared/Loading";
 
-function AddDocumentModal({ closeModal, setDocumentsIds, documentsIds }) {
+function AddDocumentModal({ closeModal }) {
+  const [fields, setFields] = useState([]);
+
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
+
+  const [documentsIds, setDocumentsIds] = useAtom(documentsIdsAtom);
+
   const currentDBId = useAtomValue(currentDBIdAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
-
-  const [fields, setFields] = useState([]);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;

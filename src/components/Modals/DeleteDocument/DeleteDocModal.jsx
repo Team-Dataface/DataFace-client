@@ -5,7 +5,11 @@ import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom, currentDocIndexAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  documentsIdsAtom,
+} from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
@@ -14,17 +18,13 @@ import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
 import Loading from "../../shared/Loading";
 
-function DeleteDocModal({
-  closeModal,
-  documentsIds,
-  isLastDocument,
-  setIsLastDocument,
-}) {
+function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const documentsIds = useAtomValue(documentsIdsAtom);
 
   async function deleteDocument() {
     await fetchData(

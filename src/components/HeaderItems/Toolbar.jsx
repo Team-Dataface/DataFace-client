@@ -12,7 +12,7 @@ import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 import Button from "../shared/Button";
 
-function Toolbar({ documentsIds, setDocumentsIds }) {
+function Toolbar() {
   const navigate = useNavigate();
 
   const [isRelationship, setIsRelationship] = useAtom(isRelationshipAtom);
@@ -40,10 +40,7 @@ function Toolbar({ documentsIds, setDocumentsIds }) {
         ${isRelationship && "hidden"}`}
       >
         <RelationshipButton />
-        <DocHandlerButtons
-          documentsIds={documentsIds}
-          setDocumentsIds={setDocumentsIds}
-        />
+        <DocHandlerButtons />
         <SwitchViewButtons />
       </div>
     </>

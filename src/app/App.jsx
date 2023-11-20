@@ -20,7 +20,6 @@ import CONSTANT from "../constants/constant";
 
 function App() {
   const [user, setUser] = useState("");
-  const [documentsIds, setDocumentsIds] = useState([]);
   const [isInitial, setIsInitial] = useState(true);
 
   const navigate = useNavigate();
@@ -53,13 +52,7 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorPage}>
       <UserContext.Provider value={user}>
         <div className="flex flex-col h-screen">
-          {user && (
-            <Header
-              clickHandleLogout={setUser}
-              documentsIds={documentsIds}
-              setDocumentsIds={setDocumentsIds}
-            />
-          )}
+          {user && <Header clickHandleLogout={setUser} />}
           <div className="flex flex-1 overflow-y-auto">
             {user && (
               <Sidebar isInitial={isInitial} setIsInitial={setIsInitial} />
@@ -68,14 +61,8 @@ function App() {
               <Routes>
                 <Route path="/login" element={<Login setUser={setUser} />} />
                 <Route path="/dashboard" element={<ContentsContainer />}>
-                  <Route
-                    path="listview"
-                    element={<ListView setDocumentsIds={setDocumentsIds} />}
-                  />
-                  <Route
-                    path="detailview"
-                    element={<DetailView setDocumentsIds={setDocumentsIds} />}
-                  />
+                  <Route path="listview" element={<ListView />} />
+                  <Route path="detailview" element={<DetailView />} />
                   <Route path="relationship" element={<Relationship />} />
                   <Route path="nodatabase" element={<NoDatabase />} />
                 </Route>

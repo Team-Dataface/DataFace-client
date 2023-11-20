@@ -1,6 +1,6 @@
 import { useState, useContext, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import {
   currentDBIdAtom,
@@ -8,6 +8,7 @@ import {
   isEditModeAtom,
   isOnSaveAtom,
   relationshipsDataAtom,
+  documentsIdsAtom,
 } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
 import Loading from "../../shared/Loading";
@@ -20,7 +21,7 @@ import movePortal from "../../../utils/movePortal";
 import getTodaysDate from "../../../utils/getTodaysDate";
 import CONSTANT from "../../../constants/constant";
 
-function DetailView({ setDocumentsIds }) {
+function DetailView() {
   const canvasRef = useRef(null);
   const canvasElement = canvasRef.current;
   let canvasRect = null;
@@ -42,6 +43,8 @@ function DetailView({ setDocumentsIds }) {
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
+
+  const setDocumentsIds = useSetAtom(documentsIdsAtom);
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();

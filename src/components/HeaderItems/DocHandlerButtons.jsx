@@ -8,6 +8,7 @@ import {
   currentDBIdAtom,
   currentDocIndexAtom,
   isEditModeAtom,
+  documentsIdsAtom,
 } from "../../atoms/atoms";
 import UserContext from "../../context/UserContext";
 import Button from "../shared/Button";
@@ -15,12 +16,13 @@ import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
-function DocHandlerButtons({ documentsIds, setDocumentsIds }) {
+function DocHandlerButtons() {
   const { userId } = useContext(UserContext);
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
+  const documentsIds = useAtomValue(documentsIdsAtom);
 
   const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
@@ -136,17 +138,11 @@ function DocHandlerButtons({ documentsIds, setDocumentsIds }) {
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
       {showAddDocumentModal && (
-        <AddDocModal
-          closeModal={() => setShowAddDocumentModal(false)}
-          documentsIds={documentsIds}
-          setDocumentsIds={setDocumentsIds}
-        />
+        <AddDocModal closeModal={() => setShowAddDocumentModal(false)} />
       )}
       {showDeleteDocumentModal && (
         <DeleteDocModal
-          user={userId}
           closeModal={() => setShowDeleteDocumentModal(false)}
-          documentsIds={documentsIds}
           isLastDocument={isLastDocument}
           setIsLastDocument={setIsLastDocument}
         />

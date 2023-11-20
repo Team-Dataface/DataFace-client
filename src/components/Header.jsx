@@ -7,7 +7,7 @@ import LogoutButton from "./HeaderItems/LogoutButton";
 import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
-function Header({ clickHandleLogout, documentsIds, setDocumentsIds }) {
+function Header({ clickHandleLogout }) {
   const currentDBName = useAtomValue(currentDBNameAtom);
 
   return (
@@ -23,12 +23,7 @@ function Header({ clickHandleLogout, documentsIds, setDocumentsIds }) {
       </div>
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
-        {currentDBName && (
-          <Toolbar
-            documentsIds={documentsIds}
-            setDocumentsIds={setDocumentsIds}
-          />
-        )}
+        {currentDBName && <Toolbar />}
         {currentDBName && <SaveButton />}
       </div>
     </div>
