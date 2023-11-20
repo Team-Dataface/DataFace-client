@@ -21,7 +21,6 @@ import CONSTANT from "../constants/constant";
 function App() {
   const [user, setUser] = useState("");
   const [documentsIds, setDocumentsIds] = useState([]);
-  const [isRelationship, setIsRelationship] = useState(false);
   const [isInitial, setIsInitial] = useState(true);
   const [relationshipsData, setRelationshipsData] = useState(null);
 
@@ -60,8 +59,6 @@ function App() {
               clickHandleLogout={setUser}
               documentsIds={documentsIds}
               setDocumentsIds={setDocumentsIds}
-              isRelationship={isRelationship}
-              setIsRelationship={setIsRelationship}
             />
           )}
           <div className="flex flex-1 overflow-y-auto">
@@ -69,7 +66,6 @@ function App() {
               <Sidebar
                 isInitial={isInitial}
                 setIsInitial={setIsInitial}
-                isRelationship={isRelationship}
                 setRelationshipsData={setRelationshipsData}
               />
             )}

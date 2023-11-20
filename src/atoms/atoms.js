@@ -6,3 +6,4 @@ export const currentDBNameAtom = atom("");
 export const currentDocIndexAtom = atom(0);
 export const isEditModeAtom = atom(false);
 export const isOnSaveAtom = atom(false);
+export const isRelationshipAtom = atom(false);

@@ -9,6 +9,7 @@ import {
   currentDBNameAtom,
   currentDocIndexAtom,
   isEditModeAtom,
+  isRelationshipAtom,
 } from "../atoms/atoms";
 import UserContext from "../context/UserContext";
 
@@ -16,12 +17,7 @@ import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
-function Sidebar({
-  isInitial,
-  setIsInitial,
-  isRelationship,
-  setRelationshipsData,
-}) {
+function Sidebar({ isInitial, setIsInitial, setRelationshipsData }) {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
@@ -30,6 +26,7 @@ function Sidebar({
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
+  const isRelationship = useAtomValue(isRelationshipAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);

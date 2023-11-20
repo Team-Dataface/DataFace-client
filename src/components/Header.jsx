@@ -7,13 +7,7 @@ import LogoutButton from "./HeaderItems/LogoutButton";
 import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
-function Header({
-  clickHandleLogout,
-  documentsIds,
-  setDocumentsIds,
-  isRelationship,
-  setIsRelationship,
-}) {
+function Header({ clickHandleLogout, documentsIds, setDocumentsIds }) {
   const currentDBName = useAtomValue(currentDBNameAtom);
 
   return (
@@ -33,11 +27,9 @@ function Header({
           <Toolbar
             documentsIds={documentsIds}
             setDocumentsIds={setDocumentsIds}
-            isRelationship={isRelationship}
-            setIsRelationship={setIsRelationship}
           />
         )}
-        {currentDBName && <SaveButton isRelationship={isRelationship} />}
+        {currentDBName && <SaveButton />}
       </div>
     </div>
   );
