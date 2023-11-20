@@ -8,6 +8,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:prettier/recommended",
   ],
+  ignorePatterns: ["dist", ".eslintrc.cjs", "*.spec.jsx"],
   overrides: [
     {
       env: {
