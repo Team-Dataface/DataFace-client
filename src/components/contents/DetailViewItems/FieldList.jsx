@@ -25,7 +25,7 @@ function FieldList({
       >
         <div className="flex w-full h-full p-2">
           <span
-            className={`flex justify-end mr-3 w-[140px] select-none
+            className={`flex justify-end mr-3 w-[140px] select-none text-right
             ${isEditMode && "hover:cursor-move"}`}
             onMouseDown={event => {
               setDraggingElement(`field-${index}`);
@@ -66,7 +66,7 @@ function FieldList({
             </div>
           ) : (
             <input
-              className={`flex w-full mr-3 ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
+              className={`flex w-full ring-2 rounded-md ring-light-grey text-center focus:outline-none ${
                 isEditMode &&
                 !draggingElement &&
                 "hover:ring-2 hover:ring-blue hover:bg-blue hover:bg-opacity-20 focus:ring-2 focus:ring-blue focus:bg-blue focus:bg-opacity-20"
