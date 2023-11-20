@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useSetAtom } from "jotai";
 
-import isListViewAtom from "../../atoms/atoms";
+import { isListViewAtom } from "../../atoms/atoms";
 
 import RelationshipButton from "./RelationshipButton";
 import DocHandlerButtons from "./DocHandlerButtons";

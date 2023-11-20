@@ -1,18 +1,17 @@
 import { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 
-import PropTypes from "prop-types";
 import fetchData from "../utils/axios";
 
+import { currentDBIdAtom } from "../atoms/atoms";
 import UserContext from "../context/UserContext";
-import CurrentDBIdContext from "../context/CurrentDBIdContext";
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
 function Sidebar({
   isEditMode,
-  setCurrentDBId,
   isInitial,
   setIsInitial,
   setCurrentDocIndex,
@@ -24,7 +23,7 @@ function Sidebar({
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   const { userId, username } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -177,9 +176,5 @@ function Sidebar({
     </div>
   );
 }
-
-Sidebar.propTypes = {
-  setCurrentDBId: PropTypes.func.isRequired,
-};
 
 export default Sidebar;

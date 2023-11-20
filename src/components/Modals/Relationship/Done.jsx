@@ -1,15 +1,16 @@
-import { useContext } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+
+import { currentDBIdAtom } from "../../../atoms/atoms";
 
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 function Done({ closeModal }) {
   const queryClient = useQueryClient();
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   return (
     <>

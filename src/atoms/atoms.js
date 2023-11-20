@@ -1,5 +1,4 @@
 import { atom } from "jotai";
 
-const isListViewAtom = atom(true);
-
-export default isListViewAtom;
+export const isListViewAtom = atom(true);
+export const currentDBIdAtom = atom("");

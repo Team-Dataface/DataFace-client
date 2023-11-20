@@ -1,11 +1,12 @@
 import { useState, useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import Button from "../../shared/Button";
 import Modal from "../../shared/Modal";
 import Title from "../SharedItems/Title";
@@ -24,7 +25,7 @@ function AddDocumentModal({
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   const [fields, setFields] = useState([]);
 

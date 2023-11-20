@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -14,7 +15,7 @@ import FieldWizard from "./WizardItems/FieldsWizard";
 
 function StepThree({ setRelationshipStep, relationData, setRelationData }) {
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   const targetDb = relationData.foreignDb;
 

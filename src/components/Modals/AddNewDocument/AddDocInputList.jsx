@@ -1,18 +1,19 @@
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 import getTodaysDate from "../../../utils/getTodaysDate";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import InputWrapper from "../SharedItems/InputWrapper";
 import Loading from "../../shared/Loading";
 
 function AddDocInputList({ updateFieldValue, setFields }) {
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function getDatabase() {
     const response = await fetchData(

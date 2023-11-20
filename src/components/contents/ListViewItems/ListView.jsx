@@ -1,8 +1,11 @@
 import { useState, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
+
+import { currentDBIdAtom } from "../../../atoms/atoms";
+
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
@@ -22,7 +25,7 @@ function ListView({
 }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   const [changedDoc, setChangedDoc] = useState([]);
 

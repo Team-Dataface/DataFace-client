@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
 import Content from "../SharedItems/Content";
@@ -23,7 +24,7 @@ function DeleteDocModal({
 }) {
   const queryClient = useQueryClient();
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function deleteDocument() {
     await fetchData(

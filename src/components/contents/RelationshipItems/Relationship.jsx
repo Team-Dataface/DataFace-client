@@ -1,10 +1,11 @@
 import { useContext, useState, useMemo } from "react";
 import { useQueries } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
 import DatabaseFields from "./DatabaseFields";
 import Button from "../../shared/Button";
@@ -17,7 +18,7 @@ function Relationship() {
   const [relationships, setRelationships] = useState([]);
 
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(

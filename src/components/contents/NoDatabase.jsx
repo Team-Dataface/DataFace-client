@@ -1,10 +1,9 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
-function NoDatabase({ setCurrentDBId, setCurrentDBName }) {
+function NoDatabase({ setCurrentDBName }) {
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   return (
@@ -25,16 +24,11 @@ function NoDatabase({ setCurrentDBId, setCurrentDBName }) {
       {showCreateDBModal && (
         <CreateDBModal
           closeModal={() => setShowCreateDBModal(false)}
-          setCurrentDBId={setCurrentDBId}
           setCurrentDBName={setCurrentDBName}
         />
       )}
     </div>
   );
 }
-
-NoDatabase.propTypes = {
-  setCurrentDBId: PropTypes.func.isRequired,
-};
 
 export default NoDatabase;

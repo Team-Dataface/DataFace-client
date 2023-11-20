@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
-import isListViewAtom from "../../../atoms/atoms";
+import { currentDBIdAtom, isListViewAtom } from "../../../atoms/atoms";
 
 import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
@@ -22,7 +22,7 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
+function CreateDBModal({ closeModal, setCurrentDBName }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
@@ -40,6 +40,7 @@ function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
 
   const setIsListView = useSetAtom(isListViewAtom);
+  const setCurrentDBId = useSetAtom(currentDBIdAtom);
 
   function updateFieldName(index, event) {
     const newFields = [...fields];
@@ -218,7 +219,6 @@ function CreateDBModal({ closeModal, setCurrentDBId, setCurrentDBName }) {
 
 CreateDBModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  setCurrentDBId: PropTypes.func.isRequired,
 };
 
 export default CreateDBModal;

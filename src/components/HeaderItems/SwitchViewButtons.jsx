@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 
-import isListViewAtom from "../../atoms/atoms";
+import { isListViewAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 

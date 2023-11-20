@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
+import { useAtomValue } from "jotai";
+
+import { currentDBIdAtom } from "../../../atoms/atoms";
+
+import UserContext from "../../../context/UserContext";
+import fetchData from "../../../utils/axios";
+
+import Loading from "../../shared/Loading";
 import PortalFooter from "./PortalFooter";
 import PortalTable from "./PortalTable";
 import Button from "../../shared/Button";
-
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
-import UserContext from "../../../context/UserContext";
-import Loading from "../../shared/Loading";
-
-import fetchData from "../../../utils/axios";
 
 function Portal({
   index,
@@ -27,7 +29,7 @@ function Portal({
   setElementScale,
 }) {
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";

@@ -1,9 +1,10 @@
 import { useState, useContext, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
+import { useAtomValue } from "jotai";
 
+import { currentDBIdAtom } from "../../../atoms/atoms";
 import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 import Loading from "../../shared/Loading";
 import Elements from "./Elements";
 
@@ -36,7 +37,7 @@ function DetailView({
   const queryClient = useQueryClient();
 
   const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();
