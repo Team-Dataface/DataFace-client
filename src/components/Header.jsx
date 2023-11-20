@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import PropTypes from "prop-types";
 
 import { currentDBNameAtom } from "../atoms/atoms";
 
@@ -7,7 +6,7 @@ import LogoutButton from "./HeaderItems/LogoutButton";
 import Toolbar from "./HeaderItems/Toolbar";
 import SaveButton from "./HeaderItems/SaveButton";
 
-function Header({ clickHandleLogout }) {
+function Header() {
   const currentDBName = useAtomValue(currentDBNameAtom);
 
   return (
@@ -19,7 +18,7 @@ function Header({ clickHandleLogout }) {
           alt="dataface logo"
         />
         <span className="text-white">{currentDBName}</span>
-        <LogoutButton clickHandleLogout={clickHandleLogout} />
+        <LogoutButton />
       </div>
 
       <div className="flex flex-row justify-between items-center h-[70px] p-3 bg-black-bg">
@@ -29,9 +28,5 @@ function Header({ clickHandleLogout }) {
     </div>
   );
 }
-
-Header.propTypes = {
-  clickHandleLogout: PropTypes.func.isRequired,
-};
 
 export default Header;

@@ -1,5 +1,7 @@
 import { atom } from "jotai";
 
+export const userAtom = atom("");
+
 export const currentDBIdAtom = atom("");
 export const currentDBNameAtom = atom("");
 export const currentDocIndexAtom = atom(0);

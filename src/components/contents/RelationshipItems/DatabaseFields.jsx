@@ -1,12 +1,11 @@
 /* eslint-disable no-else-return */
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
+import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
 
-import UserContext from "../../../context/UserContext";
-import { currentDBIdAtom } from "../../../atoms/atoms";
 import Button from "../../shared/Button";
 
 function DatabaseFields({
@@ -18,7 +17,7 @@ function DatabaseFields({
   relationships,
 }) {
   const queryClient = useQueryClient();
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   const [fieldNames, setFieldNames] = useState([]);

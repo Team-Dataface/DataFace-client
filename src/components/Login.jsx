@@ -1,18 +1,22 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useSetAtom } from "jotai";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import fetchData from "../utils/axios";
 import { firebaseAuth } from "../app/firebaseAuth";
 import useLoading from "../utils/useLoading";
 
+import { userAtom } from "../atoms/atoms";
+
 import Button from "./shared/Button";
 import Loading from "./shared/Loading";
 
-function Login({ setUser }) {
+function Login() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
+
+  const setUser = useSetAtom(userAtom);
 
   async function handleGoogleLogin() {
     const result = await signInWithPopup(firebaseAuth, googleProvider);
@@ -75,9 +79,5 @@ function Login({ setUser }) {
     </div>
   );
 }
-
-Login.propTypes = {
-  setUser: PropTypes.func.isRequired,
-};
 
 export default Login;

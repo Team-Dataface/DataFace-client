@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
@@ -12,8 +12,8 @@ import {
   isRelationshipAtom,
   relationshipsDataAtom,
   isInitialAtom,
+  userAtom,
 } from "../atoms/atoms";
-import UserContext from "../context/UserContext";
 
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
@@ -23,7 +23,7 @@ function Sidebar() {
   const queryClient = useQueryClient();
   const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
-  const { userId, username } = useContext(UserContext);
+  const { userId, username } = useAtomValue(userAtom);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const [isInitial, setIsInitial] = useAtom(isInitialAtom);
 
@@ -108,6 +108,8 @@ function Sidebar() {
       queryClient.refetchQueries(["userDb"]);
       queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
     }
+
+    console.log("this is DB!!", databases);
 
     return databases.map(element => {
       return (

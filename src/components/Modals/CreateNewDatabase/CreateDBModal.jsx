@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetAtom } from "jotai";
+import { useSetAtom, useAtomValue } from "jotai";
 import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,9 +9,9 @@ import {
   currentDBIdAtom,
   isListViewAtom,
   currentDBNameAtom,
+  userAtom,
 } from "../../../atoms/atoms";
 
-import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Content from "../SharedItems/Content";
@@ -29,7 +29,7 @@ import CONSTANT from "../../../constants/constant";
 function CreateDBModal({ closeModal }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
 
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useState([

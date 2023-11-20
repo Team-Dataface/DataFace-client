@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
-import UserContext from "../../../context/UserContext";
+import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -16,7 +15,7 @@ import FieldWizard from "./WizardItems/FieldsWizard";
 import Loading from "../../shared/Loading";
 
 function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const [isNotSelected, setIsNotSelected] = useState(false);
 

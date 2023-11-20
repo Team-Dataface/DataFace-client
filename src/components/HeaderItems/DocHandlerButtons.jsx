@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 
@@ -9,15 +9,16 @@ import {
   currentDocIndexAtom,
   isEditModeAtom,
   documentsIdsAtom,
+  userAtom,
 } from "../../atoms/atoms";
-import UserContext from "../../context/UserContext";
+
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
 function DocHandlerButtons() {
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);

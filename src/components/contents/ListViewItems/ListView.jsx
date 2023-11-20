@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
@@ -7,9 +7,8 @@ import {
   isEditModeAtom,
   isOnSaveAtom,
   documentsIdsAtom,
+  userAtom,
 } from "../../../atoms/atoms";
-
-import UserContext from "../../../context/UserContext";
 
 import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
@@ -23,10 +22,9 @@ function ListView() {
 
   const [changedDoc, setChangedDoc] = useState([]);
 
-  const { userId } = useContext(UserContext);
-
   const [isOnSave, setIsOnSave] = useAtom(isOnSaveAtom);
 
+  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 

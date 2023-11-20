@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
@@ -9,8 +9,9 @@ import {
   isOnSaveAtom,
   relationshipsDataAtom,
   documentsIdsAtom,
+  userAtom,
 } from "../../../atoms/atoms";
-import UserContext from "../../../context/UserContext";
+
 import Loading from "../../shared/Loading";
 import Elements from "./Elements";
 
@@ -33,7 +34,7 @@ function DetailView() {
 
   const queryClient = useQueryClient();
 
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
 
   const [isOnSave, setIsOnSave] = useAtom(isOnSaveAtom);
   const [relationshipsData, setRelationshipsData] = useAtom(

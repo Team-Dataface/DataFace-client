@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
 import { useAtom, useAtomValue } from "jotai";
 
 import {
@@ -8,9 +7,9 @@ import {
   currentDocIndexAtom,
   isEditModeAtom,
   relationshipsDataAtom,
+  userAtom,
 } from "../../../atoms/atoms";
 
-import UserContext from "../../../context/UserContext";
 import fetchData from "../../../utils/axios";
 
 import Loading from "../../shared/Loading";
@@ -28,7 +27,7 @@ function Portal({
   primaryField,
   setElementScale,
 }) {
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
 
   const currentDBId = useAtomValue(currentDBIdAtom);

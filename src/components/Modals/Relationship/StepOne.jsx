@@ -1,11 +1,11 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom } from "../../../atoms/atoms";
-import UserContext from "../../../context/UserContext";
+import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
+
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -22,7 +22,7 @@ function StepOne({
   const [targetDatabases, setTargetDatabases] = useState([]);
   const [isNotSelected, setIsNotSelected] = useState(false);
 
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   async function getDatabaseList() {

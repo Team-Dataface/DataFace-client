@@ -1,15 +1,15 @@
-import { useContext } from "react";
+import { useAtomValue } from "jotai";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import fetchData from "../utils/axios";
+import { userAtom } from "../atoms/atoms";
 
-import UserContext from "../context/UserContext";
 import Loading from "./shared/Loading";
 
 function ContentsContainer() {
   const navigate = useNavigate();
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
