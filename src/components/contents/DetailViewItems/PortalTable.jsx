@@ -41,7 +41,7 @@ function PortalTable({ index, relationship }) {
         `users/${userId}/databases/${currentDBId}/relationships/${relationship._id}?primaryFieldValue=${queryValue}`,
       );
 
-      return response.data.foreignDocuments;
+      return response.data.displayedDocuments;
     }
 
     return [];
