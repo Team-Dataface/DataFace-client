@@ -14,9 +14,9 @@ function Elements() {
         relationshipsData.map((relationship, index) => {
           return (
             <Portal
-              key={relationship._id}
               index={index}
               relationship={relationship}
+              key={relationship._id}
             />
           );
         })}
