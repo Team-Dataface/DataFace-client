@@ -22,3 +22,6 @@ export const draggingElementAtom = atom(null);
 export const elementScaleAtom = atom([]);
 
 export const showCreateDBModalAtom = atom(false);
+export const showAddDocumentModalAtom = atom(false);
+export const showDeleteDocumentModalAtom = atom(false);
+export const isLastDocumentAtom = atom(false);

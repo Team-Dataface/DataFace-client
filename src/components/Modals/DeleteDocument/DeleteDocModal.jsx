@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
-import PropTypes from "prop-types";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
@@ -9,6 +8,8 @@ import {
   currentDocIndexAtom,
   documentsIdsAtom,
   userAtom,
+  showDeleteDocumentModalAtom,
+  isLastDocumentAtom,
 } from "../../../atoms/atoms";
 
 import Modal from "../../shared/Modal";
@@ -18,13 +19,15 @@ import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
 import Loading from "../../shared/Loading";
 
-function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
+function DeleteDocModal() {
   const queryClient = useQueryClient();
   const { userId } = useAtomValue(userAtom);
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
+  const [isLastDocument, setIsLastDocument] = useAtom(isLastDocumentAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const documentsIds = useAtomValue(documentsIdsAtom);
+  const setShowDeleteDocumentModal = useSetAtom(showDeleteDocumentModalAtom);
 
   async function deleteDocument() {
     await fetchData(
@@ -39,7 +42,7 @@ function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
       onSuccess: () => {
         queryClient.refetchQueries(["dbDocumentList", currentDBId]);
         setCurrentDocIndex(0);
-        closeModal();
+        setShowDeleteDocumentModal(false);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -48,7 +51,7 @@ function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
   );
 
   function clickHandleCancel() {
-    closeModal();
+    setShowDeleteDocumentModal(false);
     setIsLastDocument(false);
   }
 
@@ -57,7 +60,7 @@ function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
   }
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowDeleteDocumentModal(false)}>
       <ContentWrapper>
         <Content>
           <Message>
@@ -86,9 +89,5 @@ function DeleteDocModal({ closeModal, isLastDocument, setIsLastDocument }) {
     </Modal>
   );
 }
-
-DeleteDocModal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};
 
 export default DeleteDocModal;

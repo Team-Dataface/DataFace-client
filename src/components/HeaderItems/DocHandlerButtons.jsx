@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../../utils/axios";
 
@@ -10,6 +10,9 @@ import {
   isEditModeAtom,
   documentsIdsAtom,
   userAtom,
+  showAddDocumentModalAtom,
+  showDeleteDocumentModalAtom,
+  isLastDocumentAtom,
 } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
@@ -18,19 +21,23 @@ import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
 function DocHandlerButtons() {
-  const { userId } = useAtomValue(userAtom);
+  const [documentsNum, setDocumentsNum] = useState(0);
+  const queryClient = useQueryClient();
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
+  const [showAddDocumentModal, setShowAddDocumentModal] = useAtom(
+    showAddDocumentModalAtom,
+  );
+  const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useAtom(
+    showDeleteDocumentModalAtom,
+  );
+
+  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
   const documentsIds = useAtomValue(documentsIdsAtom);
 
-  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
-  const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
-  const [documentsNum, setDocumentsNum] = useState(0);
-  const [isLastDocument, setIsLastDocument] = useState(false);
-
-  const queryClient = useQueryClient();
+  const setIsLastDocument = useSetAtom(isLastDocumentAtom);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -138,16 +145,8 @@ function DocHandlerButtons() {
       >
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
-      {showAddDocumentModal && (
-        <AddDocModal closeModal={() => setShowAddDocumentModal(false)} />
-      )}
-      {showDeleteDocumentModal && (
-        <DeleteDocModal
-          closeModal={() => setShowDeleteDocumentModal(false)}
-          isLastDocument={isLastDocument}
-          setIsLastDocument={setIsLastDocument}
-        />
-      )}
+      {showAddDocumentModal && <AddDocModal />}
+      {showDeleteDocumentModal && <DeleteDocModal />}
     </div>
   );
 }

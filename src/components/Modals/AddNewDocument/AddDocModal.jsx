@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
-import PropTypes from "prop-types";
 
 import fetchData from "../../../utils/axios";
 
@@ -10,6 +9,7 @@ import {
   currentDocIndexAtom,
   documentsIdsAtom,
   userAtom,
+  showAddDocumentModalAtom,
 } from "../../../atoms/atoms";
 
 import Button from "../../shared/Button";
@@ -21,7 +21,7 @@ import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
 import Loading from "../../shared/Loading";
 
-function AddDocumentModal({ closeModal }) {
+function AddDocumentModal() {
   const [fields, setFields] = useState([]);
 
   const queryClient = useQueryClient();
@@ -32,6 +32,7 @@ function AddDocumentModal({ closeModal }) {
 
   const currentDBId = useAtomValue(currentDBIdAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
+  const setShowAddDocumentModal = useSetAtom(showAddDocumentModalAtom);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
@@ -71,7 +72,7 @@ function AddDocumentModal({ closeModal }) {
         setCurrentDocIndex(documentsIds.length);
 
         queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-        closeModal();
+        setShowAddDocumentModal(false);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -84,7 +85,7 @@ function AddDocumentModal({ closeModal }) {
   }
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowAddDocumentModal(false)}>
       <ContentWrapper>
         <Title>Add New Document</Title>
         <Content>
@@ -105,9 +106,5 @@ function AddDocumentModal({ closeModal }) {
     </Modal>
   );
 }
-
-AddDocumentModal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};
 
 export default AddDocumentModal;
