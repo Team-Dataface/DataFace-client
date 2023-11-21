@@ -1,21 +1,27 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
-import { isEditModeAtom } from "../../../atoms/atoms";
+import {
+  isEditModeAtom,
+  docDataAtom,
+  currentDocIndexAtom,
+  draggingElementAtom,
+  elementScaleAtom,
+} from "../../../atoms/atoms";
 
 import FieldFooter from "./FieldFooter";
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function FieldList({
-  document,
-  updateFieldValue,
-  draggingElement,
-  setDraggingElement,
-  updateFieldRows,
-  setElementScale,
-}) {
+function FieldList({ updateFieldValue, updateFieldRows }) {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
 
-  return document.fields.map((element, index) => {
+  const setElementScale = useSetAtom(elementScaleAtom);
+
+  const docData = useAtomValue(docDataAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const document = docData[currentDocIndex];
+
+  return document?.fields.map((element, index) => {
     return (
       <div
         key={element.fieldName}

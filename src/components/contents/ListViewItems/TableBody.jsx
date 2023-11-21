@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 
 import getTodaysDate from "../../../utils/getTodaysDate";
 
 import {
   currentDocIndexAtom,
   isEditModeAtom,
-  isOnSaveAtom,
   changedDocAtom,
 } from "../../../atoms/atoms";
 
@@ -14,7 +13,6 @@ function TableBody({ documents }) {
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
   const [changedDoc, setChangedDoc] = useAtom(changedDocAtom);
-  const setIsOnSave = useSetAtom(isOnSaveAtom);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
@@ -96,7 +94,6 @@ function TableBody({ documents }) {
               key={field._id}
               id={field.field}
               onDoubleClick={() => {
-                setIsOnSave(true);
                 setIsEditMode(true);
               }}
               className="h-full border"

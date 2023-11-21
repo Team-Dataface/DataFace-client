@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useQuery } from "@tanstack/react-query";
-import { useAtom, useAtomValue } from "jotai";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import {
   currentDBIdAtom,
@@ -8,6 +8,10 @@ import {
   isEditModeAtom,
   relationshipsDataAtom,
   userAtom,
+  docDataAtom,
+  primaryFieldAtom,
+  draggingElementAtom,
+  elementScaleAtom,
 } from "../../../atoms/atoms";
 
 import fetchData from "../../../utils/axios";
@@ -17,22 +21,22 @@ import PortalFooter from "./PortalFooter";
 import PortalTable from "./PortalTable";
 import Button from "../../shared/Button";
 
-function Portal({
-  index,
-  relationship,
-  draggingElement,
-  setDraggingElement,
-  handleClickDelete,
-  docData,
-  primaryField,
-  setElementScale,
-}) {
+function Portal({ index, relationship }) {
+  const queryClient = useQueryClient();
+
   const { userId } = useAtomValue(userAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const [relationshipsData, setRelationshipsData] = useAtom(
+    relationshipsDataAtom,
+  );
 
   const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const relationshipsData = useAtomValue(relationshipsDataAtom);
+  const docData = useAtomValue(docDataAtom);
+  const primaryField = useAtomValue(primaryFieldAtom);
+
+  const setDraggingElement = useSetAtom(draggingElementAtom);
+  const setElementScale = useSetAtom(elementScaleAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
@@ -71,6 +75,23 @@ function Portal({
     },
   );
 
+  async function deleteRelationship(relationshipIndex) {
+    await fetchData(
+      "DELETE",
+      `/users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[relationshipIndex]._id}`,
+    );
+  }
+
+  const { mutate: fetchDeleteRelationship } = useMutation(deleteRelationship, {
+    onSuccess: () => {
+      setRelationshipsData(null);
+      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+    },
+    onFailure: () => {
+      console.log("sending user to errorpage");
+    },
+  });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -103,14 +124,13 @@ function Portal({
       >
         <PortalTable
           index={index}
-          draggingElement={draggingElement}
           relationship={relationship}
           foreignDocuments={foreignDocuments.displayedDocuments}
         />
         {isEditMode && (
           <Button
             className="absolute -top-3 -right-3 w-6 rounded-full"
-            onClick={() => handleClickDelete(index)}
+            onClick={() => fetchDeleteRelationship(index)}
           >
             <img src="/assets/close_icon.svg" alt="close button" />
           </Button>

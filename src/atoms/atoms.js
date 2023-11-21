@@ -10,10 +10,13 @@ export const isEditModeAtom = atom(false);
 export const isListViewAtom = atom(true);
 export const isRelationshipAtom = atom(false);
 
-export const isOnSaveAtom = atom(false);
-
 export const relationshipsDataAtom = atom(null);
 export const documentsIdsAtom = atom([]);
 
 export const isInitialAtom = atom(true);
 export const changedDocAtom = atom([]);
+
+export const docDataAtom = atom([]);
+export const primaryFieldAtom = atom(null);
+export const draggingElementAtom = atom(null);
+export const elementScaleAtom = atom([]);

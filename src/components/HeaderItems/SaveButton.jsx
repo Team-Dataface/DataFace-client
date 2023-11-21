@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useSetAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import {
   isEditModeAtom,
-  isOnSaveAtom,
   isRelationshipAtom,
   userAtom,
   currentDBIdAtom,
   changedDocAtom,
+  isListViewAtom,
+  docDataAtom,
+  currentDocIndexAtom,
+  relationshipsDataAtom,
 } from "../../atoms/atoms";
 
 import fetchData from "../../utils/axios";
@@ -18,19 +21,40 @@ function SaveButton() {
   const queryClient = useQueryClient();
 
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
-  const setIsOnSave = useSetAtom(isOnSaveAtom);
 
   const isRelationship = useAtomValue(isRelationshipAtom);
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const changedDoc = useAtomValue(changedDocAtom);
+  const isListview = useAtomValue(isListViewAtom);
+  const docData = useAtomValue(docDataAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   async function handleClickSave() {
+    if (isListview) {
+      await fetchData(
+        "PUT",
+        `/users/${userId}/databases/${currentDBId}/documents`,
+        changedDoc,
+      );
+
+      return;
+    }
+
     await fetchData(
       "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents`,
-      changedDoc,
+      `/users/${userId}/databases/${currentDBId}/documents/${docData[currentDocIndex]._id}`,
+      { fields: docData[currentDocIndex].fields },
     );
+
+    if (relationshipsData?.length) {
+      await fetchData(
+        "PUT",
+        `/users/${userId}/databases/${currentDBId}/relationships`,
+        relationshipsData,
+      );
+    }
   }
 
   const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
@@ -54,7 +78,6 @@ function SaveButton() {
         onClick={() => {
           if (isEditMode) {
             fetchDocumentUpdate();
-            setIsOnSave(false);
           }
           setIsEditMode(!isEditMode);
         }}
