@@ -43,14 +43,6 @@ function FieldList() {
     setDocData(newDocData);
   }
 
-  function updateFieldRows(index, value) {
-    const newDocData = [...docData];
-
-    newDocData[currentDocIndex].fields[index].rows = value;
-
-    setDocData(newDocData);
-  }
-
   return document?.fields.map((element, index) => {
     return (
       <div
@@ -97,10 +89,7 @@ function FieldList() {
               />
               <div className="hidden peer-hover:flex hover:flex">
                 {isEditMode && !draggingElement && (
-                  <FieldFooter
-                    index={index}
-                    updateFieldRows={updateFieldRows}
-                  />
+                  <FieldFooter index={index} />
                 )}
               </div>
             </div>
