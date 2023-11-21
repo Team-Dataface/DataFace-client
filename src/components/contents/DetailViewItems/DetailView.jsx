@@ -22,7 +22,6 @@ import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
 import moveField from "../../../utils/moveField";
 import movePortal from "../../../utils/movePortal";
-import getTodaysDate from "../../../utils/getTodaysDate";
 import CONSTANT from "../../../constants/constant";
 
 function DetailView() {
@@ -98,34 +97,6 @@ function DetailView() {
     return <Loading />;
   }
 
-  function updateDateModified(newDocData, fields) {
-    const dateModifiedFieldIndex = fields.findIndex(
-      field => field.fieldType === "Date modified",
-    );
-
-    if (dateModifiedFieldIndex !== -1) {
-      newDocData[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
-        getTodaysDate();
-    }
-  }
-
-  function updateFieldValue(index, event) {
-    const newDocData = [...docData];
-
-    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
-
-    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
-    setDocData(newDocData);
-  }
-
-  function updateFieldRows(index, value) {
-    const newDocData = [...docData];
-
-    newDocData[currentDocIndex].fields[index].rows = value;
-
-    setDocData(newDocData);
-  }
-
   function handleMouseUp() {
     setDraggingElement(null);
   }
@@ -169,10 +140,7 @@ function DetailView() {
       onMouseUp={handleMouseUp}
       ref={canvasRef}
     >
-      <Elements
-        updateFieldValue={updateFieldValue}
-        updateFieldRows={updateFieldRows}
-      />
+      <Elements />
     </div>
   );
 }

@@ -8,18 +8,48 @@ import {
   elementScaleAtom,
 } from "../../../atoms/atoms";
 
+import getTodaysDate from "../../../utils/getTodaysDate";
+
 import FieldFooter from "./FieldFooter";
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function FieldList({ updateFieldValue, updateFieldRows }) {
+function FieldList() {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
   const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
+  const [docData, setDocData] = useAtom(docDataAtom);
 
   const setElementScale = useSetAtom(elementScaleAtom);
 
-  const docData = useAtomValue(docDataAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const document = docData[currentDocIndex];
+
+  function updateDateModified(newDocData, fields) {
+    const dateModifiedFieldIndex = fields.findIndex(
+      field => field.fieldType === "Date modified",
+    );
+
+    if (dateModifiedFieldIndex !== -1) {
+      newDocData[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
+        getTodaysDate();
+    }
+  }
+
+  function updateFieldValue(index, event) {
+    const newDocData = [...docData];
+
+    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
+
+    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
+    setDocData(newDocData);
+  }
+
+  function updateFieldRows(index, value) {
+    const newDocData = [...docData];
+
+    newDocData[currentDocIndex].fields[index].rows = value;
+
+    setDocData(newDocData);
+  }
 
   return document?.fields.map((element, index) => {
     return (

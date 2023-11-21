@@ -5,7 +5,7 @@ import { relationshipsDataAtom } from "../../../atoms/atoms";
 import FieldList from "./FieldList";
 import Portal from "./Portal";
 
-function Elements({ updateFieldValue, updateFieldRows }) {
+function Elements() {
   const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   return (
@@ -21,10 +21,7 @@ function Elements({ updateFieldValue, updateFieldRows }) {
           );
         })}
       <div className="flex flex-col absolute">
-        <FieldList
-          updateFieldValue={updateFieldValue}
-          updateFieldRows={updateFieldRows}
-        />
+        <FieldList />
       </div>
     </>
   );
