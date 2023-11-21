@@ -13,6 +13,7 @@ import {
   relationshipsDataAtom,
   isInitialAtom,
   userAtom,
+  showCreateDBModalAtom,
 } from "../atoms/atoms";
 
 import Button from "./shared/Button";
@@ -21,11 +22,13 @@ import Loading from "./shared/Loading";
 
 function Sidebar() {
   const queryClient = useQueryClient();
-  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
   const { userId, username } = useAtomValue(userAtom);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const [isInitial, setIsInitial] = useAtom(isInitialAtom);
+  const [showCreateDBModal, setShowCreateDBModal] = useAtom(
+    showCreateDBModalAtom,
+  );
 
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
@@ -175,9 +178,7 @@ function Sidebar() {
           New Database
         </Button>
       </div>
-      {showCreateDBModal && (
-        <CreateDBModal closeModal={() => setShowCreateDBModal(false)} />
-      )}
+      {showCreateDBModal && <CreateDBModal />}
     </div>
   );
 }

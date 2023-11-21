@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetAtom, useAtomValue } from "jotai";
-import PropTypes from "prop-types";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
@@ -10,6 +9,7 @@ import {
   isListViewAtom,
   currentDBNameAtom,
   userAtom,
+  showCreateDBModalAtom,
 } from "../../../atoms/atoms";
 
 import Modal from "../../shared/Modal";
@@ -26,7 +26,7 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({ closeModal }) {
+function CreateDBModal() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useAtomValue(userAtom);
@@ -46,6 +46,7 @@ function CreateDBModal({ closeModal }) {
   const setIsListView = useSetAtom(isListViewAtom);
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
+  const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
 
   function updateFieldName(index, event) {
     const newFields = [...fields];
@@ -107,7 +108,7 @@ function CreateDBModal({ closeModal }) {
 
       navigate("/dashboard/listview");
 
-      closeModal();
+      setShowCreateDBModal(false);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -166,7 +167,7 @@ function CreateDBModal({ closeModal }) {
   }
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowCreateDBModal(false)}>
       <ContentWrapper>
         <Title>Create New Database</Title>
         <Content>
@@ -221,9 +222,5 @@ function CreateDBModal({ closeModal }) {
     </Modal>
   );
 }
-
-CreateDBModal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};
 
 export default CreateDBModal;

@@ -20,3 +20,5 @@ export const docDataAtom = atom([]);
 export const primaryFieldAtom = atom(null);
 export const draggingElementAtom = atom(null);
 export const elementScaleAtom = atom([]);
+
+export const showCreateDBModalAtom = atom(false);

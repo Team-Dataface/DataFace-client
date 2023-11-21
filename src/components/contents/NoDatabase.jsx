@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useAtom } from "jotai";
+
+import { showCreateDBModalAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
 function NoDatabase() {
-  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+  const [showCreateDBModal, setShowCreateDBModal] = useAtom(
+    showCreateDBModalAtom,
+  );
 
   return (
     <div className="flex flex-col justify-center">
@@ -21,9 +25,7 @@ function NoDatabase() {
           Click here to get Started!
         </Button>
       </div>
-      {showCreateDBModal && (
-        <CreateDBModal closeModal={() => setShowCreateDBModal(false)} />
-      )}
+      {showCreateDBModal && <CreateDBModal />}
     </div>
   );
 }
