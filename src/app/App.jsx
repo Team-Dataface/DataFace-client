@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { ErrorBoundary } from "react-error-boundary";
 
-import UserContext from "../context/UserContext";
-import CurrentDBIdContext from "../context/CurrentDBIdContext";
+import { userAtom } from "../atoms/atoms";
+
 import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
@@ -20,17 +20,7 @@ import ErrorPage from "../components/shared/ErrorPage";
 import CONSTANT from "../constants/constant";
 
 function App() {
-  const [user, setUser] = useState("");
-  const [isListView, setIsListView] = useState(true);
-  const [currentDBId, setCurrentDBId] = useState("");
-  const [currentDocIndex, setCurrentDocIndex] = useState(0);
-  const [documentsIds, setDocumentsIds] = useState([]);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isOnSave, setIsOnSave] = useState(false);
-  const [isRelationship, setIsRelationship] = useState(false);
-  const [isInitial, setIsInitial] = useState(true);
-  const [currentDBName, setCurrentDBName] = useState("");
-  const [relationshipsData, setRelationshipsData] = useState(null);
+  const [user, setUser] = useAtom(userAtom);
 
   const navigate = useNavigate();
 
@@ -60,95 +50,24 @@ function App() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorPage}>
-      <UserContext.Provider value={user}>
-        <CurrentDBIdContext.Provider value={currentDBId}>
-          <div className="flex flex-col h-screen">
-            {user && (
-              <Header
-                clickHandleLogout={setUser}
-                isEditMode={isEditMode}
-                setIsEditMode={setIsEditMode}
-                currentDocIndex={currentDocIndex}
-                setCurrentDocIndex={setCurrentDocIndex}
-                documentsIds={documentsIds}
-                setDocumentsIds={setDocumentsIds}
-                setIsOnSave={setIsOnSave}
-                currentDBName={currentDBName}
-                isRelationship={isRelationship}
-                setIsRelationship={setIsRelationship}
-                isListView={isListView}
-                setIsListView={setIsListView}
-              />
-            )}
-            <div className="flex flex-1 overflow-y-auto">
-              {user && (
-                <Sidebar
-                  isEditMode={isEditMode}
-                  setCurrentDBId={setCurrentDBId}
-                  isInitial={isInitial}
-                  setIsInitial={setIsInitial}
-                  setCurrentDocIndex={setCurrentDocIndex}
-                  setCurrentDBName={setCurrentDBName}
-                  isRelationship={isRelationship}
-                  setIsListView={setIsListView}
-                  currentDocIndex={currentDocIndex}
-                  setRelationshipsData={setRelationshipsData}
-                />
-              )}
-              <div className="flex grow justify-center">
-                <Routes>
-                  <Route path="/login" element={<Login setUser={setUser} />} />
-                  <Route path="/dashboard" element={<ContentsContainer />}>
-                    <Route
-                      path="listview"
-                      element={
-                        <ListView
-                          isEditMode={isEditMode}
-                          setIsEditMode={setIsEditMode}
-                          currentDocIndex={currentDocIndex}
-                          setCurrentDocIndex={setCurrentDocIndex}
-                          setDocumentsIds={setDocumentsIds}
-                          isOnSave={isOnSave}
-                          setIsOnSave={setIsOnSave}
-                        />
-                      }
-                    />
-                    <Route
-                      path="detailview"
-                      element={
-                        <DetailView
-                          isEditMode={isEditMode}
-                          setIsEditMode={setIsEditMode}
-                          currentDocIndex={currentDocIndex}
-                          setCurrentDocIndex={setCurrentDocIndex}
-                          setDocumentsIds={setDocumentsIds}
-                          isOnSave={isOnSave}
-                          setIsOnSave={setIsOnSave}
-                          relationshipsData={relationshipsData}
-                          setRelationshipsData={setRelationshipsData}
-                        />
-                      }
-                    />
-                    <Route path="relationship" element={<Relationship />} />
-                    <Route
-                      path="nodatabase"
-                      element={
-                        <NoDatabase
-                          setCurrentDBId={setCurrentDBId}
-                          setCurrentDBName={setCurrentDBName}
-                          isListView={isListView}
-                          setIsListView={setIsListView}
-                        />
-                      }
-                    />
-                  </Route>
-                  <Route path="/" element={<Navigate replace to="/login" />} />
-                </Routes>
-              </div>
-            </div>
+      <div className="flex flex-col h-screen">
+        {user && <Header />}
+        <div className="flex flex-1 overflow-y-auto">
+          {user && <Sidebar />}
+          <div className="flex grow justify-center">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<ContentsContainer />}>
+                <Route path="listview" element={<ListView />} />
+                <Route path="detailview" element={<DetailView />} />
+                <Route path="relationship" element={<Relationship />} />
+                <Route path="nodatabase" element={<NoDatabase />} />
+              </Route>
+              <Route path="/" element={<Navigate replace to="/login" />} />
+            </Routes>
           </div>
-        </CurrentDBIdContext.Provider>
-      </UserContext.Provider>
+        </div>
+      </div>
     </ErrorBoundary>
   );
 }

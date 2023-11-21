@@ -1,6 +1,14 @@
+import { useAtom } from "jotai";
+
+import { relationshipsDataAtom } from "../../../atoms/atoms";
+
 import Button from "../../shared/Button";
 
-function PortalFooter({ relationshipsData, setRelationshipsData, index }) {
+function PortalFooter({ index }) {
+  const [relationshipsData, setRelationshipsData] = useAtom(
+    relationshipsDataAtom,
+  );
+
   function handleClickSize(size) {
     const newRelationshipData = [...relationshipsData];
 

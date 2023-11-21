@@ -1,4 +1,8 @@
+import { useAtom } from "jotai";
+
 import PropTypes from "prop-types";
+
+import { dbFieldsAtom } from "../../../atoms/atoms";
 
 import Select from "../../shared/Select";
 import Button from "../../shared/Button";
@@ -8,12 +12,27 @@ import CONSTANT from "../../../constants/constant";
 
 const { MAX_FIELD_NAME_LENGTH, FIELD_TYPES } = CONSTANT;
 
-function CreateDBInputList({
-  fields,
-  updateFieldName,
-  updateFieldType,
-  handleClickDeleteField,
-}) {
+function CreateDBInputList({ updateFieldName }) {
+  const [fields, setFields] = useAtom(dbFieldsAtom);
+
+  function updateFieldType(index, event) {
+    const newFields = [...fields];
+    newFields[index].fieldType = event.target.value;
+
+    setFields(newFields);
+  }
+
+  function handleClickDeleteField(index) {
+    if (fields.length === 1) {
+      return;
+    }
+
+    const newFields = [...fields];
+    newFields.splice(index, 1);
+
+    setFields(newFields);
+  }
+
   return fields.map((element, index) => {
     return (
       <div key={element.id}>

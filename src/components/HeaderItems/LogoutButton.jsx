@@ -1,16 +1,19 @@
-import PropTypes from "prop-types";
-
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSetAtom } from "jotai";
 
 import fetchData from "../../utils/axios";
+
+import { userAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 import Loading from "../shared/Loading";
 
-function LogoutButton({ clickHandleLogout }) {
+function LogoutButton() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const setUser = useSetAtom(userAtom);
 
   async function handleGoogleLogout() {
     await fetchData("POST", "/auth/logout");
@@ -18,7 +21,7 @@ function LogoutButton({ clickHandleLogout }) {
 
   const { mutate: fetchLogout, isLoading } = useMutation(handleGoogleLogout, {
     onSuccess: () => {
-      clickHandleLogout("");
+      setUser("");
       queryClient.clear();
       navigate("/login");
     },
@@ -42,9 +45,5 @@ function LogoutButton({ clickHandleLogout }) {
     </div>
   );
 }
-
-LogoutButton.propTypes = {
-  clickHandleLogout: PropTypes.func.isRequired,
-};
 
 export default LogoutButton;

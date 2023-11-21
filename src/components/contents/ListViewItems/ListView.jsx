@@ -1,8 +1,13 @@
-import { useState, useContext } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import { useQuery } from "@tanstack/react-query";
+import { useAtomValue, useSetAtom } from "jotai";
+
+import {
+  currentDBIdAtom,
+  isEditModeAtom,
+  documentsIdsAtom,
+  userAtom,
+  changedDocAtom,
+} from "../../../atoms/atoms";
 
 import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
@@ -11,20 +16,13 @@ import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import Loading from "../../shared/Loading";
 
-function ListView({
-  isEditMode,
-  setIsEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
-  setDocumentsIds,
-  isOnSave,
-  setIsOnSave,
-}) {
-  const queryClient = useQueryClient();
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+function ListView() {
+  const { userId } = useAtomValue(userAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
-  const [changedDoc, setChangedDoc] = useState([]);
+  const setDocumentsIds = useSetAtom(documentsIdsAtom);
+  const setChangedDoc = useSetAtom(changedDocAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -59,33 +57,10 @@ function ListView({
     },
   );
 
-  async function handleClickSave() {
-    await fetchData(
-      "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents`,
-      changedDoc,
-    );
-  }
-
-  const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
   const loadingTimeout = useLoading(isQueryLoading);
 
   if (loadingTimeout) {
     return <Loading />;
-  }
-
-  if (!isEditMode && isOnSave) {
-    fetchDocumentUpdate();
-    setIsOnSave(false);
   }
 
   return (
@@ -95,26 +70,10 @@ function ListView({
     >
       <table className="border-collapse w-full max-h-20 overflow-y-auto">
         <TableHead fields={data.documents[0].fields} />
-        <TableBody
-          documents={data.documents}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
-          changedDoc={changedDoc}
-          setChangedDoc={setChangedDoc}
-          setIsOnSave={setIsOnSave}
-          setIsEditMode={setIsEditMode}
-          isEditMode={isEditMode}
-        />
+        <TableBody documents={data.documents} />
       </table>
     </div>
   );
 }
-
-ListView.propTypes = {
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
-  currentDocIndex: PropTypes.number.isRequired,
-  setDocumentsIds: PropTypes.func.isRequired,
-};
 
 export default ListView;

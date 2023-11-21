@@ -1,12 +1,17 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  userAtom,
+  relationshipStepAtom,
+  relationDataAtom,
+} from "../../../atoms/atoms";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -14,10 +19,14 @@ import Message from "../SharedItems/Message";
 import FieldWizard from "./WizardItems/FieldsWizard";
 import Loading from "../../shared/Loading";
 
-function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+function StepTwo() {
   const [isNotSelected, setIsNotSelected] = useState(false);
+  const [relationData, setRelationData] = useAtom(relationDataAtom);
+
+  const { userId } = useAtomValue(userAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+
+  const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
   const databases = {};
 
@@ -86,8 +95,6 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
           <FieldWizard
             fields={databases.baseDb.documents[0].fields}
             databaseName={databases.baseDb.name}
-            relationData={relationData}
-            setRelationData={setRelationData}
             databaseType="base"
           />
           <div className="flex items-center h-[160px] my-10">
@@ -102,8 +109,6 @@ function StepTwo({ setRelationshipStep, relationData, setRelationData }) {
           <FieldWizard
             fields={databases.targetDb.documents[0].fields}
             databaseName={databases.targetDb.name}
-            relationData={relationData}
-            setRelationData={setRelationData}
             databaseType="target"
           />
         </div>

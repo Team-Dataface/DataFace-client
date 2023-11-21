@@ -1,17 +1,49 @@
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
+
+import {
+  isEditModeAtom,
+  docDataAtom,
+  currentDocIndexAtom,
+  draggingElementAtom,
+  elementScaleAtom,
+} from "../../../atoms/atoms";
+
+import getTodaysDate from "../../../utils/getTodaysDate";
+
 import FieldFooter from "./FieldFooter";
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-function FieldList({
-  document,
-  isEditMode,
-  updateFieldValue,
-  setIsEditMode,
-  draggingElement,
-  setDraggingElement,
-  updateFieldRows,
-  setElementScale,
-}) {
-  return document.fields.map((element, index) => {
+function FieldList() {
+  const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
+  const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
+  const [docData, setDocData] = useAtom(docDataAtom);
+
+  const setElementScale = useSetAtom(elementScaleAtom);
+
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const document = docData[currentDocIndex];
+
+  function updateDateModified(newDocData, fields) {
+    const dateModifiedFieldIndex = fields.findIndex(
+      field => field.fieldType === "Date modified",
+    );
+
+    if (dateModifiedFieldIndex !== -1) {
+      newDocData[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
+        getTodaysDate();
+    }
+  }
+
+  function updateFieldValue(index, event) {
+    const newDocData = [...docData];
+
+    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
+
+    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
+    setDocData(newDocData);
+  }
+
+  return document?.fields.map((element, index) => {
     return (
       <div
         key={element.fieldName}
@@ -57,10 +89,7 @@ function FieldList({
               />
               <div className="hidden peer-hover:flex hover:flex">
                 {isEditMode && !draggingElement && (
-                  <FieldFooter
-                    index={index}
-                    updateFieldRows={updateFieldRows}
-                  />
+                  <FieldFooter index={index} />
                 )}
               </div>
             </div>

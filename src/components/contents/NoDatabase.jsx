@@ -1,16 +1,14 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useAtom } from "jotai";
+
+import { showCreateDBModalAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 import CreateDBModal from "../Modals/CreateNewDatabase/CreateDBModal";
 
-function NoDatabase({
-  isListView,
-  setIsListView,
-  setCurrentDBId,
-  setCurrentDBName,
-}) {
-  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
+function NoDatabase() {
+  const [showCreateDBModal, setShowCreateDBModal] = useAtom(
+    showCreateDBModalAtom,
+  );
 
   return (
     <div className="flex flex-col justify-center">
@@ -27,21 +25,9 @@ function NoDatabase({
           Click here to get Started!
         </Button>
       </div>
-      {showCreateDBModal && (
-        <CreateDBModal
-          closeModal={() => setShowCreateDBModal(false)}
-          setCurrentDBId={setCurrentDBId}
-          setCurrentDBName={setCurrentDBName}
-          isListView={isListView}
-          setIsListView={setIsListView}
-        />
-      )}
+      {showCreateDBModal && <CreateDBModal />}
     </div>
   );
 }
-
-NoDatabase.propTypes = {
-  setCurrentDBId: PropTypes.func.isRequired,
-};
 
 export default NoDatabase;

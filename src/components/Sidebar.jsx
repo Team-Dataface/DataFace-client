@@ -1,31 +1,41 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
-import PropTypes from "prop-types";
 import fetchData from "../utils/axios";
 
-import UserContext from "../context/UserContext";
-import CurrentDBIdContext from "../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  currentDBNameAtom,
+  currentDocIndexAtom,
+  isEditModeAtom,
+  isRelationshipAtom,
+  relationshipsDataAtom,
+  isInitialAtom,
+  userAtom,
+  showCreateDBModalAtom,
+} from "../atoms/atoms";
+
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
 
-function Sidebar({
-  setIsListView,
-  isEditMode,
-  setCurrentDBId,
-  isInitial,
-  setIsInitial,
-  setCurrentDocIndex,
-  setCurrentDBName,
-  isRelationship,
-  setRelationshipsData,
-}) {
+function Sidebar() {
   const queryClient = useQueryClient();
-  const [showCreateDBModal, setShowCreateDBModal] = useState(false);
 
-  const { userId, username } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const { userId, username } = useAtomValue(userAtom);
+  const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
+  const [isInitial, setIsInitial] = useAtom(isInitialAtom);
+  const [showCreateDBModal, setShowCreateDBModal] = useAtom(
+    showCreateDBModalAtom,
+  );
+
+  const setCurrentDBName = useSetAtom(currentDBNameAtom);
+  const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
+  const setRelationshipsData = useSetAtom(relationshipsDataAtom);
+
+  const isEditMode = useAtomValue(isEditModeAtom);
+  const isRelationship = useAtomValue(isRelationshipAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -168,20 +178,9 @@ function Sidebar({
           New Database
         </Button>
       </div>
-      {showCreateDBModal && (
-        <CreateDBModal
-          closeModal={() => setShowCreateDBModal(false)}
-          setCurrentDBId={setCurrentDBId}
-          setCurrentDBName={setCurrentDBName}
-          setIsListView={setIsListView}
-        />
-      )}
+      {showCreateDBModal && <CreateDBModal />}
     </div>
   );
 }
-
-Sidebar.propTypes = {
-  setCurrentDBId: PropTypes.func.isRequired,
-};
 
 export default Sidebar;

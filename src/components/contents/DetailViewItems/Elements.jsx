@@ -1,21 +1,13 @@
+import { useAtomValue } from "jotai";
+
+import { relationshipsDataAtom } from "../../../atoms/atoms";
+
 import FieldList from "./FieldList";
 import Portal from "./Portal";
 
-function Elements({
-  draggingElement,
-  setDraggingElement,
-  relationshipsData,
-  setRelationshipsData,
-  isEditMode,
-  setIsEditMode,
-  fetchDeleteRelationship,
-  docData,
-  currentDocIndex,
-  primaryField,
-  updateFieldValue,
-  updateFieldRows,
-  setElementScale,
-}) {
+function Elements() {
+  const relationshipsData = useAtomValue(relationshipsDataAtom);
+
   return (
     <>
       {relationshipsData &&
@@ -23,34 +15,13 @@ function Elements({
           return (
             <Portal
               index={index}
-              key={relationship._id}
               relationship={relationship}
-              setRelationshipsData={setRelationshipsData}
-              setDraggingElement={setDraggingElement}
-              isEditMode={isEditMode}
-              setIsEditMode={setIsEditMode}
-              handleClickDelete={fetchDeleteRelationship}
-              docData={docData}
-              currentDocIndex={currentDocIndex}
-              primaryField={primaryField}
-              relationshipsData={relationshipsData}
-              setElementScale={setElementScale}
+              key={relationship._id}
             />
           );
         })}
       <div className="flex flex-col absolute">
-        {docData[currentDocIndex] && (
-          <FieldList
-            document={docData[currentDocIndex]}
-            draggingElement={draggingElement}
-            setDraggingElement={setDraggingElement}
-            isEditMode={isEditMode}
-            updateFieldValue={updateFieldValue}
-            updateFieldRows={updateFieldRows}
-            setIsEditMode={setIsEditMode}
-            setElementScale={setElementScale}
-          />
-        )}
+        <FieldList />
       </div>
     </>
   );

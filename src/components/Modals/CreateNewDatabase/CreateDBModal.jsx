@@ -1,11 +1,18 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useSetAtom, useAtomValue, useAtom } from "jotai";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
+import {
+  currentDBIdAtom,
+  isListViewAtom,
+  currentDBNameAtom,
+  userAtom,
+  showCreateDBModalAtom,
+  dbFieldsAtom,
+} from "../../../atoms/atoms";
 
-import UserContext from "../../../context/UserContext";
 import Modal from "../../shared/Modal";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Content from "../SharedItems/Content";
@@ -20,27 +27,22 @@ import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
-function CreateDBModal({
-  setIsListView,
-  closeModal,
-  setCurrentDBId,
-  setCurrentDBName,
-}) {
+function CreateDBModal() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { userId } = useContext(UserContext);
+  const { userId } = useAtomValue(userAtom);
 
   const [dbName, setdbName] = useState(null);
-  const [fields, setFields] = useState([
-    {
-      id: crypto.randomUUID(),
-      fieldName: "",
-      fieldType: "Text",
-    },
-  ]);
+  const [fields, setFields] = useAtom(dbFieldsAtom);
+
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
   const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
+
+  const setIsListView = useSetAtom(isListViewAtom);
+  const setCurrentDBId = useSetAtom(currentDBIdAtom);
+  const setCurrentDBName = useSetAtom(currentDBNameAtom);
+  const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
 
   function updateFieldName(index, event) {
     const newFields = [...fields];
@@ -49,13 +51,6 @@ function CreateDBModal({
     setIsDBNameEmpty(false);
     setIsFieldNameEmpty(false);
     setIsFieldNameDuplicate(false);
-
-    setFields(newFields);
-  }
-
-  function updateFieldType(index, event) {
-    const newFields = [...fields];
-    newFields[index].fieldType = event.target.value;
 
     setFields(newFields);
   }
@@ -69,17 +64,6 @@ function CreateDBModal({
         fieldType: "Text",
       },
     ]);
-  }
-
-  function handleClickDeleteField(index) {
-    if (fields.length === 1) {
-      return;
-    }
-
-    const newFields = [...fields];
-    newFields.splice(index, 1);
-
-    setFields(newFields);
   }
 
   async function fetchDatabase(newDatabase) {
@@ -102,7 +86,7 @@ function CreateDBModal({
 
       navigate("/dashboard/listview");
 
-      closeModal();
+      setShowCreateDBModal(false);
     },
     onFailure: () => {
       console.log("sending user to errorpage");
@@ -161,7 +145,7 @@ function CreateDBModal({
   }
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowCreateDBModal(false)}>
       <ContentWrapper>
         <Title>Create New Database</Title>
         <Content>
@@ -182,12 +166,7 @@ function CreateDBModal({
                 {`Database's name cannot be empty.`}
               </p>
             )}
-            <CreateDBInputList
-              fields={fields}
-              updateFieldName={updateFieldName}
-              updateFieldType={updateFieldType}
-              handleClickDeleteField={handleClickDeleteField}
-            />
+            <CreateDBInputList updateFieldName={updateFieldName} />
             {isFieldNameEmpty && (
               <p className="text-red text-sm">{`Field's name cannot be empty.`}</p>
             )}
@@ -216,10 +195,5 @@ function CreateDBModal({
     </Modal>
   );
 }
-
-CreateDBModal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  setCurrentDBId: PropTypes.func.isRequired,
-};
 
 export default CreateDBModal;

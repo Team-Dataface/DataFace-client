@@ -1,10 +1,17 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  relationshipStepAtom,
+  userAtom,
+  relationDataAtom,
+  targetDatabasesAtom,
+} from "../../../atoms/atoms";
+
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -12,17 +19,15 @@ import Message from "../SharedItems/Message";
 import Loading from "../../shared/Loading";
 import DatabasesWizard from "./WizardItems/DatabasesWizard";
 
-function StepOne({
-  setRelationshipStep,
-  databaseName,
-  relationData,
-  setRelationData,
-}) {
-  const [targetDatabases, setTargetDatabases] = useState([]);
+function StepOne({ databaseName }) {
   const [isNotSelected, setIsNotSelected] = useState(false);
 
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const { userId } = useAtomValue(userAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const relationData = useAtomValue(relationDataAtom);
+
+  const setRelationshipStep = useSetAtom(relationshipStepAtom);
+  const setTargetDatabases = useSetAtom(targetDatabasesAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -66,12 +71,7 @@ function StepOne({
         <p>Please choose a database that you would like to link with DBNAME</p>
       </Message>
       <Content>
-        <DatabasesWizard
-          databaseName={databaseName}
-          targetDatabases={targetDatabases}
-          relationData={relationData}
-          setRelationData={setRelationData}
-        />
+        <DatabasesWizard databaseName={databaseName} />
       </Content>
       {isNotSelected && (
         <p className="mt-2 text-red text-sm">

@@ -1,15 +1,22 @@
-import { useContext } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSetAtom, useAtomValue } from "jotai";
+
+import {
+  currentDBIdAtom,
+  showRelationshipModalAtom,
+  relationshipStepAtom,
+} from "../../../atoms/atoms";
 
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
 
-function Done({ closeModal }) {
+function Done() {
   const queryClient = useQueryClient();
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const setShowRelationshipModal = useSetAtom(showRelationshipModalAtom);
+  const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
   return (
     <>
@@ -26,7 +33,8 @@ function Done({ closeModal }) {
         onClick={() => {
           queryClient.refetchQueries(["dbDocumentList", currentDBId]);
           queryClient.refetchQueries(["dbRelationShips", currentDBId]);
-          closeModal();
+          setShowRelationshipModal(false);
+          setRelationshipStep("start");
         }}
       >
         Close

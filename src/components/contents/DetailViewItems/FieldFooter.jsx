@@ -1,6 +1,21 @@
+import { useAtom, useAtomValue } from "jotai";
+
+import { docDataAtom, currentDocIndexAtom } from "../../../atoms/atoms";
+
 import Button from "../../shared/Button";
 
-function FieldFooter({ index, updateFieldRows }) {
+function FieldFooter({ index }) {
+  const [docData, setDocData] = useAtom(docDataAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+
+  function updateFieldRows(fieldIndex, value) {
+    const newDocData = [...docData];
+
+    newDocData[currentDocIndex].fields[fieldIndex].rows = value;
+
+    setDocData(newDocData);
+  }
+
   return (
     <div className="flex justify-between w-full p-1 bg-black-bg">
       <div className="flex">

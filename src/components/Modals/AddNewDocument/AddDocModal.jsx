@@ -1,11 +1,18 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  documentsIdsAtom,
+  userAtom,
+  showAddDocumentModalAtom,
+  fieldsAtom,
+} from "../../../atoms/atoms";
+
 import Button from "../../shared/Button";
 import Modal from "../../shared/Modal";
 import Title from "../SharedItems/Title";
@@ -15,31 +22,17 @@ import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
 import Loading from "../../shared/Loading";
 
-function AddDocumentModal({
-  closeModal,
-  setDocumentsIds,
-  setCurrentDocIndex,
-  documentsIds,
-}) {
+function AddDocumentModal() {
   const queryClient = useQueryClient();
 
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const [documentsIds, setDocumentsIds] = useAtom(documentsIdsAtom);
 
-  const [fields, setFields] = useState([]);
+  const { userId } = useAtomValue(userAtom);
+  const fields = useAtomValue(fieldsAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
 
-  function adjustTextareaHeight(event) {
-    event.target.style.height = `${event.target.scrollHeight}px`;
-  }
-
-  function updateFieldValue(index, event) {
-    const newFields = [...fields];
-
-    newFields[index].fieldValue = event.target.value;
-
-    setFields(newFields);
-    adjustTextareaHeight(event);
-  }
+  const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
+  const setShowAddDocumentModal = useSetAtom(showAddDocumentModalAtom);
 
   function addNewDocumentId(newId) {
     const newFields = [...documentsIds];
@@ -66,7 +59,7 @@ function AddDocumentModal({
         setCurrentDocIndex(documentsIds.length);
 
         queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-        closeModal();
+        setShowAddDocumentModal(false);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
@@ -79,15 +72,12 @@ function AddDocumentModal({
   }
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowAddDocumentModal(false)}>
       <ContentWrapper>
         <Title>Add New Document</Title>
         <Content>
           <InputsArea>
-            <AddDocInputList
-              updateFieldValue={updateFieldValue}
-              setFields={setFields}
-            />
+            <AddDocInputList />
           </InputsArea>
         </Content>
         <Button
@@ -100,9 +90,5 @@ function AddDocumentModal({
     </Modal>
   );
 }
-
-AddDocumentModal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-};
 
 export default AddDocumentModal;

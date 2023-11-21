@@ -1,32 +1,43 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../../utils/axios";
 
-import UserContext from "../../context/UserContext";
-import CurrentDBIdContext from "../../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  isEditModeAtom,
+  documentsIdsAtom,
+  userAtom,
+  showAddDocumentModalAtom,
+  showDeleteDocumentModalAtom,
+  isLastDocumentAtom,
+} from "../../atoms/atoms";
+
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
 import Loading from "../shared/Loading";
 
-function DocHandlerButtons({
-  isEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
-  documentsIds,
-  setDocumentsIds,
-}) {
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
-
-  const [showAddDocumentModal, setShowAddDocumentModal] = useState(false);
-  const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useState(false);
+function DocHandlerButtons() {
   const [documentsNum, setDocumentsNum] = useState(0);
-  const [isLastDocument, setIsLastDocument] = useState(false);
-
   const queryClient = useQueryClient();
+
+  const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
+  const [showAddDocumentModal, setShowAddDocumentModal] = useAtom(
+    showAddDocumentModalAtom,
+  );
+  const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useAtom(
+    showDeleteDocumentModalAtom,
+  );
+
+  const { userId } = useAtomValue(userAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
+  const documentsIds = useAtomValue(documentsIdsAtom);
+
+  const setIsLastDocument = useSetAtom(isLastDocumentAtom);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
@@ -134,33 +145,10 @@ function DocHandlerButtons({
       >
         <img src="/assets/minus_icon.svg" alt="minus icon" />
       </Button>
-      {showAddDocumentModal && (
-        <AddDocModal
-          closeModal={() => setShowAddDocumentModal(false)}
-          documentsIds={documentsIds}
-          setDocumentsIds={setDocumentsIds}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
-        />
-      )}
-      {showDeleteDocumentModal && (
-        <DeleteDocModal
-          user={userId}
-          closeModal={() => setShowDeleteDocumentModal(false)}
-          currentDocIndex={currentDocIndex}
-          documentsIds={documentsIds}
-          setCurrentDocIndex={setCurrentDocIndex}
-          isLastDocument={isLastDocument}
-          setIsLastDocument={setIsLastDocument}
-        />
-      )}
+      {showAddDocumentModal && <AddDocModal />}
+      {showDeleteDocumentModal && <DeleteDocModal />}
     </div>
   );
 }
-
-DocHandlerButtons.propTypes = {
-  currentDocIndex: PropTypes.number.isRequired,
-  setCurrentDocIndex: PropTypes.func.isRequired,
-};
 
 export default DocHandlerButtons;

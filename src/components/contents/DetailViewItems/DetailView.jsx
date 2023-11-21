@@ -1,9 +1,20 @@
-import { useState, useContext, useRef } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import PropTypes from "prop-types";
+import { useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import {
+  currentDBIdAtom,
+  currentDocIndexAtom,
+  isEditModeAtom,
+  relationshipsDataAtom,
+  documentsIdsAtom,
+  userAtom,
+  docDataAtom,
+  primaryFieldAtom,
+  draggingElementAtom,
+  elementScaleAtom,
+} from "../../../atoms/atoms";
+
 import Loading from "../../shared/Loading";
 import Elements from "./Elements";
 
@@ -11,32 +22,28 @@ import fetchData from "../../../utils/axios";
 import useLoading from "../../../utils/useLoading";
 import moveField from "../../../utils/moveField";
 import movePortal from "../../../utils/movePortal";
-import getTodaysDate from "../../../utils/getTodaysDate";
 import CONSTANT from "../../../constants/constant";
 
-function DetailView({
-  isEditMode,
-  setIsEditMode,
-  currentDocIndex,
-  setDocumentsIds,
-  isOnSave,
-  setIsOnSave,
-  relationshipsData,
-  setRelationshipsData,
-}) {
+function DetailView() {
   const canvasRef = useRef(null);
   const canvasElement = canvasRef.current;
   let canvasRect = null;
 
-  const [docData, setDocData] = useState([]);
-  const [primaryField, setPrimaryField] = useState(null);
-  const [draggingElement, setDraggingElement] = useState(null);
-  const [elementScale, setElementScale] = useState([]);
+  const { userId } = useAtomValue(userAtom);
+  const elementScale = useAtomValue(elementScaleAtom);
 
-  const queryClient = useQueryClient();
+  const [docData, setDocData] = useAtom(docDataAtom);
+  const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
+  const [relationshipsData, setRelationshipsData] = useAtom(
+    relationshipsDataAtom,
+  );
 
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+  const currentDocIndex = useAtomValue(currentDocIndexAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
+
+  const setDocumentsIds = useSetAtom(documentsIdsAtom);
+  const setPrimaryField = useSetAtom(primaryFieldAtom);
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();
@@ -84,86 +91,10 @@ function DetailView({
     },
   );
 
-  async function handleClickSave() {
-    await fetchData(
-      "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents/${docData[currentDocIndex]._id}`,
-      { fields: docData[currentDocIndex].fields },
-    );
-
-    if (relationshipsData?.length) {
-      await fetchData(
-        "PUT",
-        `/users/${userId}/databases/${currentDBId}/relationships`,
-        relationshipsData,
-      );
-    }
-  }
-
-  const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  async function deleteRelationship(index) {
-    await fetchData(
-      "DELETE",
-      `/users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[index]._id}`,
-    );
-  }
-
-  const { mutate: fetchDeleteRelationship } = useMutation(deleteRelationship, {
-    onSuccess: () => {
-      setRelationshipsData(null);
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
-
   const loadingTimeout = useLoading(gettingAllDocument);
 
   if (loadingTimeout) {
     return <Loading />;
-  }
-
-  if (!isEditMode && isOnSave) {
-    fetchDocumentUpdate();
-    setIsOnSave(false);
-  }
-
-  function updateDateModified(newDocData, fields) {
-    const dateModifiedFieldIndex = fields.findIndex(
-      field => field.fieldType === "Date modified",
-    );
-
-    if (dateModifiedFieldIndex !== -1) {
-      newDocData[currentDocIndex].fields[dateModifiedFieldIndex].fieldValue =
-        getTodaysDate();
-    }
-  }
-
-  function updateFieldValue(index, event) {
-    const newDocData = [...docData];
-
-    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
-
-    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
-    setDocData(newDocData);
-  }
-
-  function updateFieldRows(index, value) {
-    const newDocData = [...docData];
-
-    newDocData[currentDocIndex].fields[index].rows = value;
-
-    setDocData(newDocData);
   }
 
   function handleMouseUp() {
@@ -209,29 +140,9 @@ function DetailView({
       onMouseUp={handleMouseUp}
       ref={canvasRef}
     >
-      <Elements
-        handleMouseUp={handleMouseUp}
-        draggingElement={draggingElement}
-        setDraggingElement={setDraggingElement}
-        relationshipsData={relationshipsData}
-        setRelationshipsData={setRelationshipsData}
-        isEditMode={isEditMode}
-        setIsEditMode={setIsEditMode}
-        fetchDeleteRelationship={fetchDeleteRelationship}
-        docData={docData}
-        currentDocIndex={currentDocIndex}
-        primaryField={primaryField}
-        updateFieldValue={updateFieldValue}
-        updateFieldRows={updateFieldRows}
-        setElementScale={setElementScale}
-      />
+      <Elements />
     </div>
   );
 }
-
-DetailView.propTypes = {
-  isEditMode: PropTypes.bool.isRequired,
-  setIsEditMode: PropTypes.func.isRequired,
-};
 
 export default DetailView;

@@ -1,23 +1,23 @@
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useAtom, useSetAtom, useAtomValue } from "jotai";
+
+import {
+  isListViewAtom,
+  isEditModeAtom,
+  isRelationshipAtom,
+} from "../../atoms/atoms";
 
 import RelationshipButton from "./RelationshipButton";
 import DocHandlerButtons from "./DocHandlerButtons";
 import SwitchViewButtons from "./SwitchViewButtons";
 import Button from "../shared/Button";
 
-function Toolbar({
-  isListView,
-  setIsListView,
-  isEditMode,
-  currentDocIndex,
-  setCurrentDocIndex,
-  documentsIds,
-  setDocumentsIds,
-  isRelationship,
-  setIsRelationship,
-}) {
+function Toolbar() {
   const navigate = useNavigate();
+
+  const [isRelationship, setIsRelationship] = useAtom(isRelationshipAtom);
+  const setIsListView = useSetAtom(isListViewAtom);
+  const isEditMode = useAtomValue(isEditModeAtom);
 
   function clickHandelBackButton() {
     setIsRelationship(false);
@@ -39,31 +39,12 @@ function Toolbar({
         className={`flex justify-between items-center w-full h-full mr-3 bg-black-bg
         ${isRelationship && "hidden"}`}
       >
-        <RelationshipButton
-          isEditMode={isEditMode}
-          isRelationship={isRelationship}
-          setIsRelationship={setIsRelationship}
-        />
-        <DocHandlerButtons
-          isEditMode={isEditMode}
-          currentDocIndex={currentDocIndex}
-          setCurrentDocIndex={setCurrentDocIndex}
-          documentsIds={documentsIds}
-          setDocumentsIds={setDocumentsIds}
-        />
-        <SwitchViewButtons
-          isEditMode={isEditMode}
-          isListView={isListView}
-          setIsListView={setIsListView}
-        />
+        <RelationshipButton />
+        <DocHandlerButtons />
+        <SwitchViewButtons />
       </div>
     </>
   );
 }
-
-Toolbar.propTypes = {
-  currentDocIndex: PropTypes.number.isRequired,
-  setCurrentDocIndex: PropTypes.func.isRequired,
-};
 
 export default Toolbar;

@@ -1,18 +1,31 @@
-import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import PropTypes from "prop-types";
+import { useAtomValue, useAtom } from "jotai";
 
 import fetchData from "../../../utils/axios";
 import getTodaysDate from "../../../utils/getTodaysDate";
 
-import UserContext from "../../../context/UserContext";
-import CurrentDBIdContext from "../../../context/CurrentDBIdContext";
+import { currentDBIdAtom, userAtom, fieldsAtom } from "../../../atoms/atoms";
+
 import InputWrapper from "../SharedItems/InputWrapper";
 import Loading from "../../shared/Loading";
 
-function AddDocInputList({ updateFieldValue, setFields }) {
-  const { userId } = useContext(UserContext);
-  const currentDBId = useContext(CurrentDBIdContext);
+function AddDocInputList() {
+  const [fields, setFields] = useAtom(fieldsAtom);
+  const { userId } = useAtomValue(userAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
+
+  function adjustTextareaHeight(event) {
+    event.target.style.height = `${event.target.scrollHeight}px`;
+  }
+
+  function updateFieldValue(index, event) {
+    const newFields = [...fields];
+
+    newFields[index].fieldValue = event.target.value;
+
+    setFields(newFields);
+    adjustTextareaHeight(event);
+  }
 
   async function getDatabase() {
     const response = await fetchData(
@@ -75,10 +88,5 @@ function AddDocInputList({ updateFieldValue, setFields }) {
     );
   });
 }
-
-AddDocInputList.propTypes = {
-  updateFieldValue: PropTypes.func.isRequired,
-  setFields: PropTypes.func.isRequired,
-};
 
 export default AddDocInputList;
