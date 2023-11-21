@@ -27,3 +27,10 @@ export const showDeleteDocumentModalAtom = atom(false);
 export const isLastDocumentAtom = atom(false);
 
 export const fieldsAtom = atom([]);
+export const dbFieldsAtom = atom([
+  {
+    id: crypto.randomUUID(),
+    fieldName: "",
+    fieldType: "Text",
+  },
+]);

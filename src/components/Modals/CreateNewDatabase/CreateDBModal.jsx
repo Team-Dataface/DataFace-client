@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetAtom, useAtomValue } from "jotai";
+import { useSetAtom, useAtomValue, useAtom } from "jotai";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import fetchData from "../../../utils/axios";
@@ -10,6 +10,7 @@ import {
   currentDBNameAtom,
   userAtom,
   showCreateDBModalAtom,
+  dbFieldsAtom,
 } from "../../../atoms/atoms";
 
 import Modal from "../../shared/Modal";
@@ -32,13 +33,8 @@ function CreateDBModal() {
   const { userId } = useAtomValue(userAtom);
 
   const [dbName, setdbName] = useState(null);
-  const [fields, setFields] = useState([
-    {
-      id: crypto.randomUUID(),
-      fieldName: "",
-      fieldType: "Text",
-    },
-  ]);
+  const [fields, setFields] = useAtom(dbFieldsAtom);
+
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
   const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
@@ -59,13 +55,6 @@ function CreateDBModal() {
     setFields(newFields);
   }
 
-  function updateFieldType(index, event) {
-    const newFields = [...fields];
-    newFields[index].fieldType = event.target.value;
-
-    setFields(newFields);
-  }
-
   function handleClickAddField() {
     setFields([
       ...fields,
@@ -75,17 +64,6 @@ function CreateDBModal() {
         fieldType: "Text",
       },
     ]);
-  }
-
-  function handleClickDeleteField(index) {
-    if (fields.length === 1) {
-      return;
-    }
-
-    const newFields = [...fields];
-    newFields.splice(index, 1);
-
-    setFields(newFields);
   }
 
   async function fetchDatabase(newDatabase) {
@@ -188,12 +166,7 @@ function CreateDBModal() {
                 {`Database's name cannot be empty.`}
               </p>
             )}
-            <CreateDBInputList
-              fields={fields}
-              updateFieldName={updateFieldName}
-              updateFieldType={updateFieldType}
-              handleClickDeleteField={handleClickDeleteField}
-            />
+            <CreateDBInputList updateFieldName={updateFieldName} />
             {isFieldNameEmpty && (
               <p className="text-red text-sm">{`Field's name cannot be empty.`}</p>
             )}
