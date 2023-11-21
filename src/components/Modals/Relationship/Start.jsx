@@ -1,9 +1,14 @@
+import { useSetAtom } from "jotai";
+
+import { relationshipStepAtom } from "../../../atoms/atoms";
+
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
 
-function Start({ setRelationshipStep }) {
+function Start() {
+  const setRelationshipStep = useSetAtom(relationshipStepAtom);
   return (
     <>
       <Title>Create Relationship Wizard</Title>

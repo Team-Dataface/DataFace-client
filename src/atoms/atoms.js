@@ -24,6 +24,7 @@ export const elementScaleAtom = atom([]);
 export const showCreateDBModalAtom = atom(false);
 export const showAddDocumentModalAtom = atom(false);
 export const showDeleteDocumentModalAtom = atom(false);
+export const showRelationshipModalAtom = atom(false);
 export const isLastDocumentAtom = atom(false);
 
 export const fieldsAtom = atom([]);
@@ -34,3 +35,14 @@ export const dbFieldsAtom = atom([
     fieldType: "Text",
   },
 ]);
+
+export const relationshipsAtom = atom([]);
+export const relationshipStepAtom = atom("start");
+export const relationDataAtom = atom({
+  primaryFieldName: "",
+  foreignDbId: "",
+  foreignFieldName: "",
+  foreignFieldsToDisplay: [],
+  foreignDb: null,
+});
+export const targetDatabasesAtom = atom([]);

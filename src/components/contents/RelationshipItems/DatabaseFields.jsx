@@ -4,26 +4,24 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 import fetchData from "../../../utils/axios";
-import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  relationshipsAtom,
+  userAtom,
+} from "../../../atoms/atoms";
 
 import Button from "../../shared/Button";
 
-function DatabaseFields({
-  fields,
-  databaseName,
-  primaryDbId,
-  databaseId,
-  dbIndex,
-  relationships,
-}) {
+function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
   const queryClient = useQueryClient();
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const relationships = useAtomValue(relationshipsAtom);
 
   const [fieldNames, setFieldNames] = useState([]);
   const [relationId, setRelationId] = useState("");
   const [updatedFields, setUpdatedFields] = useState(() => {
-    if (primaryDbId === databaseId) {
+    if (currentDBId === databaseId) {
       const primaryFieldNames = relationships.map(
         relation => relation.primaryFieldName,
       );
@@ -87,19 +85,19 @@ function DatabaseFields({
   return (
     <div
       className={`relative group flex flex-col justify-center items-center w-64 mb-20
-      ${primaryDbId === databaseId ? "rounded-md p-1" : ""}
-      ${primaryDbId === databaseId ? "ring-4 ring-blue" : ""}
-      ${primaryDbId !== databaseId ? "hover:rounded-md p-1" : ""}
-      ${primaryDbId !== databaseId ? "hover:ring-4 ring-red" : ""}
+      ${currentDBId === databaseId ? "rounded-md p-1" : ""}
+      ${currentDBId === databaseId ? "ring-4 ring-blue" : ""}
+      ${currentDBId !== databaseId ? "hover:rounded-md p-1" : ""}
+      ${currentDBId !== databaseId ? "hover:ring-4 ring-red" : ""}
       }
-      ${databaseId !== primaryDbId && dbIndex === 0 ? "mt-8" : ""}`}
+      ${databaseId !== currentDBId && dbIndex === 0 ? "mt-8" : ""}`}
     >
       <div className="flex flex-col w-full mb-2 border-2 rounded-md items-center bg-blue bg-opacity-50">
         <span className="flex font-bold py-1">{databaseName}</span>
       </div>
       <Button
         className={`absolute -top-3 -right-3 flex w-6 h-6 hidden ${
-          primaryDbId !== databaseId ? "group-hover:block" : ""
+          currentDBId !== databaseId ? "group-hover:block" : ""
         }`}
         onClick={fetchDeleteRelationship}
       >

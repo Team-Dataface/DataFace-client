@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+
+import {
+  relationshipStepAtom,
+  showRelationshipModalAtom,
+} from "../../../atoms/atoms";
 
 import Modal from "../../shared/Modal";
 import ContentWrapper from "../SharedItems/ContentWrapper";
@@ -8,50 +13,20 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import Done from "./Done";
 
-function RelationshipModal({ closeModal, databaseName }) {
-  const [relationshipStep, setRelationshipStep] = useState("start");
-  const [relationData, setRelationData] = useState({
-    primaryFieldName: "",
-    foreignDbId: "",
-    foreignFieldName: "",
-    foreignFieldsToDisplay: [],
-    foreignDb: null,
-  });
+function RelationshipModal({ databaseName }) {
+  const relationshipStep = useAtomValue(relationshipStepAtom);
+  const setShowRelationshipModal = useSetAtom(showRelationshipModalAtom);
 
   return (
-    <Modal onClick={closeModal}>
+    <Modal onClick={() => setShowRelationshipModal(false)}>
       <ContentWrapper>
-        {relationshipStep === "start" && (
-          <Start setRelationshipStep={setRelationshipStep} />
-        )}
+        {relationshipStep === "start" && <Start />}
         {relationshipStep === "stepOne" && (
-          <StepOne
-            setRelationshipStep={setRelationshipStep}
-            databaseName={databaseName}
-            relationData={relationData}
-            setRelationData={setRelationData}
-          />
+          <StepOne databaseName={databaseName} />
         )}
-        {relationshipStep === "stepTwo" && (
-          <StepTwo
-            setRelationshipStep={setRelationshipStep}
-            relationData={relationData}
-            setRelationData={setRelationData}
-          />
-        )}
-        {relationshipStep === "stepThree" && (
-          <StepThree
-            setRelationshipStep={setRelationshipStep}
-            relationData={relationData}
-            setRelationData={setRelationData}
-          />
-        )}
-        {relationshipStep === "Done" && (
-          <Done
-            setRelationshipStep={setRelationshipStep}
-            closeModal={closeModal}
-          />
-        )}
+        {relationshipStep === "stepTwo" && <StepTwo />}
+        {relationshipStep === "stepThree" && <StepThree />}
+        {relationshipStep === "Done" && <Done />}
       </ContentWrapper>
     </Modal>
   );

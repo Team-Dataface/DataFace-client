@@ -1,17 +1,15 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
+import { useAtom } from "jotai";
 
-function FieldWizard({
-  fields,
-  databaseName,
-  relationData,
-  setRelationData,
-  databaseType,
-}) {
+import { relationDataAtom } from "../../../../atoms/atoms";
+
+function FieldWizard({ fields, databaseName, databaseType }) {
   const [isSelected, setIsSelected] = useState("");
   const [updatedFields, setUpdatedFields] = useState(fields);
   const [selectedFieldNames, setSelectedFieldNames] = useState([]);
+  const [relationData, setRelationData] = useAtom(relationDataAtom);
 
   function moveToFirstIndex(id) {
     if (databaseType === "portal") {

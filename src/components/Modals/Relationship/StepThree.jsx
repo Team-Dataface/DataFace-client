@@ -1,9 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  userAtom,
+  relationshipStepAtom,
+  relationDataAtom,
+} from "../../../atoms/atoms";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -11,9 +16,11 @@ import Message from "../SharedItems/Message";
 import Content from "../SharedItems/Content";
 import FieldWizard from "./WizardItems/FieldsWizard";
 
-function StepThree({ setRelationshipStep, relationData, setRelationData }) {
+function StepThree() {
+  const [relationData, setRelationData] = useAtom(relationDataAtom);
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
   const targetDb = relationData.foreignDb;
 
@@ -70,8 +77,6 @@ function StepThree({ setRelationshipStep, relationData, setRelationData }) {
           <FieldWizard
             fields={targetDb.documents[0].fields}
             databaseName={targetDb.name}
-            relationData={relationData}
-            setRelationData={setRelationData}
             databaseType="portal"
           />
         </div>

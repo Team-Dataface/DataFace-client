@@ -1,10 +1,15 @@
 import { useState, useMemo } from "react";
 import { useQueries } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../../../utils/axios";
 
-import { currentDBIdAtom, userAtom } from "../../../atoms/atoms";
+import {
+  currentDBIdAtom,
+  relationshipsAtom,
+  showRelationshipModalAtom,
+  userAtom,
+} from "../../../atoms/atoms";
 
 import DatabaseFields from "./DatabaseFields";
 import Button from "../../shared/Button";
@@ -12,9 +17,12 @@ import RelationshipModal from "../../Modals/Relationship/RelationshipModal";
 import Loading from "../../shared/Loading";
 
 function Relationship() {
-  const [showRelationshipModal, setShowRelationshipModal] = useState(false);
   const [docs, setDocs] = useState([]);
-  const [relationships, setRelationships] = useState([]);
+
+  const setRelationships = useSetAtom(relationshipsAtom);
+  const [showRelationshipModal, setShowRelationshipModal] = useAtom(
+    showRelationshipModalAtom,
+  );
 
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
@@ -98,10 +106,8 @@ function Relationship() {
               key={crypto.randomUUID()}
               fields={database.documents[0].fields}
               databaseName={database.name}
-              primaryDbId={currentDBId}
               databaseId={database._id}
               dbIndex={index}
-              relationships={relationships}
             />
             {docs.length === 2 && index === 0 && (
               <div className="border border-dashed w-80 h-0 mt-16 border-blue"></div>
@@ -133,10 +139,7 @@ function Relationship() {
           </Button>
         )}
         {showRelationshipModal && (
-          <RelationshipModal
-            closeModal={() => setShowRelationshipModal(false)}
-            databaseName={documentQuery.data.name}
-          />
+          <RelationshipModal databaseName={documentQuery.data.name} />
         )}
       </div>
     </div>

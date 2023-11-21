@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
 
-function DatabasesWizard({
-  databaseName,
-  targetDatabases,
-  relationData,
-  setRelationData,
-}) {
+import { relationDataAtom, targetDatabasesAtom } from "../../../../atoms/atoms";
+
+function DatabasesWizard({ databaseName }) {
   const [isSelected, setIsSelected] = useState("");
+  const [relationData, setRelationData] = useAtom(relationDataAtom);
+  const targetDatabases = useAtomValue(targetDatabasesAtom);
 
   function handleDatabaseClick(id) {
     setIsSelected(id);
