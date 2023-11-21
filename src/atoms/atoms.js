@@ -25,3 +25,5 @@ export const showCreateDBModalAtom = atom(false);
 export const showAddDocumentModalAtom = atom(false);
 export const showDeleteDocumentModalAtom = atom(false);
 export const isLastDocumentAtom = atom(false);
+
+export const fieldsAtom = atom([]);

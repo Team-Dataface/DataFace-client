@@ -10,6 +10,7 @@ import {
   documentsIdsAtom,
   userAtom,
   showAddDocumentModalAtom,
+  fieldsAtom,
 } from "../../../atoms/atoms";
 
 import Button from "../../shared/Button";
@@ -22,30 +23,16 @@ import InputsArea from "../SharedItems/InputsArea";
 import Loading from "../../shared/Loading";
 
 function AddDocumentModal() {
-  const [fields, setFields] = useState([]);
-
   const queryClient = useQueryClient();
-
-  const { userId } = useAtomValue(userAtom);
 
   const [documentsIds, setDocumentsIds] = useAtom(documentsIdsAtom);
 
+  const { userId } = useAtomValue(userAtom);
+  const fields = useAtomValue(fieldsAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const setShowAddDocumentModal = useSetAtom(showAddDocumentModalAtom);
-
-  function adjustTextareaHeight(event) {
-    event.target.style.height = `${event.target.scrollHeight}px`;
-  }
-
-  function updateFieldValue(index, event) {
-    const newFields = [...fields];
-
-    newFields[index].fieldValue = event.target.value;
-
-    setFields(newFields);
-    adjustTextareaHeight(event);
-  }
 
   function addNewDocumentId(newId) {
     const newFields = [...documentsIds];
@@ -90,10 +77,7 @@ function AddDocumentModal() {
         <Title>Add New Document</Title>
         <Content>
           <InputsArea>
-            <AddDocInputList
-              updateFieldValue={updateFieldValue}
-              setFields={setFields}
-            />
+            <AddDocInputList />
           </InputsArea>
         </Content>
         <Button
