@@ -1,11 +1,9 @@
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAtomValue } from "jotai";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { userAtom } from "../atoms/atoms";
 
-import authUser from "../utils/authUser";
 import Login from "../components/Login";
 import Header from "../components/Header";
 import ContentsContainer from "../components/ContentsContainer";
@@ -14,39 +12,12 @@ import Sidebar from "../components/Sidebar";
 import ListView from "../components/contents/ListViewItems/ListView";
 import NoDatabase from "../components/contents/NoDatabase";
 import Relationship from "../components/contents/RelationshipItems/Relationship";
-import Loading from "../components/shared/Loading";
 import ErrorPage from "../components/shared/ErrorPage";
-
-import CONSTANT from "../constants/constant";
+import useGetAuthStatus from "../apis/useGetAuthStatus";
 
 function App() {
-  const [user, setUser] = useAtom(userAtom);
-
-  const navigate = useNavigate();
-
-  const { isLoading } = useQuery(["authStatus"], authUser, {
-    retry: false,
-    onSuccess: response => {
-      const { success, userInfo } = response.data;
-
-      if (success) {
-        setUser(userInfo);
-        navigate("/dashboard");
-      } else {
-        setUser("");
-      }
-    },
-    onError: () => {
-      setUser("");
-      return navigate("/login");
-    },
-    staleTime: CONSTANT.ONE_HOUR_IN_MILLISECONDS,
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const user = useAtomValue(userAtom);
+  useGetAuthStatus();
 
   return (
     <ErrorBoundary FallbackComponent={ErrorPage}>
