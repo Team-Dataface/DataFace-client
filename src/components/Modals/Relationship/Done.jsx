@@ -31,8 +31,8 @@ function Done() {
       <Button
         className="w-20 h-8 mt-5 rounded-md bg-black-bg text-white hover:bg-dark-grey"
         onClick={() => {
-          queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-          queryClient.refetchQueries(["dbRelationShips", currentDBId]);
+          queryClient.refetchQueries(["DocumentsList", currentDBId]);
+          queryClient.refetchQueries(["Relationships", currentDBId]);
           setShowRelationshipModal(false);
           setRelationshipStep("start");
         }}

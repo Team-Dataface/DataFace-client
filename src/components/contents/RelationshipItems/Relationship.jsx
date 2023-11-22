@@ -68,7 +68,7 @@ function Relationship() {
   const [documentQuery, relationQuery] = useQueries({
     queries: [
       {
-        queryKey: ["dbDocumentList", currentDBId],
+        queryKey: ["DocumentsList", currentDBId],
         queryFn: getDocumentsList,
         enabled: !!userId && !!currentDBId,
         refetchOnWindowFocus: false,
@@ -77,7 +77,7 @@ function Relationship() {
         },
       },
       {
-        queryKey: ["dbRelationShips", currentDBId],
+        queryKey: ["Relationships", currentDBId],
         queryFn: getRelationships,
         refetchOnWindowFocus: false,
       },

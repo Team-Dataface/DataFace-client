@@ -63,7 +63,7 @@ function Sidebar() {
       setCurrentDBName(clickedDB);
       setRelationshipsData(null);
 
-      queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
+      queryClient.refetchQueries(["DocumentsList", clickedDBId]);
     }
 
     return databases.map(element => {

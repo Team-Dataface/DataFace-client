@@ -59,7 +59,7 @@ function DetailView() {
   }
 
   const { isLoading: gettingAllDocument } = useQuery(
-    ["dbDocumentList", currentDBId],
+    ["DocumentsList", currentDBId],
     getDocumentsList,
     {
       enabled: !!userId && !!currentDBId,

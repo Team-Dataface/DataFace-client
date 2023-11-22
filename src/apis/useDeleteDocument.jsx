@@ -33,7 +33,7 @@ function useDeleteDocument() {
     deleteDocument,
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+        queryClient.refetchQueries(["DocumentsList", currentDBId]);
         setCurrentDocIndex(0);
         setShowDeleteDocumentModal(false);
       },

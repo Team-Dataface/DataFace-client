@@ -34,8 +34,8 @@ function useDeleteRelationship() {
     deleteRelationship,
     {
       onSuccess: () => {
-        queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-        queryClient.refetchQueries(["dbRelationShips", currentDBId]);
+        queryClient.refetchQueries(["DocumentsList", currentDBId]);
+        queryClient.refetchQueries(["Relationships", currentDBId]);
         setShowDeleteRelationshipModal(false);
       },
       onFailure: () => {

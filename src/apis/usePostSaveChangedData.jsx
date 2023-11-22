@@ -15,7 +15,6 @@ import fetchData from "../utils/axios";
 
 function usePostSaveChangedData() {
   const queryClient = useQueryClient();
-
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const changedDoc = useAtomValue(changedDocAtom);
@@ -52,7 +51,12 @@ function usePostSaveChangedData() {
 
   const { mutate: fetchSaveChangedData } = useMutation(handleClickSave, {
     onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+      queryClient.refetchQueries([
+        "ForeignDocuments",
+        currentDBId,
+        currentDocIndex,
+        0,
+      ]);
     },
     onFailure: () => {
       console.log("sending user to errorpage");

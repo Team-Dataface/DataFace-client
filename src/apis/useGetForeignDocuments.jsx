@@ -48,7 +48,7 @@ function useGetForeignDocuments(index, relationship) {
   }
 
   const { isLoading } = useQuery(
-    ["foreignDocuments", currentDBId, currentDocIndex, relationship._id],
+    ["ForeignDocuments", currentDBId, currentDocIndex, relationship._id],
     () => getForeignDocuments(index),
     {
       enabled:
