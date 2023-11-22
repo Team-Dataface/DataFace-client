@@ -4,7 +4,9 @@ import { useAtomValue } from "jotai";
 import fetchData from "../utils/axios";
 import { currentDBIdAtom, userAtom } from "../atoms/atoms";
 
-function useMutateRelationship() {
+import Loading from "../components/shared/Loading";
+
+function useMutatePostRelationship() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
@@ -16,14 +18,21 @@ function useMutateRelationship() {
     );
   }
 
-  const { mutate: fetchNewRelationship } = useMutation(setRelationShip, {
-    onFailure: () => {
-      console.log("sending user to errorpage");
+  const { mutate: fetchNewRelationship, isLoading } = useMutation(
+    setRelationShip,
+    {
+      onFailure: () => {
+        console.log("sending user to errorpage");
+      },
+      refetchOnWindowFocus: false,
     },
-    refetchOnWindowFocus: false,
-  });
+  );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return fetchNewRelationship;
 }
 
-export default useMutateRelationship;
+export default useMutatePostRelationship;
