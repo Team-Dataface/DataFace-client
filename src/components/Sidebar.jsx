@@ -4,6 +4,7 @@ import { useAtom, useSetAtom, useAtomValue } from "jotai";
 import fetchData from "../utils/axios";
 
 import {
+  databasesAtom,
   currentDBIdAtom,
   currentDBNameAtom,
   currentDocIndexAtom,
@@ -39,6 +40,7 @@ function Sidebar() {
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
+  const setDatabases = useSetAtom(databasesAtom);
 
   const isEditMode = useAtomValue(isEditModeAtom);
   const isRelationship = useAtomValue(isRelationshipAtom);
@@ -60,6 +62,8 @@ function Sidebar() {
           setCurrentDBName(result[0].name);
           setIsInitial(false);
         }
+
+        setDatabases(result);
       },
       onFailure: () => {
         console.log("sending user to errorpage");
