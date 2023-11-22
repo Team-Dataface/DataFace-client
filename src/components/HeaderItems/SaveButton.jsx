@@ -1,71 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 
-import {
-  isEditModeAtom,
-  isRelationshipAtom,
-  userAtom,
-  currentDBIdAtom,
-  changedDocAtom,
-  isListViewAtom,
-  docDataAtom,
-  currentDocIndexAtom,
-  relationshipsDataAtom,
-} from "../../atoms/atoms";
-
-import fetchData from "../../utils/axios";
+import { isEditModeAtom, isRelationshipAtom } from "../../atoms/atoms";
+import usePostSaveChangedData from "../../apis/usePostSaveChangedData";
 
 import Button from "../shared/Button";
 
 function SaveButton() {
-  const queryClient = useQueryClient();
-
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
-
   const isRelationship = useAtomValue(isRelationshipAtom);
-  const { userId } = useAtomValue(userAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
-  const changedDoc = useAtomValue(changedDocAtom);
-  const isListview = useAtomValue(isListViewAtom);
-  const docData = useAtomValue(docDataAtom);
-  const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const relationshipsData = useAtomValue(relationshipsDataAtom);
-
-  async function handleClickSave() {
-    if (isListview) {
-      await fetchData(
-        "PUT",
-        `/users/${userId}/databases/${currentDBId}/documents`,
-        changedDoc,
-      );
-
-      return;
-    }
-
-    await fetchData(
-      "PUT",
-      `/users/${userId}/databases/${currentDBId}/documents/${docData[currentDocIndex]._id}`,
-      { fields: docData[currentDocIndex].fields },
-    );
-
-    if (relationshipsData?.length) {
-      await fetchData(
-        "PUT",
-        `/users/${userId}/databases/${currentDBId}/relationships`,
-        relationshipsData,
-      );
-    }
-  }
-
-  const { mutate: fetchDocumentUpdate } = useMutation(handleClickSave, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
+  const fetchSaveChangedData = usePostSaveChangedData();
 
   return (
     <div
@@ -77,7 +20,7 @@ function SaveButton() {
         ${isEditMode ? "ring-4 ring-blue hover:bg-blue" : ""}`}
         onClick={() => {
           if (isEditMode) {
-            fetchDocumentUpdate();
+            fetchSaveChangedData();
           }
           setIsEditMode(!isEditMode);
         }}
