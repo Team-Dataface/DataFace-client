@@ -1,62 +1,26 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useSetAtom, useAtomValue } from "jotai";
-
-import fetchData from "../../../utils/axios";
+import { useAtom, useSetAtom } from "jotai";
 
 import {
-  currentDBIdAtom,
-  currentDocIndexAtom,
-  documentsIdsAtom,
-  userAtom,
   showDeleteDocumentModalAtom,
   isLastDocumentAtom,
 } from "../../../atoms/atoms";
+
+import useMutateDeleteDocument from "../../../apis/useMutateDeleteDocument";
 
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
 import Content from "../SharedItems/Content";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
-import Loading from "../../shared/Loading";
 
 function DeleteDocModal() {
-  const queryClient = useQueryClient();
-  const { userId } = useAtomValue(userAtom);
-
-  const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [isLastDocument, setIsLastDocument] = useAtom(isLastDocumentAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
-  const documentsIds = useAtomValue(documentsIdsAtom);
   const setShowDeleteDocumentModal = useSetAtom(showDeleteDocumentModalAtom);
-
-  async function deleteDocument() {
-    await fetchData(
-      "DELETE",
-      `/users/${userId}/databases/${currentDBId}/documents/${documentsIds[currentDocIndex]}`,
-    );
-  }
-
-  const { mutate: fetchDeleteDocument, isLoading } = useMutation(
-    deleteDocument,
-    {
-      onSuccess: () => {
-        queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-        setCurrentDocIndex(0);
-        setShowDeleteDocumentModal(false);
-      },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
-    },
-  );
+  const fetchDeleteDocument = useMutateDeleteDocument();
 
   function clickHandleCancel() {
     setShowDeleteDocumentModal(false);
     setIsLastDocument(false);
-  }
-
-  if (isLoading) {
-    return <Loading />;
   }
 
   return (
@@ -79,7 +43,7 @@ function DeleteDocModal() {
           {!isLastDocument && (
             <Button
               className="w-20 h-8 rounded-md bg-red text-white hover:bg-red-hover"
-              onClick={fetchDeleteDocument}
+              onClick={() => fetchDeleteDocument()}
             >
               Delete
             </Button>
