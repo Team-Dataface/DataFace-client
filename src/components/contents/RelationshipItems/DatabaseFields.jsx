@@ -1,25 +1,26 @@
 /* eslint-disable no-else-return */
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useAtom, useSetAtom } from "jotai";
 
-import fetchData from "../../../utils/axios";
 import {
   currentDBIdAtom,
   relationshipsAtom,
-  userAtom,
+  deleteTargetRelationshipAtom,
+  showDeleteRelationshipModalAtom,
 } from "../../../atoms/atoms";
 
 import Button from "../../shared/Button";
+import DeleteRelationshipModal from "../../Modals/DeleteRelationship/DeleteRelationshipModal";
 
 function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
-  const queryClient = useQueryClient();
-  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const relationships = useAtomValue(relationshipsAtom);
 
+  const setDeleteTargetRelationship = useSetAtom(deleteTargetRelationshipAtom);
+  const [showDeleteRelationshipModal, setShowDeleteRelationshipModal] = useAtom(
+    showDeleteRelationshipModalAtom,
+  );
   const [fieldNames, setFieldNames] = useState([]);
-  const [relationId, setRelationId] = useState("");
   const [updatedFields, setUpdatedFields] = useState(() => {
     if (currentDBId === databaseId) {
       const primaryFieldNames = relationships.map(
@@ -51,7 +52,7 @@ function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
         field.fieldName === foreignFieldName && databaseId === foreignDbId,
     );
 
-    setRelationId(_id);
+    setDeleteTargetRelationship(_id);
 
     if (selectedFieldIndex !== -1) {
       const updatedFieldsCopy = [...fields];
@@ -65,41 +66,31 @@ function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
     }
   });
 
-  async function deleteRelationship() {
-    await fetchData(
-      "DELETE",
-      `/users/${userId}/databases/${currentDBId}/relationships/${relationId}`,
-    );
+  function handleClickDelete() {
+    setShowDeleteRelationshipModal(true);
   }
-
-  const { mutate: fetchDeleteRelationship } = useMutation(deleteRelationship, {
-    onSuccess: () => {
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-      queryClient.refetchQueries(["dbRelationShips", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
 
   return (
     <div
-      className={`relative group flex flex-col justify-center items-center w-64 mb-20
-      ${currentDBId === databaseId ? "rounded-md p-1" : ""}
-      ${currentDBId === databaseId ? "ring-4 ring-blue" : ""}
-      ${currentDBId !== databaseId ? "hover:rounded-md p-1" : ""}
-      ${currentDBId !== databaseId ? "hover:ring-4 ring-red" : ""}
-      }
-      ${databaseId !== currentDBId && dbIndex === 0 ? "mt-8" : ""}`}
+      className={`
+        relative group flex flex-col justify-center items-center w-64 mb-20
+        ${currentDBId === databaseId ? "rounded-md p-1 ring-4 ring-blue" : ""}
+        ${
+          currentDBId !== databaseId
+            ? "hover:rounded-md p-1 hover:ring-4 ring-red"
+            : ""
+        }
+        ${databaseId !== currentDBId && dbIndex === 0 ? "mt-8" : ""}
+      `}
     >
       <div className="flex flex-col w-full mb-2 border-2 rounded-md items-center bg-blue bg-opacity-50">
         <span className="flex font-bold py-1">{databaseName}</span>
       </div>
       <Button
-        className={`absolute -top-3 -right-3 flex w-6 h-6 hidden ${
-          currentDBId !== databaseId ? "group-hover:block" : ""
+        className={`absolute -top-3 -right-3 w-6 h-6 hidden ${
+          currentDBId !== databaseId ? "group-hover:flex" : ""
         }`}
-        onClick={fetchDeleteRelationship}
+        onClick={() => handleClickDelete()}
       >
         <img className="" src="/assets/close_icon.svg" alt="close button" />
       </Button>
@@ -118,6 +109,7 @@ function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
           ))}
         </ul>
       </div>
+      {showDeleteRelationshipModal && <DeleteRelationshipModal />}
     </div>
   );
 }

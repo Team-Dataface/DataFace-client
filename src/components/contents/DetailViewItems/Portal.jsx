@@ -1,52 +1,33 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAtom, useSetAtom, useAtomValue } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 import {
-  currentDBIdAtom,
   isEditModeAtom,
-  relationshipsDataAtom,
-  userAtom,
   draggingElementAtom,
   elementScaleAtom,
+  deleteTargetRelationshipAtom,
+  showDeleteRelationshipModalAtom,
 } from "../../../atoms/atoms";
-
-import fetchData from "../../../utils/axios";
 
 import PortalFooter from "./PortalFooter";
 import PortalTable from "./PortalTable";
 import Button from "../../shared/Button";
+import DeleteRelationshipModal from "../../Modals/DeleteRelationship/DeleteRelationshipModal";
 
 function Portal({ index, relationship }) {
-  const queryClient = useQueryClient();
-
-  const { userId } = useAtomValue(userAtom);
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
-  const [relationshipsData, setRelationshipsData] = useAtom(
-    relationshipsDataAtom,
+  const [showDeleteRelationshipModal, setShowDeleteRelationshipModal] = useAtom(
+    showDeleteRelationshipModalAtom,
   );
-
-  const currentDBId = useAtomValue(currentDBIdAtom);
 
   const setDraggingElement = useSetAtom(draggingElementAtom);
   const setElementScale = useSetAtom(elementScaleAtom);
+  const setDeleteTargetRelationship = useSetAtom(deleteTargetRelationshipAtom);
 
-  async function deleteRelationship(relationshipIndex) {
-    await fetchData(
-      "DELETE",
-      `/users/${userId}/databases/${currentDBId}/relationships/${relationshipsData[relationshipIndex]._id}`,
-    );
+  function handleClickDelete() {
+    setDeleteTargetRelationship(relationship._id);
+    setShowDeleteRelationshipModal(true);
   }
-
-  const { mutate: fetchDeleteRelationship } = useMutation(deleteRelationship, {
-    onSuccess: () => {
-      setRelationshipsData(null);
-      queryClient.refetchQueries(["dbDocumentList", currentDBId]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
 
   return (
     <div
@@ -78,7 +59,7 @@ function Portal({ index, relationship }) {
         {isEditMode && (
           <Button
             className="absolute -top-3 -right-3 w-6 rounded-full"
-            onClick={() => fetchDeleteRelationship(index)}
+            onClick={() => handleClickDelete()}
           >
             <img src="/assets/close_icon.svg" alt="close button" />
           </Button>
@@ -87,6 +68,7 @@ function Portal({ index, relationship }) {
       <div className="hidden group-hover:flex hover:flex">
         {isEditMode && <PortalFooter index={index} />}
       </div>
+      {showDeleteRelationshipModal && <DeleteRelationshipModal />}
     </div>
   );
 }

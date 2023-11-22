@@ -25,6 +25,10 @@ export const showCreateDBModalAtom = atom(false);
 export const showAddDocumentModalAtom = atom(false);
 export const showDeleteDocumentModalAtom = atom(false);
 export const showRelationshipModalAtom = atom(false);
+export const showDeleteDBModalAtom = atom(false);
+export const deleteTargetDBIdAtom = atom(null);
+export const showDeleteRelationshipModalAtom = atom(false);
+export const deleteTargetRelationshipAtom = atom(null);
 export const isLastDocumentAtom = atom(false);
 
 export const fieldsAtom = atom([]);

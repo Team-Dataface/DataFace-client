@@ -68,7 +68,7 @@ CreateDBInputList.propTypes = {
       fieldName: PropTypes.string.isRequired,
       fieldType: PropTypes.string.isRequired,
     }),
-  ).isRequired,
+  ),
   updateFieldName: PropTypes.func,
   updateFieldType: PropTypes.func,
   handleClickDeleteField: PropTypes.func,

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import fetchData from "../utils/axios";
@@ -14,11 +13,14 @@ import {
   isInitialAtom,
   userAtom,
   showCreateDBModalAtom,
+  showDeleteDBModalAtom,
+  deleteTargetDBIdAtom,
 } from "../atoms/atoms";
 
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
 import Loading from "./shared/Loading";
+import DeleteDBModal from "./Modals/DeleteDatabase/DeleteDBModal";
 
 function Sidebar() {
   const queryClient = useQueryClient();
@@ -26,6 +28,10 @@ function Sidebar() {
   const { userId, username } = useAtomValue(userAtom);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const [isInitial, setIsInitial] = useAtom(isInitialAtom);
+  const [showDeleteDBModal, setShowDeleteDBModal] = useAtom(
+    showDeleteDBModalAtom,
+  );
+  const setDeleteTargetDBId = useSetAtom(deleteTargetDBIdAtom);
   const [showCreateDBModal, setShowCreateDBModal] = useAtom(
     showCreateDBModalAtom,
   );
@@ -63,34 +69,13 @@ function Sidebar() {
     },
   );
 
-  async function deleteDatabase(databaseId) {
-    const response = await fetchData(
-      "DELETE",
-      `/users/${userId}/databases/${databaseId}`,
-    );
-
-    return response.data.databases;
-  }
-
-  const { mutate: fetchDeleteDB } = useMutation(deleteDatabase, {
-    onSuccess: result => {
-      if (databases.length === 1) {
-        setCurrentDocIndex(0);
-        setCurrentDBName("");
-      } else {
-        setCurrentDBId(result[0]._id);
-        setCurrentDBName(result[0].name);
-      }
-
-      queryClient.refetchQueries(["userDbList"]);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
-
   if (isLoading) {
     return <Loading />;
+  }
+
+  function clickHandleDelete(targetId) {
+    setDeleteTargetDBId(targetId);
+    setShowDeleteDBModal(true);
   }
 
   function renderDatabaseList() {
@@ -137,7 +122,7 @@ function Sidebar() {
             </div>
           </Button>
           <Button
-            onClick={() => fetchDeleteDB(element._id)}
+            onClick={() => clickHandleDelete(element._id)}
             disabled={isEditMode}
           >
             <img className="mr-2" src="/assets/bin_icon.svg" alt="bin icon" />
@@ -179,6 +164,7 @@ function Sidebar() {
         </Button>
       </div>
       {showCreateDBModal && <CreateDBModal />}
+      {showDeleteDBModal && <DeleteDBModal databases={databases} />}
     </div>
   );
 }
