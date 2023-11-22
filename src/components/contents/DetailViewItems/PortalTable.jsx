@@ -68,7 +68,11 @@ function PortalTable({ index, relationship }) {
   }
 
   if (!foreignDocuments || foreignDocuments.length === 0) {
-    return null;
+    return (
+      <div className="flex justify-center items-center w-[130px] h-full bg-light-grey">
+        <span>no result</span>
+      </div>
+    );
   }
 
   return (
@@ -94,20 +98,7 @@ function PortalTable({ index, relationship }) {
             );
           })}
         </tr>
-        {!foreignDocuments.length ? (
-          <tr key="no-result" className="flex items-center justify-center">
-            {relationship.foreignFieldsToDisplay.map(element => {
-              return (
-                <td
-                  key={element}
-                  className="w-[130px] h-10 border border-dark-grey text-center"
-                >
-                  N/A
-                </td>
-              );
-            })}
-          </tr>
-        ) : (
+        {foreignDocuments.length &&
           foreignDocuments.map((element, fieldIndex) => {
             return (
               <tr
@@ -126,8 +117,7 @@ function PortalTable({ index, relationship }) {
                 })}
               </tr>
             );
-          })
-        )}
+          })}
       </tbody>
     </table>
   );
