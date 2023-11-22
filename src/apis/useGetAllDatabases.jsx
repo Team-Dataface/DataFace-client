@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
@@ -15,6 +16,7 @@ import {
 import Loading from "../components/shared/Loading";
 
 function useGetAllDatabases() {
+  const navigate = useNavigate();
   const { userId } = useAtomValue(userAtom);
 
   const [isInitial, setIsInitial] = useAtom(isInitialAtom);
@@ -38,7 +40,13 @@ function useGetAllDatabases() {
         setIsInitial(false);
       }
 
+      if (!result.length) {
+        navigate("/dashboard/nodatabase");
+        return;
+      }
+
       setDatabases(result);
+      navigate("/dashboard/listview");
     },
     onFailure: () => {
       console.log("sending user to errorpage");
