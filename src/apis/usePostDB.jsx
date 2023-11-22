@@ -12,7 +12,7 @@ import {
 } from "../atoms/atoms";
 import Loading from "../components/shared/Loading";
 
-function useMutatePostDB() {
+function usePostDB() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { userId } = useAtomValue(userAtom);
@@ -56,4 +56,4 @@ function useMutatePostDB() {
   return fetchNewDatabase;
 }
 
-export default useMutatePostDB;
+export default usePostDB;

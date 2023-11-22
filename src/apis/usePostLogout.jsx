@@ -8,7 +8,7 @@ import { userAtom } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
 
-function useMutateLogout() {
+function useLogout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -36,4 +36,4 @@ function useMutateLogout() {
   return fetchLogout;
 }
 
-export default useMutateLogout;
+export default useLogout;

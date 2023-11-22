@@ -6,7 +6,7 @@ import { currentDBIdAtom, userAtom } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
 
-function useMutatePostRelationship() {
+function usePostRelationship() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
@@ -35,4 +35,4 @@ function useMutatePostRelationship() {
   return fetchNewRelationship;
 }
 
-export default useMutatePostRelationship;
+export default usePostRelationship;

@@ -1,8 +1,8 @@
-import useMutateLogout from "../../apis/useMutateLogout";
+import usePostLogout from "../../apis/usePostLogout";
 import Button from "../shared/Button";
 
 function LogoutButton() {
-  const fetchLogout = useMutateLogout();
+  const fetchLogout = usePostLogout();
   return (
     <div className="flex justify-center w-20">
       <Button

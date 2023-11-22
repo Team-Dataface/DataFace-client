@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 
 import { showAddDocumentModalAtom } from "../../../atoms/atoms";
-import useMutatePostDocument from "../../../apis/useMutatePostDocument";
+import usePostDocument from "../../../apis/usePostDocument";
 
 import Button from "../../shared/Button";
 import Modal from "../../shared/Modal";
@@ -12,7 +12,7 @@ import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
 
 function AddDocumentModal() {
-  const fetchNewDocument = useMutatePostDocument();
+  const fetchNewDocument = usePostDocument();
   const setShowAddDocumentModal = useSetAtom(showAddDocumentModalAtom);
 
   return (

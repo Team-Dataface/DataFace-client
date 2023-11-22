@@ -1,8 +1,8 @@
-import useMutateGoogleLogin from "../apis/useMutateGoogleLogin";
+import usePostGoogleLogin from "../apis/usePostGoogleLogin";
 import Button from "./shared/Button";
 
 function Login() {
-  const fetchGoogleLogin = useMutateGoogleLogin();
+  const fetchGoogleLogin = usePostGoogleLogin();
   return (
     <div className="flex flex-col justify-center items-center h-full p-10">
       <img

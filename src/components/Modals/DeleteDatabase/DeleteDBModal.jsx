@@ -9,13 +9,13 @@ import Button from "../../shared/Button";
 import Content from "../SharedItems/Content";
 import ContentWrapper from "../SharedItems/ContentWrapper";
 import Message from "../SharedItems/Message";
-import useMutateDeleteDB from "../../../apis/useMutateDeleteDB";
+import useDeleteDB from "../../../apis/useDeleteDB";
 
 function DeleteDBModal() {
   const deleteTargetDBId = useAtomValue(deleteTargetDBIdAtom);
   const setShowDeleteDBModal = useSetAtom(showDeleteDBModalAtom);
 
-  const fetchDeleteDB = useMutateDeleteDB();
+  const fetchDeleteDB = useDeleteDB();
 
   return (
     <Modal onClick={() => setShowDeleteDBModal(false)}>

@@ -14,7 +14,7 @@ import {
 
 import Loading from "../components/shared/Loading";
 
-function useMutateDeleteDB() {
+function useDeleteDB() {
   const queryClient = useQueryClient();
 
   const { userId } = useAtomValue(userAtom);
@@ -60,4 +60,4 @@ function useMutateDeleteDB() {
   return fetchDeleteDB;
 }
 
-export default useMutateDeleteDB;
+export default useDeleteDB;

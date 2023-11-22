@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from "jotai";
 
 import { relationshipStepAtom, relationDataAtom } from "../../../atoms/atoms";
-import useMutatePostRelationship from "../../../apis/useMutatePostRelationship";
+import usePostRelationship from "../../../apis/usePostRelationship";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -13,7 +13,7 @@ function StepThree() {
   const [relationData, setRelationData] = useAtom(relationDataAtom);
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
-  const fetchNewRelationship = useMutatePostRelationship();
+  const fetchNewRelationship = usePostRelationship();
 
   const targetDb = relationData.foreignDb;
 

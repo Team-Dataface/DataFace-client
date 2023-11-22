@@ -14,7 +14,7 @@ import {
 
 import Loading from "../components/shared/Loading";
 
-function useMutatePostDocument() {
+function usePostDocument() {
   const queryClient = useQueryClient();
 
   const { userId } = useAtomValue(userAtom);
@@ -62,4 +62,4 @@ function useMutatePostDocument() {
   return fetchNewDocument;
 }
 
-export default useMutatePostDocument;
+export default usePostDocument;

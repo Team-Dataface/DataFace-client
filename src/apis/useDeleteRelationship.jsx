@@ -12,7 +12,7 @@ import {
 
 import Loading from "../components/shared/Loading";
 
-function useMutateDeleteRelationship() {
+function useDeleteRelationship() {
   const queryClient = useQueryClient();
 
   const { userId } = useAtomValue(userAtom);
@@ -51,4 +51,4 @@ function useMutateDeleteRelationship() {
   return fetchDeleteRelationship;
 }
 
-export default useMutateDeleteRelationship;
+export default useDeleteRelationship;

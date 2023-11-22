@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 
 import { showDeleteRelationshipModalAtom } from "../../../atoms/atoms";
-import useMutateDeleteRelationship from "../../../apis/useMutateDeleteRelationship";
+import useDeleteRelationship from "../../../apis/useDeleteRelationship";
 
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
@@ -13,7 +13,7 @@ function DeleteRelationshipModal() {
   const setShowDeleteRelationshipModal = useSetAtom(
     showDeleteRelationshipModalAtom,
   );
-  const fetchDeleteRelationship = useMutateDeleteRelationship();
+  const fetchDeleteRelationship = useDeleteRelationship();
 
   return (
     <Modal onClick={() => setShowDeleteRelationshipModal(false)}>

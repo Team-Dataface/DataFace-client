@@ -11,7 +11,7 @@ import fetchData from "../utils/axios";
 
 import Loading from "../components/shared/Loading";
 
-function useMutateGoogleLogin() {
+function useGoogleLogin() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
@@ -54,4 +54,4 @@ function useMutateGoogleLogin() {
   return fetchGoogleLogin;
 }
 
-export default useMutateGoogleLogin;
+export default useGoogleLogin;

@@ -5,7 +5,7 @@ import {
   isLastDocumentAtom,
 } from "../../../atoms/atoms";
 
-import useMutateDeleteDocument from "../../../apis/useMutateDeleteDocument";
+import useDeleteDocument from "../../../apis/useDeleteDocument";
 
 import Modal from "../../shared/Modal";
 import Button from "../../shared/Button";
@@ -16,7 +16,7 @@ import Message from "../SharedItems/Message";
 function DeleteDocModal() {
   const [isLastDocument, setIsLastDocument] = useAtom(isLastDocumentAtom);
   const setShowDeleteDocumentModal = useSetAtom(showDeleteDocumentModalAtom);
-  const fetchDeleteDocument = useMutateDeleteDocument();
+  const fetchDeleteDocument = useDeleteDocument();
 
   function clickHandleCancel() {
     setShowDeleteDocumentModal(false);

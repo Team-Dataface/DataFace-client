@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSetAtom, useAtom } from "jotai";
 
 import { showCreateDBModalAtom, dbFieldsAtom } from "../../../atoms/atoms";
-import useMutatePostDB from "../../../apis/useMutatePostDB";
+import usePostDB from "../../../apis/usePostDB";
 
 import Modal from "../../shared/Modal";
 import ContentWrapper from "../SharedItems/ContentWrapper";
@@ -18,7 +18,7 @@ import Button from "../../shared/Button";
 import CONSTANT from "../../../constants/constant";
 
 function CreateDBModal() {
-  const fetchNewDatabase = useMutatePostDB();
+  const fetchNewDatabase = usePostDB();
   const [dbName, setdbName] = useState(null);
   const [fields, setFields] = useAtom(dbFieldsAtom);
 

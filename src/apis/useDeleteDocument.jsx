@@ -13,7 +13,7 @@ import {
   documentsIdsAtom,
 } from "../atoms/atoms";
 
-function useMutateDeleteDocument() {
+function useDeleteDocument() {
   const queryClient = useQueryClient();
   const { userId } = useAtomValue(userAtom);
 
@@ -50,4 +50,4 @@ function useMutateDeleteDocument() {
   return fetchDeleteDocument;
 }
 
-export default useMutateDeleteDocument;
+export default useDeleteDocument;
