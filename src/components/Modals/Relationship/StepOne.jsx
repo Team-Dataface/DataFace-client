@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import fetchData from "../../../utils/axios";
-
 import {
+  databasesAtom,
   currentDBIdAtom,
   relationshipStepAtom,
-  userAtom,
   relationDataAtom,
   targetDatabasesAtom,
 } from "../../../atoms/atoms";
@@ -16,43 +13,23 @@ import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
-import Loading from "../../shared/Loading";
 import DatabasesWizard from "./WizardItems/DatabasesWizard";
 
-function StepOne({ databaseName }) {
+function StepOne() {
   const [isNotSelected, setIsNotSelected] = useState(false);
 
-  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const relationData = useAtomValue(relationDataAtom);
+  const databases = useAtomValue(databasesAtom);
 
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
   const setTargetDatabases = useSetAtom(targetDatabasesAtom);
 
-  async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${userId}/databases`);
+  const filteredDbs = databases.filter(
+    database => database._id !== currentDBId,
+  );
 
-    return response.data.databases;
-  }
-
-  const { isLoading } = useQuery(["dbs"], getDatabaseList, {
-    enabled: !!userId,
-    onSuccess: result => {
-      const filteredDbs = result.filter(
-        database => database._id !== currentDBId,
-      );
-
-      setTargetDatabases(filteredDbs);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  setTargetDatabases(filteredDbs);
 
   function handleNextClick() {
     if (!relationData.foreignDbId) {
@@ -71,7 +48,7 @@ function StepOne({ databaseName }) {
         <p>Please choose a database that you would like to link with DBNAME</p>
       </Message>
       <Content>
-        <DatabasesWizard databaseName={databaseName} />
+        <DatabasesWizard />
       </Content>
       {isNotSelected && (
         <p className="mt-2 text-red text-sm">
