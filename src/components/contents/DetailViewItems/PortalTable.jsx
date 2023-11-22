@@ -48,7 +48,7 @@ function PortalTable({ index, relationship }) {
   }
 
   const { data: foreignDocuments, isLoading } = useQuery(
-    ["foreignDocuments1", currentDBId, currentDocIndex, relationship._id],
+    ["foreignDocuments", currentDBId, currentDocIndex, relationship._id],
     () => getForeignDocuments(index),
     {
       enabled:
