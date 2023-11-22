@@ -4,14 +4,25 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 import fetchData from "../utils/axios";
 
-import { currentDBIdAtom, userAtom, documentsNumAtom } from "../atoms/atoms";
+import {
+  currentDBIdAtom,
+  userAtom,
+  documentsNumAtom,
+  documentsIdsAtom,
+  changedDocAtom,
+  documentsAtom,
+} from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
 
 function useGetAllDocuments() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+
   const setDocumentsNum = useSetAtom(documentsNumAtom);
+  const setDocumentsIds = useSetAtom(documentsIdsAtom);
+  const setChangedDoc = useSetAtom(changedDocAtom);
+  const setDocuments = useSetAtom(documentsAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -23,12 +34,23 @@ function useGetAllDocuments() {
   }
 
   const { isLoading } = useQuery(
-    ["dbDocumentList", currentDBId],
+    ["DocumentsList", currentDBId],
     getDocumentsList,
     {
       retry: false,
       enabled: !!userId && !!currentDBId,
       onSuccess: result => {
+        const documentsId = [];
+
+        const docs = result.documents.map(document => {
+          documentsId.push(document._id);
+
+          return { documentId: document._id, fields: [] };
+        });
+
+        setDocuments(result);
+        setChangedDoc(docs);
+        setDocumentsIds(documentsId);
         setDocumentsNum(result.documents.length);
       },
       onFailure: () => {
@@ -39,7 +61,7 @@ function useGetAllDocuments() {
     },
   );
 
-  if (isLoading && currentDBId) {
+  if (isLoading) {
     return <Loading />;
   }
 }
