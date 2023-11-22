@@ -58,8 +58,8 @@ function DeleteRelationshipModal() {
         <Content>
           <Message>
             <span>
-              Deleting this portal will also disconnect the associated
-              relationship. Are you sure you want to proceed?
+              Deleting this portal will also remove the existing relationships.
+              Are you sure you want to proceed?
             </span>
           </Message>
         </Content>
