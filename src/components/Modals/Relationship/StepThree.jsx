@@ -1,14 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
-import fetchData from "../../../utils/axios";
-
-import {
-  currentDBIdAtom,
-  userAtom,
-  relationshipStepAtom,
-  relationDataAtom,
-} from "../../../atoms/atoms";
+import { relationshipStepAtom, relationDataAtom } from "../../../atoms/atoms";
+import useMutateRelationship from "../../../apis/useMutateRelationship";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -18,26 +11,11 @@ import FieldWizard from "./WizardItems/FieldsWizard";
 
 function StepThree() {
   const [relationData, setRelationData] = useAtom(relationDataAtom);
-  const { userId } = useAtomValue(userAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
+  const fetchNewRelationship = useMutateRelationship();
+
   const targetDb = relationData.foreignDb;
-
-  async function setRelationShip(updatedRelationData) {
-    await fetchData(
-      "POST",
-      `/users/${userId}/databases/${currentDBId}/relationships`,
-      updatedRelationData,
-    );
-  }
-
-  const { mutate: fetchRelationshipUpdate } = useMutation(setRelationShip, {
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
 
   function handleBackClick() {
     setRelationData({
@@ -53,7 +31,7 @@ function StepThree() {
   function handleNextClick() {
     const { foreignDb, ...updatedRelationData } = relationData;
 
-    fetchRelationshipUpdate(updatedRelationData);
+    fetchNewRelationship(updatedRelationData);
     setRelationshipStep("Done");
   }
 
