@@ -14,6 +14,7 @@ export const isRelationshipAtom = atom(false);
 
 export const relationshipsDataAtom = atom(null);
 export const documentsIdsAtom = atom([]);
+export const documentsNumAtom = atom(0);
 
 export const isInitialAtom = atom(true);
 export const changedDocAtom = atom([]);
