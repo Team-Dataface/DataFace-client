@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "jotai";
-import { showAddDocumentModalAtom } from '../../../../atoms/atoms';
+import { showDeleteDBModalAtom } from "../../../../atoms/atoms";
 
-import AddDocModal from "../../../../components/Modals/AddNewDocument/AddDocModal";
+import DeleteDBModal from "../../../../components/Modals/DeleteDatabase/DeleteDBModal";
 
 const queryClient = new QueryClient();
 
 const mocks = {
-  setShowAddDocumentModal: vi.fn(),
+  setShowDeleteDBModal: vi.fn(),
 };
 
 vi.mock("jotai", async () => {
@@ -17,20 +17,20 @@ vi.mock("jotai", async () => {
   return {
     ...actualJotai,
     useSetAtom: (atom) => {
-      if (atom === showAddDocumentModalAtom) {
-        return mocks.setShowAddDocumentModal;
+      if (atom === showDeleteDBModalAtom) {
+        return mocks.setShowDeleteDBModal;
       }
       return vi.fn();
     },
   };
 });
 
-describe("AddDocModal", () => {
+describe("DeleteDBModal", () => {
   beforeEach(() => {
     render(
       <QueryClientProvider client={queryClient}>
         <Provider>
-          <AddDocModal />
+          <DeleteDBModal />
         </Provider>
       </QueryClientProvider>
     );
@@ -41,15 +41,15 @@ describe("AddDocModal", () => {
   });
 
   it("renders title well", () => {
-    expect(screen.getByText("Add New Document")).toBeInTheDocument;
+    expect(screen.getByText("Are you sure you want to permanently delete this database?")).toBeInTheDocument;
   });
 
-  it("renders add button and submit button well", () => {
-    const closeButton = screen.getByAltText("close button");
-    const submitButton = screen.getByText("Submit");
+  it("closes the modal when cancel button is clicked", () => {
+    const cancelButton = screen.getByText("Cancel");
 
-    expect(closeButton).toBeInTheDocument;
-    expect(submitButton).toBeInTheDocument;
+    fireEvent.click(cancelButton);
+
+    expect(mocks.setShowDeleteDBModal).toHaveBeenCalledWith(false);
   });
 
   it("closes the modal when close button is clicked", () => {
@@ -57,6 +57,6 @@ describe("AddDocModal", () => {
 
     fireEvent.click(closeButton);
 
-    expect(mocks.setShowAddDocumentModal).toHaveBeenCalledWith(false);
+    expect(mocks.setShowDeleteDBModal).toHaveBeenCalledWith(false);
   });
 });

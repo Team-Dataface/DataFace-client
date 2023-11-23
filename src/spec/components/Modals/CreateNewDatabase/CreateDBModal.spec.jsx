@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "jotai";
 import { showCreateDBModalAtom } from '../../../../atoms/atoms';
 
-import CreateDBModal from "../../../../components/Modals/CreateNewDatabase/CreateDBModal"
+import CreateDBModal from "../../../../components/Modals/CreateNewDatabase/CreateDBModal";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +44,7 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-describe("AddDocModal", () => {
+describe("CreateDBModal", () => {
   beforeEach(() => {
     render(
       <QueryClientProvider client={queryClient}>
