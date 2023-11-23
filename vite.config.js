@@ -12,7 +12,13 @@ export default defineConfig({
     environment: "jsdom",
     coverage: {
       all: true,
-      exclude: ["*.config.js", "*.cjs", "**/main.jsx"],
+      exclude: [
+        "*.config.js",
+        "*.cjs",
+        "**/main.jsx",
+        "**/atoms.js",
+        "**/constant.js",
+      ],
     },
   },
 });
