@@ -39,6 +39,7 @@ function CreateDBInputList({ updateFieldName }) {
         <InputWrapper>
           <div className="flex flex-row justify-center items-center">
             <input
+              data-testid="field name"
               className="flex w-full h-7 mr-3 rounded-md text-center"
               maxLength={MAX_FIELD_NAME_LENGTH}
               value={element.name}
