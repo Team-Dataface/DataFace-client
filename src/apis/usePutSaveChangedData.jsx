@@ -13,7 +13,7 @@ import {
 
 import fetchData from "../utils/axios";
 
-function usePostSaveChangedData() {
+function usePutSaveChangedData() {
   const queryClient = useQueryClient();
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
@@ -67,4 +67,4 @@ function usePostSaveChangedData() {
   return fetchSaveChangedData;
 }
 
-export default usePostSaveChangedData;
+export default usePutSaveChangedData;

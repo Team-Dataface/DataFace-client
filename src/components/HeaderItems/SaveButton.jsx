@@ -1,14 +1,14 @@
 import { useAtom, useAtomValue } from "jotai";
 
 import { isEditModeAtom, isRelationshipAtom } from "../../atoms/atoms";
-import usePostSaveChangedData from "../../apis/usePostSaveChangedData";
+import usePutSaveChangedData from "../../apis/usePutSaveChangedData";
 
 import Button from "../shared/Button";
 
 function SaveButton() {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
   const isRelationship = useAtomValue(isRelationshipAtom);
-  const fetchSaveChangedData = usePostSaveChangedData();
+  const fetchSaveChangedData = usePutSaveChangedData();
 
   return (
     <div
