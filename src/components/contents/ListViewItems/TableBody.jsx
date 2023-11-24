@@ -109,7 +109,7 @@ function TableBody({ documents }) {
                     id={field._id}
                     rows="1"
                     defaultValue={field.fieldValue}
-                    disabled={!isEditMode}
+                    style={{ pointerEvents: isEditMode ? "auto" : "none" }}
                     onChange={event => handleOnChange(event, document._id)}
                   />
                 ) : (
@@ -122,11 +122,14 @@ function TableBody({ documents }) {
                     id={field._id}
                     type={field.fieldType}
                     defaultValue={field.fieldValue}
-                    disabled={
-                      field.fieldType === "Date modified" ||
-                      field.fieldType === "Date created" ||
-                      !isEditMode
-                    }
+                    style={{
+                      pointerEvents:
+                        field.fieldType === "Date modified" ||
+                        field.fieldType === "Date created" ||
+                        !isEditMode
+                          ? "none"
+                          : "auto",
+                    }}
                     onChange={event => handleOnChange(event, document._id)}
                   />
                 )}
