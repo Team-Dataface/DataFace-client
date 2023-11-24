@@ -19,7 +19,7 @@ import CONSTANT from "../../../constants/constant";
 
 function CreateDBModal() {
   const fetchNewDatabase = usePostDB();
-  const [dbName, setdbName] = useState(null);
+  const [DBName, setDBName] = useState(null);
   const [fields, setFields] = useAtom(dbFieldsAtom);
 
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
@@ -54,7 +54,7 @@ function CreateDBModal() {
     const names = [];
     let allNamesFilled = true;
 
-    if (!dbName) {
+    if (!DBName) {
       setIsDBNameEmpty(true);
       allNamesFilled = false;
 
@@ -81,7 +81,7 @@ function CreateDBModal() {
       }
 
       const newDatabase = {
-        dbName,
+        DBName,
         fields,
       };
 
@@ -94,7 +94,7 @@ function CreateDBModal() {
     setIsFieldNameEmpty(false);
     setIsFieldNameDuplicate(false);
 
-    setdbName(event.target.value);
+    setDBName(event.target.value);
   }
 
   return (
