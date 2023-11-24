@@ -38,9 +38,6 @@ function useDeleteRelationship() {
         queryClient.refetchQueries(["Relationships", currentDBId]);
         setShowDeleteRelationshipModal(false);
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
     },
   );
 

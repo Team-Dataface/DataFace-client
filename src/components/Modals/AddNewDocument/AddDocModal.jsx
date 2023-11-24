@@ -12,8 +12,9 @@ import Content from "../SharedItems/Content";
 import InputsArea from "../SharedItems/InputsArea";
 
 function AddDocumentModal() {
-  const fetchNewDocument = usePostDocument();
   const setShowAddDocumentModal = useSetAtom(showAddDocumentModalAtom);
+
+  const fetchNewDocument = usePostDocument();
 
   return (
     <Modal onClick={() => setShowAddDocumentModal(false)}>

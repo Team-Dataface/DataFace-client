@@ -21,9 +21,6 @@ function usePostRelationship() {
   const { mutate: fetchNewRelationship, isLoading } = useMutation(
     setRelationShip,
     {
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
       refetchOnWindowFocus: false,
     },
   );

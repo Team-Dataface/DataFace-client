@@ -60,9 +60,6 @@ function useGetForeignDocuments(index, relationship) {
       onSuccess: result => {
         setForeignDocuments(result);
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
     },
   );
 

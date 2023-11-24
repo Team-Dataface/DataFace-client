@@ -44,9 +44,6 @@ function usePostDB() {
 
       setShowCreateDBModal(false);
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
   });
 
   if (isLoading) {

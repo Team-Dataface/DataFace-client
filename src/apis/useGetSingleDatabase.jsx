@@ -27,9 +27,6 @@ function useGetSingleDatabase() {
     onSuccess: result => {
       setFields(result.fields);
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
     refetchOnWindowFocus: false,
   });
 

@@ -51,7 +51,7 @@ function usePostDocument() {
       setShowAddDocumentModal(false);
     },
     onFailure: () => {
-      console.log("sending user to errorpage");
+      setShowAddDocumentModal(false);
     },
   });
 
