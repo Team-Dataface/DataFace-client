@@ -10,7 +10,6 @@ import {
   documentsNumAtom,
   documentsIdsAtom,
   changedDocAtom,
-  documentsAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -22,7 +21,6 @@ function useGetAllDocuments() {
   const setDocumentsNum = useSetAtom(documentsNumAtom);
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
-  const setDocuments = useSetAtom(documentsAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -33,7 +31,7 @@ function useGetAllDocuments() {
     return response.data.database;
   }
 
-  const { isLoading } = useQuery(
+  const { data: documents, isLoading } = useQuery(
     ["DocumentsList", currentDBId],
     getDocumentsList,
     {
@@ -48,7 +46,6 @@ function useGetAllDocuments() {
           return { documentId: document._id, fields: [] };
         });
 
-        setDocuments(result);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
         setDocumentsNum(result.documents.length);
@@ -64,6 +61,8 @@ function useGetAllDocuments() {
   if (isLoading) {
     return <Loading />;
   }
+
+  return { documents };
 }
 
 export default useGetAllDocuments;
