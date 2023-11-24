@@ -1,74 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import fetchData from "../../../utils/axios";
 
 import {
   isEditModeAtom,
   draggingElementAtom,
-  currentDocIndexAtom,
-  docDataAtom,
-  primaryFieldAtom,
-  userAtom,
-  currentDBIdAtom,
-  relationshipsDataAtom,
+  foreignDocumentsAtom,
 } from "../../../atoms/atoms";
-
-import Loading from "../../shared/Loading";
+import useGetForeignDocuments from "../../../apis/useGetForeignDocuments";
 
 function PortalTable({ index, relationship }) {
-  const { userId } = useAtomValue(userAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
-
   const isEditMode = useAtomValue(isEditModeAtom);
   const draggingElement = useAtomValue(draggingElementAtom);
-  const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const docData = useAtomValue(docDataAtom);
-  const primaryField = useAtomValue(primaryFieldAtom);
-  const relationshipsData = useAtomValue(relationshipsDataAtom);
+  const foreignDocuments = useAtomValue(foreignDocumentsAtom);
 
-  async function getForeignDocuments(relationshipsIndex) {
-    let queryValue = "";
-
-    docData[currentDocIndex]?.fields.forEach(element => {
-      if (primaryField[relationshipsIndex] === element.fieldName) {
-        queryValue = element.fieldValue.trim();
-      }
-    });
-
-    if (relationship._id) {
-      const response = await fetchData(
-        "GET",
-        `users/${userId}/databases/${currentDBId}/relationships/${relationship._id}?primaryFieldValue=${queryValue}`,
-      );
-
-      return response.data.displayedDocuments;
-    }
-
-    return [];
-  }
-
-  const { data: foreignDocuments, isLoading } = useQuery(
-    ["foreignDocuments1", currentDBId, currentDocIndex, relationship._id],
-    () => getForeignDocuments(index),
-    {
-      enabled:
-        !!userId &&
-        !!currentDBId &&
-        currentDocIndex !== undefined &&
-        !!relationshipsData,
-      refetchOnWindowFocus: false,
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
-    },
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  useGetForeignDocuments(index, relationship);
 
   if (!foreignDocuments || foreignDocuments.length === 0) {
-    return null;
+    return (
+      <div className="flex justify-center items-center w-[130px] h-full bg-light-grey">
+        <span>no result</span>
+      </div>
+    );
   }
 
   return (
@@ -94,20 +45,7 @@ function PortalTable({ index, relationship }) {
             );
           })}
         </tr>
-        {!foreignDocuments.length ? (
-          <tr key="no-result" className="flex items-center justify-center">
-            {relationship.foreignFieldsToDisplay.map(element => {
-              return (
-                <td
-                  key={element}
-                  className="w-[130px] h-10 border border-dark-grey text-center"
-                >
-                  N/A
-                </td>
-              );
-            })}
-          </tr>
-        ) : (
+        {foreignDocuments.length &&
           foreignDocuments.map((element, fieldIndex) => {
             return (
               <tr
@@ -126,8 +64,7 @@ function PortalTable({ index, relationship }) {
                 })}
               </tr>
             );
-          })
-        )}
+          })}
       </tbody>
     </table>
   );

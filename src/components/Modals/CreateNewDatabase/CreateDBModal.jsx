@@ -1,17 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetAtom, useAtomValue, useAtom } from "jotai";
+import { useSetAtom, useAtom } from "jotai";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import fetchData from "../../../utils/axios";
-import {
-  currentDBIdAtom,
-  isListViewAtom,
-  currentDBNameAtom,
-  userAtom,
-  showCreateDBModalAtom,
-  dbFieldsAtom,
-} from "../../../atoms/atoms";
+import { showCreateDBModalAtom, dbFieldsAtom } from "../../../atoms/atoms";
+import usePostDB from "../../../apis/usePostDB";
 
 import Modal from "../../shared/Modal";
 import ContentWrapper from "../SharedItems/ContentWrapper";
@@ -23,25 +14,18 @@ import InputsArea from "../SharedItems/InputsArea";
 import InputWrapper from "../SharedItems/InputWrapper";
 import CreateDBInputList from "./CreateDBInputList";
 import Button from "../../shared/Button";
-import Loading from "../../shared/Loading";
 
 import CONSTANT from "../../../constants/constant";
 
 function CreateDBModal() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const { userId } = useAtomValue(userAtom);
-
-  const [dbName, setdbName] = useState(null);
+  const fetchNewDatabase = usePostDB();
+  const [DBName, setDBName] = useState(null);
   const [fields, setFields] = useAtom(dbFieldsAtom);
 
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
   const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
   const [isFieldNameDuplicate, setIsFieldNameDuplicate] = useState(false);
 
-  const setIsListView = useSetAtom(isListViewAtom);
-  const setCurrentDBId = useSetAtom(currentDBIdAtom);
-  const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
 
   function updateFieldName(index, event) {
@@ -66,38 +50,11 @@ function CreateDBModal() {
     ]);
   }
 
-  async function fetchDatabase(newDatabase) {
-    const response = await fetchData(
-      "POST",
-      `/users/${userId}/databases`,
-      newDatabase,
-    );
-
-    return response;
-  }
-
-  const { mutate: fetchDatabaseSave, isLoading } = useMutation(fetchDatabase, {
-    onSuccess: result => {
-      setCurrentDBId(result.data.newDatabase._id);
-      setCurrentDBName(result.data.newDatabase.name);
-      setIsListView(true);
-
-      queryClient.refetchQueries(["userDbList"]);
-
-      navigate("/dashboard/listview");
-
-      setShowCreateDBModal(false);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
-
   function handleClickSave() {
     const names = [];
     let allNamesFilled = true;
 
-    if (!dbName) {
+    if (!DBName) {
       setIsDBNameEmpty(true);
       allNamesFilled = false;
 
@@ -124,11 +81,11 @@ function CreateDBModal() {
       }
 
       const newDatabase = {
-        dbName,
+        DBName,
         fields,
       };
 
-      fetchDatabaseSave(newDatabase);
+      fetchNewDatabase(newDatabase);
     }
   }
 
@@ -137,11 +94,7 @@ function CreateDBModal() {
     setIsFieldNameEmpty(false);
     setIsFieldNameDuplicate(false);
 
-    setdbName(event.target.value);
-  }
-
-  if (isLoading) {
-    return <Loading />;
+    setDBName(event.target.value);
   }
 
   return (

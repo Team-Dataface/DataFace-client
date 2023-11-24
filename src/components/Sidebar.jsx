@@ -1,33 +1,30 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
-import fetchData from "../utils/axios";
-
 import {
+  databasesAtom,
   currentDBIdAtom,
   currentDBNameAtom,
   currentDocIndexAtom,
   isEditModeAtom,
   isRelationshipAtom,
   relationshipsDataAtom,
-  isInitialAtom,
   userAtom,
   showCreateDBModalAtom,
   showDeleteDBModalAtom,
   deleteTargetDBIdAtom,
 } from "../atoms/atoms";
 
+import useGetAllDatabases from "../apis/useGetAllDatabases";
+
 import Button from "./shared/Button";
 import CreateDBModal from "./Modals/CreateNewDatabase/CreateDBModal";
-import Loading from "./shared/Loading";
 import DeleteDBModal from "./Modals/DeleteDatabase/DeleteDBModal";
 
 function Sidebar() {
   const queryClient = useQueryClient();
-
-  const { userId, username } = useAtomValue(userAtom);
+  const { username } = useAtomValue(userAtom);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
-  const [isInitial, setIsInitial] = useAtom(isInitialAtom);
   const [showDeleteDBModal, setShowDeleteDBModal] = useAtom(
     showDeleteDBModalAtom,
   );
@@ -40,38 +37,11 @@ function Sidebar() {
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
 
+  const databases = useAtomValue(databasesAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
   const isRelationship = useAtomValue(isRelationshipAtom);
 
-  async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${userId}/databases`);
-
-    return response.data.databases;
-  }
-
-  const { data: databases, isLoading } = useQuery(
-    ["userDbList"],
-    getDatabaseList,
-    {
-      enabled: !!userId,
-      onSuccess: result => {
-        if (result.length && isInitial) {
-          setCurrentDBId(result[0]._id);
-          setCurrentDBName(result[0].name);
-          setIsInitial(false);
-        }
-      },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-    },
-  );
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  useGetAllDatabases();
 
   function clickHandleDelete(targetId) {
     setDeleteTargetDBId(targetId);
@@ -93,8 +63,7 @@ function Sidebar() {
       setCurrentDBName(clickedDB);
       setRelationshipsData(null);
 
-      queryClient.refetchQueries(["userDb"]);
-      queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
+      queryClient.refetchQueries(["DocumentsList", clickedDBId]);
     }
 
     return databases.map(element => {

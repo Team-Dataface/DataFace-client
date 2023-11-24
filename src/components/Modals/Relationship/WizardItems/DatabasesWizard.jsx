@@ -3,12 +3,17 @@
 import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
 
-import { relationDataAtom, targetDatabasesAtom } from "../../../../atoms/atoms";
+import {
+  relationDataAtom,
+  targetDatabasesAtom,
+  currentDBNameAtom,
+} from "../../../../atoms/atoms";
 
-function DatabasesWizard({ databaseName }) {
+function DatabasesWizard() {
   const [isSelected, setIsSelected] = useState("");
   const [relationData, setRelationData] = useAtom(relationDataAtom);
   const targetDatabases = useAtomValue(targetDatabasesAtom);
+  const currentDBName = useAtomValue(currentDBNameAtom);
 
   function handleDatabaseClick(id) {
     setIsSelected(id);
@@ -22,7 +27,7 @@ function DatabasesWizard({ databaseName }) {
   return (
     <div className="flex flex-col justify-around items-center w-60 h-auto">
       <div className="flex justify-center items-center w-full p-2 border-2 rounded-lg bg-blue bg-opacity-50">
-        <p>{databaseName}</p>
+        <p>{currentDBName}</p>
       </div>
       <div className="border border-blue border-dashed h-16"></div>
       <div className="flex flex-col items-center w-full max-h-[190px] border-2 rounded-lg overflow-y-scroll">

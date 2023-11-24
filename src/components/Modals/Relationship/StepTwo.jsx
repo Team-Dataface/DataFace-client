@@ -1,14 +1,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
-import fetchData from "../../../utils/axios";
-
 import {
+  databasesAtom,
   currentDBIdAtom,
-  userAtom,
   relationshipStepAtom,
   relationDataAtom,
 } from "../../../atoms/atoms";
@@ -17,36 +14,17 @@ import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
 import Message from "../SharedItems/Message";
 import FieldWizard from "./WizardItems/FieldsWizard";
-import Loading from "../../shared/Loading";
 
 function StepTwo() {
   const [isNotSelected, setIsNotSelected] = useState(false);
   const [relationData, setRelationData] = useAtom(relationDataAtom);
 
-  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const databases = useAtomValue(databasesAtom);
 
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
 
-  const databases = {};
-
-  async function getDatabaseList() {
-    const response = await fetchData("GET", `users/${userId}/databases`);
-
-    return response.data.databases;
-  }
-
-  const { data, isLoading } = useQuery(["dbs"], getDatabaseList, {
-    enabled: !!userId,
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const stepTwoSetUpData = {};
 
   function handleBackClick() {
     setRelationData({
@@ -67,18 +45,18 @@ function StepTwo() {
 
     setRelationData({
       ...relationData,
-      foreignDb: databases.targetDb,
+      foreignDb: stepTwoSetUpData.targetDb,
     });
 
     setRelationshipStep("stepThree");
   }
 
-  data.forEach(database => {
+  databases.forEach(database => {
     if (database._id === currentDBId) {
-      databases.baseDb = database;
+      stepTwoSetUpData.baseDb = database;
     }
     if (database._id === relationData.foreignDbId) {
-      databases.targetDb = database;
+      stepTwoSetUpData.targetDb = database;
     }
   });
 
@@ -90,11 +68,11 @@ function StepTwo() {
           Please choose one field from each Database that you would like to link
         </p>
       </Message>
-      {databases && (
+      {stepTwoSetUpData && (
         <div className="flex justify-center items-start h-full">
           <FieldWizard
-            fields={databases.baseDb.documents[0].fields}
-            databaseName={databases.baseDb.name}
+            fields={stepTwoSetUpData.baseDb.documents[0].fields}
+            databaseName={stepTwoSetUpData.baseDb.name}
             databaseType="base"
           />
           <div className="flex items-center h-[160px] my-10">
@@ -107,15 +85,15 @@ function StepTwo() {
             ></div>
           </div>
           <FieldWizard
-            fields={databases.targetDb.documents[0].fields}
-            databaseName={databases.targetDb.name}
+            fields={stepTwoSetUpData.targetDb.documents[0].fields}
+            databaseName={stepTwoSetUpData.targetDb.name}
             databaseType="target"
           />
         </div>
       )}
       <Message>
         <p>
-          {`Documents within ${databases.targetDb.name} will be automatically queried and displayed`}
+          {`Documents within ${stepTwoSetUpData.targetDb.name} will be automatically queried and displayed`}
         </p>
         <p>{`based on the match between the ${relationData.primaryFieldName} field and the ${relationData.foreignFieldName} field`}</p>
       </Message>

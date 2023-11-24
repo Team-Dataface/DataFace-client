@@ -1,54 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useSetAtom } from "jotai";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-
-import fetchData from "../utils/axios";
-import { firebaseAuth } from "../app/firebaseAuth";
-import useLoading from "../utils/useLoading";
-
-import { userAtom } from "../atoms/atoms";
-
+import usePostGoogleLogin from "../apis/usePostGoogleLogin";
 import Button from "./shared/Button";
-import Loading from "./shared/Loading";
 
 function Login() {
-  const navigate = useNavigate();
-  const googleProvider = new GoogleAuthProvider();
-
-  const setUser = useSetAtom(userAtom);
-
-  async function handleGoogleLogin() {
-    const result = await signInWithPopup(firebaseAuth, googleProvider);
-
-    const userInfoObject = {
-      email: result.user.email,
-      username: result.user.displayName,
-    };
-
-    const response = await fetchData("POST", "/auth/login", userInfoObject);
-
-    return response;
-  }
-
-  const { mutate: fetchLogin, isLoading } = useMutation(handleGoogleLogin, {
-    onSuccess: result => {
-      const { data } = result;
-
-      setUser(data.userInfo);
-      navigate("/dashboard");
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-  });
-
-  const loadingTimeout = useLoading(isLoading);
-
-  if (loadingTimeout) {
-    return <Loading />;
-  }
-
+  const fetchGoogleLogin = usePostGoogleLogin();
   return (
     <div className="flex flex-col justify-center items-center h-full p-10">
       <img
@@ -61,7 +15,7 @@ function Login() {
       </h1>
       <Button
         className="flex items-center w-[230px] h-[55px] p-1 rounded-[5px] bg-google-blue drop-shadow-md hover:bg-google-blue-hover"
-        onClick={fetchLogin}
+        onClick={() => fetchGoogleLogin()}
       >
         <>
           <div className="flex justify-center items-center w-[48px] h-[48px] p-15 rounded-[5px] bg-white">

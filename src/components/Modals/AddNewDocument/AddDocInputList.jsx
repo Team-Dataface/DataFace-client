@@ -1,18 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { useAtomValue, useAtom } from "jotai";
+import { useAtom } from "jotai";
 
-import fetchData from "../../../utils/axios";
 import getTodaysDate from "../../../utils/getTodaysDate";
 
-import { currentDBIdAtom, userAtom, fieldsAtom } from "../../../atoms/atoms";
+import { fieldsAtom } from "../../../atoms/atoms";
 
 import InputWrapper from "../SharedItems/InputWrapper";
-import Loading from "../../shared/Loading";
+import useGetSingleDatabase from "../../../apis/useGetSingleDatabase";
 
 function AddDocInputList() {
   const [fields, setFields] = useAtom(fieldsAtom);
-  const { userId } = useAtomValue(userAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
+
+  useGetSingleDatabase();
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
@@ -27,31 +25,7 @@ function AddDocInputList() {
     adjustTextareaHeight(event);
   }
 
-  async function getDatabase() {
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}`,
-    );
-
-    return response.data.database.documents[0];
-  }
-
-  const { data, isLoading } = useQuery(["userDb", currentDBId], getDatabase, {
-    enabled: !!userId && !!currentDBId,
-    onSuccess: result => {
-      setFields(result.fields);
-    },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  return data.fields.map((element, index) => {
+  return fields.map((element, index) => {
     return (
       <div key={element._id} className="flex w-[500px]">
         <span

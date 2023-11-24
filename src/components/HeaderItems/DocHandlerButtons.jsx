@@ -1,27 +1,25 @@
-import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-
-import fetchData from "../../utils/axios";
 
 import {
   currentDBIdAtom,
   currentDocIndexAtom,
   isEditModeAtom,
   documentsIdsAtom,
-  userAtom,
   showAddDocumentModalAtom,
   showDeleteDocumentModalAtom,
   isLastDocumentAtom,
+  documentsNumAtom,
 } from "../../atoms/atoms";
+
+import useGetAllDocuments from "../../apis/useGetAllDocuments";
 
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
-import Loading from "../shared/Loading";
 
 function DocHandlerButtons() {
-  const [documentsNum, setDocumentsNum] = useState(0);
+  const documentsNum = useAtomValue(documentsNumAtom);
   const queryClient = useQueryClient();
 
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
@@ -32,7 +30,6 @@ function DocHandlerButtons() {
     showDeleteDocumentModalAtom,
   );
 
-  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
   const documentsIds = useAtomValue(documentsIdsAtom);
@@ -40,6 +37,8 @@ function DocHandlerButtons() {
   const setIsLastDocument = useSetAtom(isLastDocumentAtom);
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
+
+  useGetAllDocuments();
 
   function navigateDown() {
     if (currentDocIndexShownToUser !== 1) {
@@ -69,36 +68,6 @@ function DocHandlerButtons() {
     }
 
     setShowDeleteDocumentModal(true);
-  }
-
-  async function getDocumentsList() {
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}`,
-    );
-
-    return response.data.database;
-  }
-
-  const { isLoading } = useQuery(
-    ["dbDocumentList", currentDBId],
-    getDocumentsList,
-    {
-      retry: false,
-      enabled: !!userId && !!currentDBId,
-      onSuccess: result => {
-        setDocumentsNum(result.documents.length);
-      },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-    },
-  );
-
-  if (isLoading && currentDBId) {
-    return <Loading />;
   }
 
   return (

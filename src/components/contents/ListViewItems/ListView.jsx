@@ -1,77 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
-import {
-  currentDBIdAtom,
-  isEditModeAtom,
-  documentsIdsAtom,
-  userAtom,
-  changedDocAtom,
-} from "../../../atoms/atoms";
+import { isEditModeAtom } from "../../../atoms/atoms";
 
-import fetchData from "../../../utils/axios";
-import useLoading from "../../../utils/useLoading";
+import useGetAllDocuments from "../../../apis/useGetAllDocuments";
 
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
-import Loading from "../../shared/Loading";
 
 function ListView() {
-  const { userId } = useAtomValue(userAtom);
-  const currentDBId = useAtomValue(currentDBIdAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
-  const setDocumentsIds = useSetAtom(documentsIdsAtom);
-  const setChangedDoc = useSetAtom(changedDocAtom);
-
-  async function getDocumentsList() {
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}`,
-    );
-
-    return response.data.database;
-  }
-
-  const { data, isLoading: isQueryLoading } = useQuery(
-    ["dbDocumentList", currentDBId],
-    getDocumentsList,
-    {
-      enabled: !!userId,
-      staleTime: Infinity,
-      onSuccess: result => {
-        const documentsId = [];
-
-        const docs = result.documents.map(document => {
-          documentsId.push(document._id);
-
-          return { documentId: document._id, fields: [] };
-        });
-
-        setChangedDoc(docs);
-        setDocumentsIds(documentsId);
-      },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
-    },
-  );
-
-  const loadingTimeout = useLoading(isQueryLoading);
-
-  if (loadingTimeout) {
-    return <Loading />;
-  }
+  const { documents } = useGetAllDocuments();
 
   return (
     <div
       className={`relative flex w-full h-[calc(100vh-145px)] p-3 bg-white drop-shadow-md overflow-y-auto
       ${isEditMode && "ring-4 ring-blue"}`}
     >
-      <table className="border-collapse w-full max-h-20 overflow-y-auto">
-        <TableHead fields={data.documents[0].fields} />
-        <TableBody documents={data.documents} />
-      </table>
+      {documents && (
+        <table className="border-collapse w-full max-h-20 overflow-y-auto">
+          <TableHead fields={documents?.documents[0].fields} />
+          <TableBody documents={documents?.documents} />
+        </table>
+      )}
     </div>
   );
 }
