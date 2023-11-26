@@ -10,6 +10,9 @@ import {
   documentsNumAtom,
   documentsIdsAtom,
   changedDocAtom,
+  docDataAtom,
+  primaryFieldAtom,
+  relationshipsDataAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -21,6 +24,9 @@ function useGetAllDocuments() {
   const setDocumentsNum = useSetAtom(documentsNumAtom);
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
+  const setDocData = useSetAtom(docDataAtom);
+  const setPrimaryField = useSetAtom(primaryFieldAtom);
+  const setRelationshipsData = useSetAtom(relationshipsDataAtom);
 
   async function getDocumentsList() {
     const response = await fetchData(
@@ -46,9 +52,24 @@ function useGetAllDocuments() {
           return { documentId: document._id, fields: [] };
         });
 
+        setDocData(result.documents);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
         setDocumentsNum(result.documents.length);
+
+        if (result.relationships?.length) {
+          setRelationshipsData(result.relationships);
+
+          const primaryFieldsList = result.relationships.map(element => {
+            return element.primaryFieldName;
+          });
+
+          setPrimaryField(primaryFieldsList);
+
+          return;
+        }
+
+        setRelationshipsData(null);
       },
       refetchOnWindowFocus: false,
       staleTime: Infinity,

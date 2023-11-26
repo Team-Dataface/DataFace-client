@@ -3,11 +3,15 @@ import { useAtomValue } from "jotai";
 import { isEditModeAtom, draggingElementAtom } from "../../../atoms/atoms";
 import useGetForeignDocuments from "../../../apis/useGetForeignDocument";
 
-function PortalTable({ index, relationship }) {
+function PortalTable({ index, relationship, documents }) {
   const isEditMode = useAtomValue(isEditModeAtom);
   const draggingElement = useAtomValue(draggingElementAtom);
 
-  const { foreignDocument } = useGetForeignDocuments(index, relationship);
+  const { foreignDocument } = useGetForeignDocuments(
+    index,
+    relationship,
+    documents,
+  );
 
   if (!foreignDocument || foreignDocument.length === 0) {
     return (

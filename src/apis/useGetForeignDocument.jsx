@@ -6,7 +6,6 @@ import fetchData from "../utils/axios";
 
 import {
   currentDocIndexAtom,
-  docDataAtom,
   primaryFieldAtom,
   userAtom,
   currentDBIdAtom,
@@ -15,38 +14,39 @@ import {
 
 import Loading from "../components/shared/Loading";
 
-function useGetForeignDocument(index, relationship) {
+function useGetForeignDocument(index, relationship, documents) {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const docData = useAtomValue(docDataAtom);
   const primaryField = useAtomValue(primaryFieldAtom);
   const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
 
-    docData[currentDocIndex]?.fields.forEach(element => {
+    documents[currentDocIndex]?.fields.forEach(element => {
       if (primaryField[relationshipsIndex] === element.fieldName) {
         queryValue = element.fieldValue.trim();
       }
     });
 
-    if (relationship._id) {
-      const response = await fetchData(
-        "GET",
-        `users/${userId}/databases/${currentDBId}/relationships/${relationship._id}?primaryFieldValue=${queryValue}`,
-      );
+    const response = await fetchData(
+      "GET",
+      `users/${userId}/databases/${currentDBId}/relationships/${relationship._id}?primaryFieldValue=${queryValue}`,
+    );
 
-      return response.data.displayedDocuments;
-    }
-
-    return [];
+    return response.data.displayedDocuments;
   }
 
   const { data: foreignDocument, isLoading } = useQuery(
-    ["ForeignDocuments", currentDBId, currentDocIndex, relationship._id],
+    [
+      "ForeignDocuments",
+      currentDBId,
+      currentDocIndex,
+      relationship._id,
+      documents.length,
+    ],
     () => getForeignDocuments(index),
     {
       enabled:

@@ -5,7 +5,7 @@ import { relationshipsDataAtom } from "../../../atoms/atoms";
 import FieldList from "./FieldList";
 import Portal from "./Portal";
 
-function Elements() {
+function Elements({ documents }) {
   const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   return (
@@ -17,6 +17,7 @@ function Elements() {
               index={index}
               relationship={relationship}
               key={relationship._id}
+              documents={documents}
             />
           );
         })}
