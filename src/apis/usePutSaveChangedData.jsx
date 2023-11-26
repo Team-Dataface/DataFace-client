@@ -51,12 +51,16 @@ function usePutSaveChangedData() {
 
   const { mutate: fetchSaveChangedData } = useMutation(handleClickSave, {
     onSuccess: () => {
-      queryClient.refetchQueries([
-        "ForeignDocuments",
-        currentDBId,
-        currentDocIndex,
-        0,
-      ]);
+      if (relationshipsData?.length) {
+        relationshipsData.forEach(relationship => {
+          queryClient.refetchQueries([
+            "ForeignDocuments",
+            currentDBId,
+            currentDocIndex,
+            relationship._id,
+          ]);
+        });
+      }
     },
     refetchOnWindowFocus: false,
   });
