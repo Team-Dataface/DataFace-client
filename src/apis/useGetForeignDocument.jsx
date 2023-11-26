@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import { useQuery } from "@tanstack/react-query";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 import fetchData from "../utils/axios";
 
@@ -11,7 +11,6 @@ import {
   userAtom,
   currentDBIdAtom,
   relationshipsDataAtom,
-  foreignDocumentsAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -24,7 +23,6 @@ function useGetForeignDocument(index, relationship) {
   const docData = useAtomValue(docDataAtom);
   const primaryField = useAtomValue(primaryFieldAtom);
   const relationshipsData = useAtomValue(relationshipsDataAtom);
-  const setForeignDocuments = useSetAtom(foreignDocumentsAtom);
 
   async function getForeignDocuments(relationshipsIndex) {
     let queryValue = "";
@@ -57,9 +55,6 @@ function useGetForeignDocument(index, relationship) {
         currentDocIndex !== undefined &&
         !!relationshipsData,
       refetchOnWindowFocus: false,
-      onSuccess: result => {
-        setForeignDocuments(result);
-      },
     },
   );
 
