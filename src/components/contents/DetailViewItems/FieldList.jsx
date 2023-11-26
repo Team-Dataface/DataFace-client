@@ -104,7 +104,7 @@ function FieldList() {
               onDoubleClick={() => setIsEditMode(true)}
               onChange={event => updateFieldValue(index, event)}
               value={element.fieldValue}
-              disabled={
+              readOnly={
                 element.fieldType === "Date modified" ||
                 element.fieldType === "Date created" ||
                 !isEditMode
