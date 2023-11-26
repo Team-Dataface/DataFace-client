@@ -1,20 +1,15 @@
 import { useAtomValue } from "jotai";
 
-import {
-  isEditModeAtom,
-  draggingElementAtom,
-  foreignDocumentsAtom,
-} from "../../../atoms/atoms";
-import useGetForeignDocuments from "../../../apis/useGetForeignDocuments";
+import { isEditModeAtom, draggingElementAtom } from "../../../atoms/atoms";
+import useGetForeignDocuments from "../../../apis/useGetForeignDocument";
 
 function PortalTable({ index, relationship }) {
   const isEditMode = useAtomValue(isEditModeAtom);
   const draggingElement = useAtomValue(draggingElementAtom);
-  const foreignDocuments = useAtomValue(foreignDocumentsAtom);
 
-  useGetForeignDocuments(index, relationship);
+  const { foreignDocument } = useGetForeignDocuments(index, relationship);
 
-  if (!foreignDocuments || foreignDocuments.length === 0) {
+  if (!foreignDocument || foreignDocument.length === 0) {
     return (
       <div className="flex justify-center items-center w-[130px] h-full bg-light-grey">
         <span>no result</span>
@@ -34,7 +29,7 @@ function PortalTable({ index, relationship }) {
         `}
       >
         <tr key="header" className="h-10">
-          {foreignDocuments[0].fields.map(element => {
+          {foreignDocument[0].fields.map(element => {
             return (
               <td
                 key={element.fieldName}
@@ -45,8 +40,8 @@ function PortalTable({ index, relationship }) {
             );
           })}
         </tr>
-        {foreignDocuments.length &&
-          foreignDocuments.map((element, fieldIndex) => {
+        {foreignDocument.length &&
+          foreignDocument.map((element, fieldIndex) => {
             return (
               <tr
                 key={element.fields[fieldIndex]._id}

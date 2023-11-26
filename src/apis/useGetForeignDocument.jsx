@@ -16,7 +16,7 @@ import {
 
 import Loading from "../components/shared/Loading";
 
-function useGetForeignDocuments(index, relationship) {
+function useGetForeignDocument(index, relationship) {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
@@ -47,7 +47,7 @@ function useGetForeignDocuments(index, relationship) {
     return [];
   }
 
-  const { isLoading } = useQuery(
+  const { data: foreignDocument, isLoading } = useQuery(
     ["ForeignDocuments", currentDBId, currentDocIndex, relationship._id],
     () => getForeignDocuments(index),
     {
@@ -66,6 +66,8 @@ function useGetForeignDocuments(index, relationship) {
   if (isLoading) {
     return <Loading />;
   }
+
+  return { foreignDocument };
 }
 
-export default useGetForeignDocuments;
+export default useGetForeignDocument;
