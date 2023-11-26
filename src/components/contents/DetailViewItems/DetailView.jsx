@@ -15,7 +15,7 @@ import Elements from "./Elements";
 import moveField from "../../../utils/moveField";
 import movePortal from "../../../utils/movePortal";
 import CONSTANT from "../../../constants/constant";
-import useGetAllDocuments from "../../../apis/useGetAllDocuments";
+import useGetSingleDatabase from "../../../apis/useGetSingleDatabase";
 
 function DetailView() {
   const canvasRef = useRef(null);
@@ -33,7 +33,7 @@ function DetailView() {
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
-  const { documents } = useGetAllDocuments();
+  const { singleDatabase } = useGetSingleDatabase();
 
   if (canvasElement) {
     canvasRect = canvasElement.getBoundingClientRect();
@@ -82,7 +82,7 @@ function DetailView() {
       onMouseUp={handleMouseUp}
       ref={canvasRef}
     >
-      {documents && <Elements documents={documents.documents} />}
+      {singleDatabase && <Elements documents={singleDatabase.documents} />}
     </div>
   );
 }

@@ -27,7 +27,7 @@ function Relationship() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
-  async function getDocumentsList() {
+  async function getSingleDatabase() {
     const response = await fetchData(
       "GET",
       `users/${userId}/databases/${currentDBId}`,
@@ -68,8 +68,8 @@ function Relationship() {
   const [documentQuery, relationQuery] = useQueries({
     queries: [
       {
-        queryKey: ["DocumentsList", currentDBId],
-        queryFn: getDocumentsList,
+        queryKey: ["SingleDatabase", currentDBId],
+        queryFn: getSingleDatabase,
         enabled: !!userId && !!currentDBId,
         refetchOnWindowFocus: false,
         onSuccess: result => {

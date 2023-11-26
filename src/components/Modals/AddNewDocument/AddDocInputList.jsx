@@ -5,12 +5,9 @@ import getTodaysDate from "../../../utils/getTodaysDate";
 import { fieldsAtom } from "../../../atoms/atoms";
 
 import InputWrapper from "../SharedItems/InputWrapper";
-import useGetSingleDatabase from "../../../apis/useGetSingleDatabase";
 
 function AddDocInputList() {
   const [fields, setFields] = useAtom(fieldsAtom);
-
-  useGetSingleDatabase();
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
