@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 
 import fetchData from "../utils/axios";
@@ -9,6 +9,7 @@ import Loading from "../components/shared/Loading";
 function usePostRelationship() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
+  const queryClient = useQueryClient();
 
   async function setRelationShip(updatedRelationData) {
     await fetchData(
@@ -21,6 +22,9 @@ function usePostRelationship() {
   const { mutate: fetchNewRelationship, isLoading } = useMutation(
     setRelationShip,
     {
+      onSuccess: () => {
+        queryClient.refetchQueries(["SingleDatabase", currentDBId]);
+      },
       refetchOnWindowFocus: false,
     },
   );
