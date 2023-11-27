@@ -7,16 +7,14 @@ import {
   showAddDocumentModalAtom,
   showDeleteDocumentModalAtom,
   isLastDocumentAtom,
-  documentsNumAtom,
 } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
+import useGetSingleDatabase from "../../apis/useGetSingleDatabase";
 
 function DocHandlerButtons() {
-  const documentsNum = useAtomValue(documentsNumAtom);
-
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [showAddDocumentModal, setShowAddDocumentModal] = useAtom(
     showAddDocumentModalAtom,
@@ -24,6 +22,9 @@ function DocHandlerButtons() {
   const [showDeleteDocumentModal, setShowDeleteDocumentModal] = useAtom(
     showDeleteDocumentModalAtom,
   );
+
+  const { singleDatabase } = useGetSingleDatabase();
+  const documentsNum = singleDatabase?.documents.length;
 
   const isEditMode = useAtomValue(isEditModeAtom);
   const documentsIds = useAtomValue(documentsIdsAtom);

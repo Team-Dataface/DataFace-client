@@ -7,7 +7,6 @@ import fetchData from "../utils/axios";
 import {
   currentDBIdAtom,
   userAtom,
-  documentsNumAtom,
   documentsIdsAtom,
   changedDocAtom,
   docDataAtom,
@@ -22,7 +21,6 @@ function useGetSingleDatabase() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
-  const setDocumentsNum = useSetAtom(documentsNumAtom);
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
   const setDocData = useSetAtom(docDataAtom);
@@ -58,7 +56,6 @@ function useGetSingleDatabase() {
         setFields(result.documents[0].fields);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
-        setDocumentsNum(result.documents.length);
 
         if (result.relationships?.length) {
           setRelationshipsData(result.relationships);
