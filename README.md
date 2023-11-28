@@ -35,17 +35,22 @@ DataFace는 누구나 손쉽게 **나만의 데이터베이스**를 만들고 **
 <br>
 
 # **🛠 Tech Stacks**
+
 ### Client
- `JavaScript, React, React Query, Tailwind CSS`
+
+`JavaScript, React, React Query, Tailwind CSS`
 
 ### Server
- `JavaScript, Node.js, Express.js, MongoDB & Mongoose`
+
+`JavaScript, Node.js, Express.js, MongoDB & Mongoose`
 
 ### Test
- `React Dom Testing, vitest, Jest`
+
+`React Dom Testing, vitest, Jest`
 
 ### Deployment
- `Netlify, AWS Elastic Beanstalk`
+
+`Netlify, AWS Elastic Beanstalk`
 
 # **💪 Motivation**
 
@@ -62,6 +67,7 @@ DataFace는 누구나 손쉽게 **나만의 데이터베이스**를 만들고 **
 저희는 위와 같은 불편함을 해결해줄 신개념 데이터베이스 관리툴을 실현시켜보고자 이 프로젝트를 기획하게 되었습니다.
 
 # **🕹️ Feature**
+
 ### 데이터베이스 열람
 
 <p align="center">
@@ -130,10 +136,13 @@ DataFace는 누구나 손쉽게 **나만의 데이터베이스**를 만들고 **
   - 디테일뷰 페이지에 생성된 포탈을 확인하여 관계설정이 잘 되었는지 확인합니다.
 
 # **🔗 Links**
+
 ### Deployed link
+
 - **[Deployed website](https://app.dataface.solutions)**
 
 ### Github Repositories
+
 - **[Frontend Repo](https://github.com/Team-Dataface/DataFace-client)**
 - **[Backend Repo](https://github.com/Team-Dataface/DataFace-server)**
 
@@ -158,13 +167,13 @@ DataFace의 이름처럼, 데이터를 원하는 디자인의 UI를 통해 열�
 실사용자경험을 분석해본 결과, Text 필드에 입력하는 값은 길이가 길더라도 편하게 입력이 가능하고 개행이 가능해야만 했습니다.
 반면 Date, Time 등의 경우 경우 데이터가 통일성을 잃지 않도록 유효성검사가 필요하며 입력 박스의 높이는 한 줄 이상일 필요가 없었습니다. 따라서 미리 디자인된 UX에 어울리는 태그를 찾기 위해서는 textarea와 input의 차이점을 정확히 조사할 필요가 있었습니다.
 
-|  | textarea | input |
-| -------------- | ---------- |---------- |
-| 예시 | <img width="300px" src="https://github.com/Team-Dataface/DataFace-client/assets/83858724/be359ca6-f724-44e3-afd5-67026849be19"> | <img width="300px" src="https://github.com/Team-Dataface/DataFace-client/assets/83858724/8dab6c2a-42ac-4714-b6d5-e25f849a4d1b"> |
-| 입력시 특징 | 여러 줄의 멀티라인 텍스트 입력 가능 | 한 줄 텍스트만 입력 가능 |
-| 크기 조절 | col, row 속성을 통해 박스가 몇 줄을 담게 할 것인지 결정 가능 | height로 박스크기 조절가능하나 한줄의 위 아래로 여백이 생기는 형태 |
-| type 어트리뷰트 유무 | 무 | 유: date와 time 밖에도 password, email 등 다양한 타입 존재 |
-| 어울리는 타입 | Text | Date, Time, Date modified, Date created |
+|                      | textarea                                                                                                                        | input                                                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 예시                 | <img width="300px" src="https://github.com/Team-Dataface/DataFace-client/assets/83858724/be359ca6-f724-44e3-afd5-67026849be19"> | <img width="300px" src="https://github.com/Team-Dataface/DataFace-client/assets/83858724/8dab6c2a-42ac-4714-b6d5-e25f849a4d1b"> |
+| 입력시 특징          | 여러 줄의 멀티라인 텍스트 입력 가능                                                                                             | 한 줄 텍스트만 입력 가능                                                                                                        |
+| 크기 조절            | col, row 속성을 통해 박스가 몇 줄을 담게 할 것인지 결정 가능                                                                    | height로 박스크기 조절가능하나 한줄의 위 아래로 여백이 생기는 형태                                                              |
+| type 어트리뷰트 유무 | 무                                                                                                                              | 유: date와 time 밖에도 password, email 등 다양한 타입 존재                                                                      |
+| 어울리는 타입        | Text                                                                                                                            | Date, Time, Date modified, Date created                                                                                         |
 
 이를 바탕으로 Text타입의 경우 textarea태그, 그 밖의 타입들은 input태그가 적용되도록 분기설정을 해주자 기존에 계획했던 UI디자인 및 사용경험을 정확하게 구현할 수 있었습니다.
 
@@ -206,25 +215,26 @@ DataFace의 이름처럼, 데이터를 원하는 디자인의 UI를 통해 열�
 ### 1-3. 직관적인 유저플로우를 위한 저장방식 고민
 
 DataFace는 비전문가도 부담없이 운용가능한 앱으로 구상하였습니다. 따라서,
+
 - 열람 => 편집=> 저장을 반복하는 과정이 간편해야하고
 - 저장여부를 신뢰할 수 있어야하며
 - UI 커스터마이즈가 쉬워야했습니다.
 
 본격적인 구현 전 저희는 아래의 두가지 수정방식 사이에서 고민하였습니다.
 
-| 즉시 저장 방식 | 컨펌 저장 방식 |
-| -------------- | ---------- |
-| 내용변경 즉시 저장하는 방식 | 편집 모드를 종료하면서 변경사항을 모아서 저장하는 방식 |
-| Apple 메모 앱, Notion 등에서 볼 수 있는 방식 | tstory, 네이버 블로그 등에서 볼 수 있는 방식 |
+| 즉시 저장 방식                               | 컨펌 저장 방식                                         |
+| -------------------------------------------- | ------------------------------------------------------ |
+| 내용변경 즉시 저장하는 방식                  | 편집 모드를 종료하면서 변경사항을 모아서 저장하는 방식 |
+| Apple 메모 앱, Notion 등에서 볼 수 있는 방식 | tstory, 네이버 블로그 등에서 볼 수 있는 방식           |
 
 또한 여러 특징에 대해서도 비교해보았습니다.
 
-| 즉시 저장 방식 | 컨펌 저장 방식 |
-| -------------- | ---------- |
-| 백엔드와의 통신횟수가 상당할 것으로 예상됌 | 통신횟수가 적은 편 |
-| 최근 다양한 웹서비스에서 차용되는 방식 | 오래전부터 대중이 익숙해하는 방식 |
-| 작은 변경으로도 DB가 바로 갱신되어짐 | 저장을 잊으면 데이터가 유실될 가능성이 있음 |
-| 편집 모드가 없음 | 열람 모드와 편집 모드가 명시적으로 나뉨 |
+| 즉시 저장 방식                             | 컨펌 저장 방식                              |
+| ------------------------------------------ | ------------------------------------------- |
+| 백엔드와의 통신횟수가 상당할 것으로 예상됌 | 통신횟수가 적은 편                          |
+| 최근 다양한 웹서비스에서 차용되는 방식     | 오래전부터 대중이 익숙해하는 방식           |
+| 작은 변경으로도 DB가 바로 갱신되어짐       | 저장을 잊으면 데이터가 유실될 가능성이 있음 |
+| 편집 모드가 없음                           | 열람 모드와 편집 모드가 명시적으로 나뉨     |
 
 저희는 토의 끝에 fetch회수를 줄여주는 장점, 그리고 데이터베이스 관리툴 특성상 CRUD동작의 신뢰성을 중시할 사용자경험을 고려하여 "컨펌 저장 방식"을 택하기로 결정하였습니다. 또한 인터페이스의 편집기능이 있는 것도 이 결정에 영향을 미쳤습니다. 인터페이스 변경이 데이터 열람시에 허용되어버리면 원치 않은 상황을 초래하기 때문에 관련 모드가 따로 존재해야만 했습니다. 따라서 편집 모드 상에서 값의 수정 그리고 인터페이스 수정이 함께 이루어지도록 하였습니다.
 
@@ -254,6 +264,7 @@ export const relationshipStepAtom = atom("start");
   {relationshipStep === "done" && <Done />}
 </ContentWrapper>
 ```
+
 - 🔺 `relationshipStep`별로 다른 컴포넌트가 렌더되도록 논리연산자를 통해 조건부 렌더링.
   컴포넌트 내부의 버튼을 이용하여 state 값을 교체하도록 구현하였다.
 
@@ -274,14 +285,14 @@ DataFace는 사용자가 데이터베이스를 자유롭게 관리하고, 나아
 
 뿐만 아니라, 데이터 스키마가 미리 정의되어야 하는 관계형 DB와 달리, 비관계형 DB는 데이터 구조를 필요에 따라 손쉽게 변경하며 개발을 진행할 수 있기에, 개발 도중 스키마가 변경되어야 하는 상황에 대한 유연한 대처가 가능했습니다.
 
-| | 관계형 DB (PostgreSQL) | 비관계형 DB (MongoDB) |
-| -------------- | ---------- |---------- |
-| 스키마 유연성 | 매우 낮음 | 매우 높음 |
-| 개발 초기 도입 속도 | 느림 (스키마가 미리 정의되어야 함) | 빠름 (데이터 구조를 필요에 따라 손쉽게 변경하며 개발할 수 있음) |
-| 핵심 기능 적합성 - 데이터베이스 CRUD | 적합 | 적합 |
-| 핵심 기능 적합성 - 데이터베이스간 관계설정 | 매우 적합 | 다소 부적합. 기능 구현에 필요한 자체 로직 작성 필요. |
-| 학습 곡선(learning curve) | 가파름 | 완만함 |
-| 즉시 도입 가능 여부 | 사실상 불가능 | **가능** |
+|                                            | 관계형 DB (PostgreSQL)             | 비관계형 DB (MongoDB)                                           |
+| ------------------------------------------ | ---------------------------------- | --------------------------------------------------------------- |
+| 스키마 유연성                              | 매우 낮음                          | 매우 높음                                                       |
+| 개발 초기 도입 속도                        | 느림 (스키마가 미리 정의되어야 함) | 빠름 (데이터 구조를 필요에 따라 손쉽게 변경하며 개발할 수 있음) |
+| 핵심 기능 적합성 - 데이터베이스 CRUD       | 적합                               | 적합                                                            |
+| 핵심 기능 적합성 - 데이터베이스간 관계설정 | 매우 적합                          | 다소 부적합. 기능 구현에 필요한 자체 로직 작성 필요.            |
+| 학습 곡선(learning curve)                  | 가파름                             | 완만함                                                          |
+| 즉시 도입 가능 여부                        | 사실상 불가능                      | **가능**                                                        |
 
 ### 2-2. MongoDB로 데이터베이스 간 관계 설정 기능을 어떻게 구현할까?
 
@@ -290,17 +301,17 @@ DataFace는 사용자가 데이터베이스를 자유롭게 관리하고, 나아
 관계형 DB는 Primary Key, Foreign Key 개념을 이용하여 서로 다른 데이터들 간의 관계를 설정하게 해 줍니다. 관계형 DB에서, 데이터들 간의 관계는 아래와 같은 과정을 거쳐 정의됩니다:
 
 1. 관계 내에서 다른 데이터베이스를 참조할 “주인” 데이터베이스를 결정합니다. 이러한 데이터베이스를 **Base DB**라고 합니다.<br>
-  ex) 맛집 동아리 부원 명부
+   ex) 맛집 동아리 부원 명부
 
 2. 관계 내에서 1. 의 “주인” 데이터베이스에 의해 참조당할 데이터베이스를 결정합니다. 이러한 데이터베이스를 **Target DB**라고 합니다.<br>
-  ex) 주변 맛집 리스트
+   ex) 주변 맛집 리스트
 
 3. Base DB의 **Primary Key**를 결정합니다. 일반적으로, Base DB의 값들 중 가장 특징적이고 고유한 값을 Primary Key로 설정합니다.<br>
-  ex) 맛집 동아리 부원의 이름
+   ex) 맛집 동아리 부원의 이름
 
 4. Target DB의 **Foreign Key**를 결정합니다. Base DB의 Primary Key와 직접적으로 연관되어, 관계된 데이터를 조회하기 위해 사용하는 값을 지정합니다.<br>
-  ex) 특정 맛집의 추천인
-<br><br>
+   ex) 특정 맛집의 추천인
+   <br><br>
 
 <p align="center">
   <img width="800px" src="https://github.com/Team-Dataface/DataFace-client/assets/83858724/05566bb9-8426-4c23-9d47-69d1df1b5bf9">
@@ -310,12 +321,12 @@ DataFace는 사용자가 데이터베이스를 자유롭게 관리하고, 나아
 
 이 점에 착안하여, DataFace는 사용자가 관계 설정 마법사를 통해 새로운 데이터베이스 간 관계를 정의할 때마다, 아래 속성들로 구성된 `relationship`이라는 `database`의 subdocument를 생성하도록 하였습니다.
 
-| 비관계형 DB인 MongoDB로 구현한 relationship subdocument의 속성 | 관계형 DB의 대응되는 개념 |
-| ------------------------------------- | ------------------------------------- |
-| primaryFieldName | Base DB의 Primary Key |
-| foreignDbId | Target DB를 특정할 수 있는 고유한 값 |
-| foreignFieldName | Target DB의 Foreign Key |
-| foreignFieldsToDisplay | Target DB의 Foreign Key로 조회한 데이터에서, 실제로 열람할 속성들 |
+| 비관계형 DB인 MongoDB로 구현한 relationship subdocument의 속성 | 관계형 DB의 대응되는 개념                                         |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| primaryFieldName                                               | Base DB의 Primary Key                                             |
+| foreignDbId                                                    | Target DB를 특정할 수 있는 고유한 값                              |
+| foreignFieldName                                               | Target DB의 Foreign Key                                           |
+| foreignFieldsToDisplay                                         | Target DB의 Foreign Key로 조회한 데이터에서, 실제로 열람할 속성들 |
 
 ```markdown
 relationship은 Base DB인 database에 종속된 subdocument 이기에,
@@ -342,7 +353,7 @@ const relationshipSchema = new Schema([
       default: [],
       required: true,
     },
-		// ... (생략된 코드)
+    // ... (생략된 코드)
   },
 ]);
 
@@ -355,6 +366,7 @@ const databaseSchema = new Schema({
   relationships: [relationshipSchema],
 });
 ```
+
 ## 3. CRUD가 잦은 환경에서 리소스를 절약할 방법은 없을까?
 
 ### 3-1. tanstack-Query를 이용한 서버 스테이트와 클라이언트 스테이트의 분리
@@ -368,10 +380,10 @@ const databaseSchema = new Schema({
 이러한 이유로 저희는 *서버와 클라이언트의 스테이트*를 분리하여 관리하고자 하였고, 다음과 같은 이점을 가져오고자 했습니다.
 <br>
 
-- *데이터 무결성* - 항상 서버와 클라이언트는 같은 시점의 데이터를 공유 하기 때문에 데이터는 안전하고 무결하게 지켜집니다.
-- *성능* - 캐싱 기능을 통한 서버와의 fetch 최소화와 불필요한 데이터 전송의 감소로 성능 개선을 달성했습니다.
-- *유지보수성* - 모든 데이터는 서버에서 오기 때문에 브라우저가 종료되거나 새로고침 되어도 데이터가 유실되지 않습니다.
-<br>
+- _데이터 무결성_ - 항상 서버와 클라이언트는 같은 시점의 데이터를 공유 하기 때문에 데이터는 안전하고 무결하게 지켜집니다.
+- _성능_ - 캐싱 기능을 통한 서버와의 fetch 최소화와 불필요한 데이터 전송의 감소로 성능 개선을 달성했습니다.
+- _유지보수성_ - 모든 데이터는 서버에서 오기 때문에 브라우저가 종료되거나 새로고침 되어도 데이터가 유실되지 않습니다.
+  <br>
 
 ### 3-2. 캐싱 활용
 
@@ -380,9 +392,9 @@ const databaseSchema = new Schema({
 만약 data의 상태가 최초 서버로부터 전달받아 cached 되어 있는 상태라고 가정했을때, 다음과 같은 메커니즘으로 동작하게 됩니다.
 
 - data의 상태가 `stale`이라면?
-→ refetch!
+  → refetch!
 - data의 상태가 `fresh`라면?
-→  캐싱된 data를 반환
+  → 캐싱된 data를 반환
 
 이를 통해 캐싱이 필요한 컴포넌트마다 `tanstack query`의 `stale time`을 활용하여 클라이언트와 서버간의 fetching을 최소화 하였습니다.
 
@@ -396,9 +408,11 @@ const databaseSchema = new Schema({
 # **🔥 Issues**
 
 ## 1. portal의 값 갱신 문제.
+
 ### 이슈 상세
 
 portal이 다음 두 상황에서 갱신되지 않는 것을 확인하였습니다.
+
 1. 값을 수정하고 저장했을 시: primary키에 해당하는 필드의 값을 수정했음에도 포탈이 이전 쿼리결과값을 보여주는 채로 묵묵부답.
 
 2. 새 도큐먼트를 추가했을 시: primary키에 해당하는 필드에 값을 채워넣고 추가했을 시, 모든 포탈이 쿼리 결과 없음, 즉 no result를 띄우는 문제 확인.
@@ -406,16 +420,63 @@ portal이 다음 두 상황에서 갱신되지 않는 것을 확인하였습니�
 ### 해결
 
 1. 값을 수정하고 저장했을 시:
-usePutSaveChangedData 커스텀훅의 onSuccess단에서 모든 관계설정의 쿼리결과를 forEach를 통해 refetch시켜 해결하였습니다. 기존에 존재하는 도큐먼트를 수정 및 저장하는 케이스이므로 refetch 메서드의 갱신개념을 이용하여 잘 해결할 수 있었습니다.
+   usePutSaveChangedData 커스텀훅의 onSuccess단에서 모든 관계설정의 쿼리결과를 forEach를 통해 refetch시켜 해결하였습니다. 기존에 존재하는 도큐먼트를 수정 및 저장하는 케이스이므로 refetch 메서드의 갱신개념을 이용하여 잘 해결할 수 있었습니다.
 
 2. 새 도큐먼트를 추가했을 시:
-새 도큐먼트의 경우 이전에 존재하지 않는 인덱스의 데이터이므로 refetch를 이용한 갱신은 해당되지 않았습니다. 따라서 다른 해결방법을 모색하게 되었습니다.
-먼저 쿼리결과를 요청하는 useGetForeignDocument 커스텀훅에 "새 도큐먼트"도 포함된 fresh한 documents 배열이 전달되도록 수정하였습니다. 그리하여 커스텀훅 내부에서 새롭게 생긴 도큐먼트의 queryValue에 접근이 가능하게 되었습니다.
-다음으로 같은 파일 내 useQuery의 dependency에 새 도큐먼트 개수의 길이 (documents.length)를 새롭게 추가하였습니다. 따라서 useQuery documents의 개수가 바뀐 것이 인식되면 새롭게 트리거되도록 하여 문제를 해결할 수 있었습니다.
+   새 도큐먼트의 경우 이전에 존재하지 않는 인덱스의 데이터이므로 refetch를 이용한 갱신은 해당되지 않았습니다. 따라서 다른 해결방법을 모색하게 되었습니다.
+   먼저 쿼리결과를 요청하는 useGetForeignDocument 커스텀훅에 "새 도큐먼트"도 포함된 fresh한 documents 배열이 전달되도록 수정하였습니다. 그리하여 커스텀훅 내부에서 새롭게 생긴 도큐먼트의 queryValue에 접근이 가능하게 되었습니다.
+   다음으로 같은 파일 내 useQuery의 dependency에 새 도큐먼트 개수의 길이 (documents.length)를 새롭게 추가하였습니다. 따라서 useQuery documents의 개수가 바뀐 것이 인식되면 새롭게 트리거되도록 하여 문제를 해결할 수 있었습니다.
+
+## Header 와 SideBar 컴포넌트 간의 state 변경 이슈
+
+### 이슈 상세
+
+2개 이상의 `Database`가 있는 상태에서 각 `Database` 클릭 시, 해당 `Database`에 맞는 현재 `document` 번호와 총 `document`의 숫자가 `Header` 컴포넌트에 표기 되어야 합니다.
+<br>
+그러나 클릭 직후 변경되는 것이 아닌 다시 서버와 `fetching` 되는 시점에 변경되는 문제가 있었습니다.
+
+### 해결
+
+`SideBar`에서 `Database`가 클릭 되었을때, 새로운 `Database`로 `fetch` 시켜주는 로직에서`local state`를 업데이트 시켜줍니다.
+<br>
+그리고, 업데이트된 state를 바로 참조하여 해당 state로 fetch 하는 로직에서 state 업데이트의 비동기적 특성 때문에 발생한 문제였습니다.
+
+```jsx
+function switchDatabase(clickedDBId, clickedDB) {
+  setCurrentDBId(clickedDBId);
+
+  queryClient.refetchQueries(["userDb"]);
+  queryClient.refetchQueries(["dbDocumentList", currentDBId]);
+}
+```
+
+**_`react`의 `state`는 비동기적으로 업데이트 됩니다!_**
+
+<p align="left">
+  <img width="691" src="https://github.com/darren-kk/Jaenitel-client/assets/111283378/69c3e87a-de93-4852-b014-50382b667f95">
+</p>
+
+사실 너무 당연하게 알고 있던 사실이지만, 복잡해지는 기능들 속에서 놓친 당연한 이유 였습니다.
+<br>
+state는 즉각적으로 업데이트 되지 않으며 다음 리렌더링을 위해 요청이 보내집니다.
+<br>
+이를 위해 기존에 fetch하던 키를 인자로 받아오는 값으로 바로 전달 하여 사용 하였습니다.
+
+```jsx
+function switchDatabase(clickedDBId, clickedDB) {
+  setCurrentDBId(clickedDBId);
+
+  queryClient.refetchQueries(["userDb"]);
+  queryClient.refetchQueries(["dbDocumentList", clickedDBId]);
+}
+```
+
+추후에 상태관리 라이브러리인 `jotai`를 도입하고 지역적으로 사용되던 fetch 함수들을 `customHook` 화 시키는 방향으로 리팩토링을 진행하면서 local State의 시점차이로 인해 촉발되던 해당 오류는 일어나지 않았어도 괜찮을 오류가 되었습니다만, 다시한번 리액트와 useState의 동작방시에 대해 깊게 생각해볼 수 있는 계기 였습니다.
 
 # **🗓 Schedule**
 
 - 1주차
+
   - 아이디어 수집, 선정
   - 기술 스택 결정 및 학습
   - Git 작업 플로우 결정
@@ -423,6 +484,7 @@ usePutSaveChangedData 커스텀훅의 onSuccess단에서 모든 관계설정의 
   - KANBAN 작성
 
 - 2주차
+
   - 리액트 및 Node.js/Express 환경 세팅
   - 로그인 및 로그아웃 구현
   - 데이터베이스 생성, 조회, 삭제 구현
@@ -437,7 +499,12 @@ usePutSaveChangedData 커스텀훅의 onSuccess단에서 모든 관계설정의 
   - 에러페이지 구현
 
 # **👨‍👩‍👦 Memoir**
-<details><summary>김재환</summary>작성중</details>
+
+<details><summary>김재환</summary>
+처음 진행해보는 협업 싸이클 속에서 우당탕탕 진행된 팀 프로젝트 였지만 치열하게 고민하고 토론하며 결과물을 만들어가는 과정은 분명 쉽지 않았지만 인풋 그 이상의 아웃풋이 있는 시간이었다고 생각합니다. 사소하다면 사소할 머지 방식을 정하는 과정에서 부터, 아이디어 회의, 일정 및 계획 수립, 구현 및 테스트를 한단계씩 지나 오며 좀 더 견고하고 단단해져가는 팀워크를 바탕으로 작업 했습니다.
+<br>
+각자 추구하는 방향성이 같지는 않았습니다. 그러나 한가지 확실한 공통점은 모두가 각자의 방식으로 더 좋은 프로젝트를 만들고 싶다는 열망이 있었습니다. 그러한 공통점을 중심으로 서로의 의견을 조율해가며 진행하는 프로젝트는 서로의 목소리에 귀기울여가며, 모두가 납득할 수 있는 방향성을 찾아가는 과정이었다고 생각합니다. 이는 곧 어떤 환경에서 저희가 그 누구와 작업을 하더라도 가장 중요한 가치라고 생각합니다.
+</details>
 <details><summary>김병균</summary>작성중</details>
 <details><summary>김유진</summary>
 김씨 셋이서 팀을 이루고 난 뒤 맞이한 첫번째 날, 협동작업에 관한 모든게 처음이라 막막했지만 침착하게 한단계 한단계 밟아나갔던 것이 기억이 납니다. 낯설기만한 깃을 이용한 협동과정을 제대로 이해하기 위해 먼저 테스트레포를 생성한 후 납득이 갈 때까지 브렌치생성과 머지연습을 반복했습니다. 전체 일정과 API 디자인을 미리 계획하고 시작하는 것에 서툴러서 많은 조사와 토의를 하고 다른 숙련자들은 어떤 기술을 쓸까, 어떤 방식으로 진행할까 활발하게 조사하고 고민하였습니다. 그렇게 하나 둘 구체적인 계획들이 수립되자 아무것도 없던 도화지에 밑그림이 술술 그려지기 시작했습니다. 거대한 산 같기만 했던 이 프로젝트를 우리가 오를 수 있겠구나, 정말 구현을 할 수 있겠다라는 자신감이 생겼습니다.
