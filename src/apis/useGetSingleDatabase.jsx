@@ -12,7 +12,7 @@ import {
   docDataAtom,
   primaryFieldAtom,
   relationshipsDataAtom,
-  fieldsAtom,
+  addDocfieldsAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -26,7 +26,7 @@ function useGetSingleDatabase() {
   const setDocData = useSetAtom(docDataAtom);
   const setPrimaryField = useSetAtom(primaryFieldAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
-  const setFields = useSetAtom(fieldsAtom);
+  const setAddDocFields = useSetAtom(addDocfieldsAtom);
 
   async function getSingleDatabase() {
     const response = await fetchData(
@@ -52,8 +52,15 @@ function useGetSingleDatabase() {
           return { documentId: document._id, fields: [] };
         });
 
+        const fieldsWithEmptyValue = result.documents[0].fields.map(field => {
+          return {
+            ...field,
+            fieldValue: "",
+          };
+        });
+
+        setAddDocFields(fieldsWithEmptyValue);
         setDocData(result.documents);
-        setFields(result.documents[0].fields);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
 

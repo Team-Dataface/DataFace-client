@@ -8,7 +8,7 @@ import {
   currentDocIndexAtom,
   userAtom,
   showAddDocumentModalAtom,
-  fieldsAtom,
+  addDocfieldsAtom,
   documentsIdsAtom,
 } from "../atoms/atoms";
 
@@ -18,7 +18,7 @@ function usePostDocument() {
   const queryClient = useQueryClient();
 
   const { userId } = useAtomValue(userAtom);
-  const fields = useAtomValue(fieldsAtom);
+  const fields = useAtomValue(addDocfieldsAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);

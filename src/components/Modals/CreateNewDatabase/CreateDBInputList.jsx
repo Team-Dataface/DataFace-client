@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 
 import PropTypes from "prop-types";
 
-import { dbFieldsAtom } from "../../../atoms/atoms";
+import { createDBFieldsAtom } from "../../../atoms/atoms";
 
 import Select from "../../shared/Select";
 import Button from "../../shared/Button";
@@ -13,27 +13,27 @@ import CONSTANT from "../../../constants/constant";
 const { MAX_FIELD_NAME_LENGTH, FIELD_TYPES } = CONSTANT;
 
 function CreateDBInputList({ updateFieldName }) {
-  const [fields, setFields] = useAtom(dbFieldsAtom);
+  const [createDBfields, setCreateDBFields] = useAtom(createDBFieldsAtom);
 
   function updateFieldType(index, event) {
-    const newFields = [...fields];
+    const newFields = [...createDBfields];
     newFields[index].fieldType = event.target.value;
 
-    setFields(newFields);
+    setCreateDBFields(newFields);
   }
 
   function handleClickDeleteField(index) {
-    if (fields.length === 1) {
+    if (createDBfields.length === 1) {
       return;
     }
 
-    const newFields = [...fields];
+    const newFields = [...createDBfields];
     newFields.splice(index, 1);
 
-    setFields(newFields);
+    setCreateDBFields(newFields);
   }
 
-  return fields.map((element, index) => {
+  return createDBfields.map((element, index) => {
     return (
       <div key={element.id}>
         <InputWrapper>
@@ -64,15 +64,7 @@ function CreateDBInputList({ updateFieldName }) {
 }
 
 CreateDBInputList.propTypes = {
-  fields: PropTypes.arrayOf(
-    PropTypes.shape({
-      fieldName: PropTypes.string.isRequired,
-      fieldType: PropTypes.string.isRequired,
-    }),
-  ),
   updateFieldName: PropTypes.func,
-  updateFieldType: PropTypes.func,
-  handleClickDeleteField: PropTypes.func,
 };
 
 export default CreateDBInputList;

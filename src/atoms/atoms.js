@@ -33,8 +33,8 @@ export const showDeleteRelationshipModalAtom = atom(false);
 export const deleteTargetRelationshipAtom = atom(null);
 export const isLastDocumentAtom = atom(false);
 
-export const fieldsAtom = atom([]);
-export const dbFieldsAtom = atom([
+export const addDocfieldsAtom = atom([]);
+export const createDBFieldsAtom = atom([
   {
     id: crypto.randomUUID(),
     fieldName: "",
