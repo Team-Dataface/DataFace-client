@@ -31,30 +31,36 @@ function useGetAllDatabases() {
     return response.data.databases;
   }
 
-  const { isLoading } = useQuery(["userDbList"], getDatabaseList, {
-    enabled: !!userId,
-    onSuccess: result => {
-      if (result.length && isInitial) {
-        setCurrentDBId(result[0]._id);
-        setCurrentDBName(result[0].name);
-        setIsInitial(false);
-      }
+  const { data: databases, isLoading } = useQuery(
+    ["userDbList"],
+    getDatabaseList,
+    {
+      enabled: !!userId,
+      onSuccess: result => {
+        if (result.length && isInitial) {
+          setCurrentDBId(result[0]._id);
+          setCurrentDBName(result[0].name);
+          setIsInitial(false);
+        }
 
-      if (!result.length) {
-        navigate("/dashboard/nodatabase");
-        return;
-      }
+        if (!result.length) {
+          navigate("/dashboard/nodatabase");
+          return;
+        }
 
-      setDatabases(result);
-      navigate("/dashboard/listview");
+        setDatabases(result);
+        navigate("/dashboard/listview");
+      },
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
     },
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+  );
 
   if (isLoading) {
     return <Loading />;
   }
+
+  return { databases };
 }
 
 export default useGetAllDatabases;
