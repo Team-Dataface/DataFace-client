@@ -47,7 +47,7 @@ function usePostDocument() {
       addNewDocumentId(result);
       setCurrentDocIndex(documentsIds.length);
 
-      queryClient.refetchQueries(["DocumentsList", currentDBId]);
+      queryClient.refetchQueries(["SingleDatabase", currentDBId]);
       setShowAddDocumentModal(false);
     },
     onFailure: () => {

@@ -1,27 +1,20 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import {
-  currentDBIdAtom,
   currentDocIndexAtom,
   isEditModeAtom,
   documentsIdsAtom,
   showAddDocumentModalAtom,
   showDeleteDocumentModalAtom,
   isLastDocumentAtom,
-  documentsNumAtom,
 } from "../../atoms/atoms";
-
-import useGetAllDocuments from "../../apis/useGetAllDocuments";
 
 import Button from "../shared/Button";
 import AddDocModal from "../Modals/AddNewDocument/AddDocModal";
 import DeleteDocModal from "../Modals/DeleteDocument/DeleteDocModal";
+import useGetSingleDatabase from "../../apis/useGetSingleDatabase";
 
 function DocHandlerButtons() {
-  const documentsNum = useAtomValue(documentsNumAtom);
-  const queryClient = useQueryClient();
-
   const [currentDocIndex, setCurrentDocIndex] = useAtom(currentDocIndexAtom);
   const [showAddDocumentModal, setShowAddDocumentModal] = useAtom(
     showAddDocumentModalAtom,
@@ -30,7 +23,9 @@ function DocHandlerButtons() {
     showDeleteDocumentModalAtom,
   );
 
-  const currentDBId = useAtomValue(currentDBIdAtom);
+  const { singleDatabase } = useGetSingleDatabase();
+  const documentsNum = singleDatabase?.documents.length;
+
   const isEditMode = useAtomValue(isEditModeAtom);
   const documentsIds = useAtomValue(documentsIdsAtom);
 
@@ -38,27 +33,15 @@ function DocHandlerButtons() {
 
   const currentDocIndexShownToUser = currentDocIndex + 1;
 
-  useGetAllDocuments();
-
   function navigateDown() {
     if (currentDocIndexShownToUser !== 1) {
       setCurrentDocIndex(prev => prev - 1);
-      queryClient.refetchQueries([
-        "foreignDocuments",
-        currentDBId,
-        currentDocIndex,
-      ]);
     }
   }
 
   function navigateUp() {
     if (currentDocIndexShownToUser !== documentsNum) {
       setCurrentDocIndex(prev => prev + 1);
-      queryClient.refetchQueries([
-        "foreignDocuments",
-        currentDBId,
-        currentDocIndex,
-      ]);
     }
   }
 

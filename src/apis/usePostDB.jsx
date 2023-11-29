@@ -9,6 +9,7 @@ import {
   currentDBNameAtom,
   userAtom,
   showCreateDBModalAtom,
+  dbFieldsAtom,
 } from "../atoms/atoms";
 import Loading from "../components/shared/Loading";
 
@@ -21,6 +22,7 @@ function usePostDB() {
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
+  const setFields = useSetAtom(dbFieldsAtom);
 
   async function fetchDatabase(newDatabase) {
     const response = await fetchData(
@@ -37,6 +39,13 @@ function usePostDB() {
       setCurrentDBId(result.data.newDatabase._id);
       setCurrentDBName(result.data.newDatabase.name);
       setIsListView(true);
+      setFields([
+        {
+          id: crypto.randomUUID(),
+          fieldName: "",
+          fieldType: "Text",
+        },
+      ]);
 
       queryClient.refetchQueries(["userDbList"]);
 

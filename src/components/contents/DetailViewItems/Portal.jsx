@@ -14,7 +14,7 @@ import PortalTable from "./PortalTable";
 import Button from "../../shared/Button";
 import DeleteRelationshipModal from "../../Modals/DeleteRelationship/DeleteRelationshipModal";
 
-function Portal({ index, relationship }) {
+function Portal({ index, relationship, documents }) {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
   const [showDeleteRelationshipModal, setShowDeleteRelationshipModal] = useAtom(
     showDeleteRelationshipModalAtom,
@@ -55,7 +55,11 @@ function Portal({ index, relationship }) {
         style={{ height: `${relationship.portalSize}px` }}
         onDoubleClick={() => setIsEditMode(true)}
       >
-        <PortalTable index={index} relationship={relationship} />
+        <PortalTable
+          index={index}
+          relationship={relationship}
+          documents={documents}
+        />
         {isEditMode && (
           <Button
             className="absolute -top-3 -right-3 w-6 rounded-full"
