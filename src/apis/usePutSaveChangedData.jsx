@@ -61,6 +61,8 @@ function usePutSaveChangedData() {
           ]);
         });
       }
+
+      queryClient.refetchQueries(["SingleDatabase", currentDBId]);
     },
     refetchOnWindowFocus: false,
   });
