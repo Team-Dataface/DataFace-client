@@ -24,9 +24,6 @@ function useLogout() {
       queryClient.clear();
       navigate("/login");
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
   });
 
   if (isLoading) {

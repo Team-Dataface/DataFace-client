@@ -37,9 +37,6 @@ function useDeleteDocument() {
         setCurrentDocIndex(0);
         setShowDeleteDocumentModal(false);
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
     },
   );
 

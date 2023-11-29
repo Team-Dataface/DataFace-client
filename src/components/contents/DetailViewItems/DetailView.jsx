@@ -85,9 +85,6 @@ function DetailView() {
 
         setRelationshipsData(null);
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
     },
   );
 

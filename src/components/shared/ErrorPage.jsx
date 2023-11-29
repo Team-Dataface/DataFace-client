@@ -6,31 +6,38 @@ function ErrorPage({ error }) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-around w-full min-h-screen">
-      <div className="flex flex-col justify-center h-full">
-        <p className="text-xl">Error Code: {error.status}</p>
-        <p className="text-xl mb-8">
-          {error ? error.message : "An unexpected error occurred."}
-        </p>
-        <h1 className="text-8xl text-red mb-16">Oops!</h1>
-        <p className="text-xl mb-8">Here are some helpful Links instead</p>
-        <div className="flex justify-between mt-6">
+    <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col w-[500px]">
+        <h1 className="text-9xl text-red mb-5">Oops!</h1>
+        <h2 className="text-4xl text-red mb-10">Something went wrong.</h2>
+        <div className="mb-20">
+          <h3 className="text-md">Error Code: {error.status}</h3>
+          <p className="text-md mb-8">
+            {error ? error.message : "An unexpected error occurred."}
+          </p>
+        </div>
+        <div>
           <Button
-            className="px-4 py-2 text-white bg-red rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="px-4 py-2 mr-4 text-white bg-red rounded-md hover:bg-red-hover focus:ring-2 focus:ring-red"
             onClick={() => navigate("/login")}
           >
-            <span>Login</span>
+            Login
           </Button>
           <Button
-            className="px-4 py-2 text-white bg-red rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="px-4 py-2 text-white bg-red rounded-md hover:bg-red-hover focus:ring-2 focus:ring-red"
             onClick={() => window.location.reload()}
           >
-            <span>Retry</span>
+            Retry
           </Button>
         </div>
       </div>
-      <div>
-        <p>Error image will be here</p>
+      <div className="flex items-center">
+        <img
+          id="Image by storyset on Freepik"
+          className="w-[600px]"
+          src="/assets/error_image.jpg"
+          alt="error illustration"
+        />
       </div>
     </div>
   );

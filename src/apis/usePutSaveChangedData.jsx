@@ -58,9 +58,6 @@ function usePutSaveChangedData() {
         0,
       ]);
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-    },
     refetchOnWindowFocus: false,
   });
 

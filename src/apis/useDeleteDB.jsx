@@ -47,10 +47,6 @@ function useDeleteDB() {
       setShowDeleteDBModal(false);
       queryClient.refetchQueries(["userDbList"]);
     },
-    onFailure: () => {
-      console.log("sending user to errorpage");
-      setShowDeleteDBModal(false);
-    },
   });
 
   if (isLoading) {

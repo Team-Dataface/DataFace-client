@@ -50,9 +50,6 @@ function useGetAllDocuments() {
         setDocumentsIds(documentsId);
         setDocumentsNum(result.documents.length);
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
       refetchOnWindowFocus: false,
       staleTime: Infinity,
     },

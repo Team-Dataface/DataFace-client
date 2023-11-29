@@ -39,9 +39,6 @@ function useGoogleLogin() {
         setUser(data.userInfo);
         navigate("/dashboard");
       },
-      onFailure: () => {
-        console.log("sending user to errorpage");
-      },
     },
   );
 
