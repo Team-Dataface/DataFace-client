@@ -104,11 +104,12 @@ function CreateDBModal() {
         <Content>
           <LabelArea>
             <Label>Database Name</Label>
-            <Label>Fields Name</Label>
+            <Label>Field Name</Label>
           </LabelArea>
           <InputsArea>
             <InputWrapper>
               <input
+                id="Database Name"
                 className="flex w-full h-7 rounded-lg text-center"
                 maxLength={CONSTANT.MAX_DATABASE_NAME_LENGTH}
                 onChange={event => handleOnDBNameChange(event)}
