@@ -345,10 +345,9 @@ DataFace는 사용자가 데이터베이스를 자유롭게 관리하고, 나아
 | foreignFieldName                                               | Target DB의 Foreign Key                                           |
 | foreignFieldsToDisplay                                         | Target DB의 Foreign Key로 조회한 데이터에서, 실제로 열람할 속성들 |
 
-```markdown
-relationship은 Base DB인 database에 종속된 subdocument 이기에,
+> [!NOTE]
+> relationship은 Base DB인 database에 종속된 subdocument 이기에,
 Base DB를 특정할 수 있는 고유한 값 (baseDbId, targetDbId...)을 별도의 속성으로 가지고 있을 필요가 없습니다.
-```
 
 ```js
 const relationshipSchema = new Schema([
@@ -467,11 +466,11 @@ function switchDatabase(clickedDBId, clickedDB) {
 }
 ```
 
-**_`react`의 `state`는 비동기적으로 업데이트 됩니다!_**
-
-<p align="left">
-  <img width="691" src="https://github.com/darren-kk/Jaenitel-client/assets/111283378/69c3e87a-de93-4852-b014-50382b667f95">
-</p>
+> [!IMPORTANT]
+> **_`react`의 `state`는 비동기적으로 업데이트 됩니다!_**
+> <p align="left">
+>  <img width="691" src="https://github.com/darren-kk/Jaenitel-client/assets/111283378/69c3e87a-de93-4852-b014-50382b667f95">
+> </p>
 
 사실 너무 당연하게 알고 있던 사실이지만, 복잡해지는 기능들 속에서 놓친 당연한 이유 였습니다.
 <br>
