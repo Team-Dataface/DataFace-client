@@ -39,7 +39,6 @@ export const createDBFieldsAtom = atom([
   },
 ]);
 
-export const relationshipsAtom = atom([]);
 export const relationshipStepAtom = atom("start");
 export const relationDataAtom = atom({
   primaryFieldName: "",

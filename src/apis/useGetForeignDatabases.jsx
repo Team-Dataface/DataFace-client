@@ -22,7 +22,7 @@ function useGetForeignDatabases() {
   }
 
   const { data: foreignDatabases, isLoading } = useQuery(
-    ["ForeignDocuments", currentDBId],
+    ["ForeignDatabases", currentDBId],
     () => getRelationships(),
     {
       enabled:

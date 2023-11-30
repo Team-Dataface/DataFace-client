@@ -1,49 +1,26 @@
 import { useState, useMemo } from "react";
-import { useQueries } from "@tanstack/react-query";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-
-import fetchData from "../../../utils/axios";
+import { useAtom, useAtomValue } from "jotai";
 
 import {
   currentDBIdAtom,
-  relationshipsAtom,
   showRelationshipModalAtom,
-  userAtom,
 } from "../../../atoms/atoms";
 
 import DatabaseFields from "./DatabaseFields";
 import Button from "../../shared/Button";
 import RelationshipModal from "../../Modals/Relationship/RelationshipModal";
-import Loading from "../../shared/Loading";
+import useGetSingleDatabase from "../../../apis/useGetSingleDatabase";
+import useGetForeignDatabases from "../../../apis/useGetForeignDatabases";
 
 function Relationship() {
-  const [docs, setDocs] = useState([]);
-
-  const setRelationships = useSetAtom(relationshipsAtom);
+  const [sortedDatabases, setSortedDatabases] = useState([]);
   const [showRelationshipModal, setShowRelationshipModal] = useAtom(
     showRelationshipModalAtom,
   );
-
-  const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
 
-  async function getSingleDatabase() {
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}`,
-    );
-
-    return response.data.database;
-  }
-
-  async function getRelationships() {
-    const response = await fetchData(
-      "GET",
-      `users/${userId}/databases/${currentDBId}/relationships`,
-    );
-
-    return response.data.foreignDatabases;
-  }
+  const { singleDatabase } = useGetSingleDatabase();
+  const { foreignDatabases } = useGetForeignDatabases();
 
   // eslint-disable-next-line consistent-return
   function sortDatabases(array) {
@@ -65,54 +42,32 @@ function Relationship() {
     }
   }
 
-  const [documentQuery, relationQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ["SingleDatabase", currentDBId],
-        queryFn: getSingleDatabase,
-        enabled: !!userId && !!currentDBId,
-        refetchOnWindowFocus: false,
-        onSuccess: result => {
-          setRelationships(result.relationships);
-        },
-      },
-      {
-        queryKey: ["Relationships", currentDBId],
-        queryFn: getRelationships,
-        refetchOnWindowFocus: false,
-      },
-    ],
-  });
-
   // eslint-disable-next-line consistent-return
   useMemo(() => {
-    if (documentQuery.data && relationQuery.data) {
-      const newDb = [documentQuery.data, ...relationQuery.data];
+    if (singleDatabase && foreignDatabases) {
+      const newDb = [singleDatabase, ...foreignDatabases];
 
-      setDocs(sortDatabases(newDb));
+      setSortedDatabases(sortDatabases(newDb));
     }
-  }, [documentQuery.data, relationQuery.data]);
-
-  if (documentQuery.isLoading) {
-    return <Loading />;
-  }
+  }, [singleDatabase, foreignDatabases]);
 
   return (
     <div className="flex flex-col w-full justify-center items-center">
       <div className="flex flex-row w-full justify-center items-start">
-        {docs?.map((database, index) => (
+        {sortedDatabases?.map((database, index) => (
           <div className="flex flex-row mb-10" key={database._id}>
             <DatabaseFields
               key={crypto.randomUUID()}
+              singleDatabase={singleDatabase}
               fields={database.documents[0].fields}
               databaseName={database.name}
               databaseId={database._id}
               dbIndex={index}
             />
-            {docs.length === 2 && index === 0 && (
+            {sortedDatabases.length === 2 && index === 0 && (
               <div className="border border-dashed w-80 h-0 mt-16 border-blue"></div>
             )}
-            {docs.length === 3 && (index === 0 || index === 1) && (
+            {sortedDatabases.length === 3 && (index === 0 || index === 1) && (
               <div
                 className={`border border-dashed w-40 h-0 border-blue ${
                   index === 0 ? "mt-24" : "mt-16"
@@ -123,12 +78,12 @@ function Relationship() {
         ))}
       </div>
       <div className="flex flex-col items-center">
-        {docs.length === 1 && (
+        {sortedDatabases.length === 1 && (
           <span className="flex justify-center items-center mb-12 font-bold text-dark-grey text-[2rem]">
             No Relationship Yet.
           </span>
         )}
-        {docs.length < 3 && (
+        {sortedDatabases.length < 3 && (
           <Button
             className="w-[250px] h-[30px] rounded-md bg-black-bg text-white hover:bg-dark-grey"
             onClick={() => {
@@ -139,7 +94,7 @@ function Relationship() {
           </Button>
         )}
         {showRelationshipModal && (
-          <RelationshipModal databaseName={documentQuery.data.name} />
+          <RelationshipModal databaseName={singleDatabase.name} />
         )}
       </div>
     </div>
