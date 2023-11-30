@@ -1,16 +1,16 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useSetAtom, useAtomValue } from "jotai";
 import { useNavigate } from "react-router-dom";
 
-import { isEditModeAtom, isRelationshipAtom } from "../../atoms/atoms";
+import { isEditModeAtom, currentViewAtom } from "../../atoms/atoms";
 import Button from "../shared/Button";
 
 function RelationshipButton() {
   const navigate = useNavigate();
-  const [isRelationship, setIsRelationship] = useAtom(isRelationshipAtom);
+  const setCurrentView = useSetAtom(currentViewAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
   function clickHandleRelationship() {
-    setIsRelationship(true);
+    setCurrentView("relationship");
     navigate("/dashboard/relationship");
   }
 
@@ -26,7 +26,7 @@ function RelationshipButton() {
         src="/assets/relation_icon.svg"
         alt="relation icon"
       />
-      <span className="w-full">{isRelationship ? "Back" : "Relationship"}</span>
+      <span className="w-full">Relationship</span>
     </Button>
   );
 }

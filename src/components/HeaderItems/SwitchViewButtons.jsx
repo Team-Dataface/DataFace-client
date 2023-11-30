@@ -1,23 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { useAtom, useAtomValue } from "jotai";
 
-import { isListViewAtom, isEditModeAtom } from "../../atoms/atoms";
+import { currentViewAtom, isEditModeAtom } from "../../atoms/atoms";
 
 import Button from "../shared/Button";
 
 function SwitchViewButtons() {
   const navigate = useNavigate();
 
-  const [isListView, setIsListView] = useAtom(isListViewAtom);
+  const [currentView, setCurrentView] = useAtom(currentViewAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
   function switchToListView() {
-    setIsListView(true);
+    setCurrentView("list");
     navigate("/dashboard/listview");
   }
 
   function switchToDetailView() {
-    setIsListView(false);
+    setCurrentView("detail");
     navigate("/dashboard/detailview");
   }
 
@@ -25,10 +25,10 @@ function SwitchViewButtons() {
     <div className="flex">
       <Button
         className={`flex flex-row items-center w-[120px] h-9 mr-1 p-2 rounded-md
-        ${isListView && isEditMode && "bg-dark-grey"}
-        ${isListView && !isEditMode && "bg-yellow"}
-        ${!isListView && isEditMode && "bg-dark-grey"}
-        ${!isListView && !isEditMode && "bg-white"}`}
+        ${currentView === "list" && isEditMode && "bg-dark-grey"}
+        ${currentView === "list" && !isEditMode && "bg-yellow"}
+        ${currentView !== "list" && isEditMode && "bg-dark-grey"}
+        ${currentView !== "list" && !isEditMode && "bg-white"}`}
         onClick={switchToListView}
         disabled={isEditMode}
       >
@@ -37,10 +37,10 @@ function SwitchViewButtons() {
       </Button>
       <Button
         className={`flex flex-row items-center w-[130px] h-9 mr-1 p-2 rounded-md
-        ${!isListView && isEditMode && "bg-dark-grey"}
-        ${!isListView && !isEditMode && "bg-yellow"}
-        ${isListView && isEditMode && "bg-dark-grey"}
-        ${isListView && !isEditMode && "bg-white"}`}
+        ${currentView !== "list" && isEditMode && "bg-dark-grey"}
+        ${currentView !== "list" && !isEditMode && "bg-yellow"}
+        ${currentView === "list" && isEditMode && "bg-dark-grey"}
+        ${currentView === "list" && !isEditMode && "bg-white"}`}
         onClick={switchToDetailView}
         disabled={isEditMode}
       >

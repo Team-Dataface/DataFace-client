@@ -5,7 +5,7 @@ import {
   userAtom,
   currentDBIdAtom,
   changedDocAtom,
-  isListViewAtom,
+  currentViewAtom,
   documentsDataAtom,
   currentDocIndexAtom,
   relationshipsDataAtom,
@@ -18,13 +18,13 @@ function usePutSaveChangedData() {
   const { userId } = useAtomValue(userAtom);
   const currentDBId = useAtomValue(currentDBIdAtom);
   const changedDoc = useAtomValue(changedDocAtom);
-  const isListview = useAtomValue(isListViewAtom);
+  const currentView = useAtomValue(currentViewAtom);
   const documentsData = useAtomValue(documentsDataAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
   const relationshipsData = useAtomValue(relationshipsDataAtom);
 
   async function handleClickSave() {
-    if (isListview) {
+    if (currentView === "list") {
       await fetchData(
         "PUT",
         `/users/${userId}/databases/${currentDBId}/documents`,

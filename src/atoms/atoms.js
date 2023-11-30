@@ -6,17 +6,16 @@ export const currentDBIdAtom = atom("");
 export const currentDBNameAtom = atom("");
 export const currentDocIndexAtom = atom(0);
 
-export const isEditModeAtom = atom(false);
-export const isListViewAtom = atom(true);
-export const isRelationshipAtom = atom(false);
-
-export const relationshipsDataAtom = atom(null);
 export const documentsIdsAtom = atom([]);
+export const isEditModeAtom = atom(false);
+export const currentViewAtom = atom("list");
+
+export const documentsDataAtom = atom([]);
+export const relationshipsDataAtom = atom(null);
 
 export const isInitialAtom = atom(true);
 export const changedDocAtom = atom([]);
 
-export const documentsDataAtom = atom([]);
 export const draggingElementAtom = atom(null);
 export const elementScaleAtom = atom([]);
 
