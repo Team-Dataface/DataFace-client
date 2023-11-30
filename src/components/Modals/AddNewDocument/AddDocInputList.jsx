@@ -2,27 +2,27 @@ import { useAtom } from "jotai";
 
 import getTodaysDate from "../../../utils/getTodaysDate";
 
-import { fieldsAtom } from "../../../atoms/atoms";
+import { addDocfieldsAtom } from "../../../atoms/atoms";
 
 import InputWrapper from "../SharedItems/InputWrapper";
 
 function AddDocInputList() {
-  const [fields, setFields] = useAtom(fieldsAtom);
+  const [addDocfields, setAddDocFields] = useAtom(addDocfieldsAtom);
 
   function adjustTextareaHeight(event) {
     event.target.style.height = `${event.target.scrollHeight}px`;
   }
 
   function updateFieldValue(index, event) {
-    const newFields = [...fields];
+    const newAddDocFields = [...addDocfields];
 
-    newFields[index].fieldValue = event.target.value;
+    newAddDocFields[index].fieldValue = event.target.value;
 
-    setFields(newFields);
+    setAddDocFields(newAddDocFields);
     adjustTextareaHeight(event);
   }
 
-  return fields.map((element, index) => {
+  return addDocfields.map((element, index) => {
     return (
       <div key={element._id} className="flex w-[500px]">
         <span

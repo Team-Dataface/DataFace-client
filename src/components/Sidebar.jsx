@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import {
-  databasesAtom,
   currentDBIdAtom,
   currentDBNameAtom,
   currentDocIndexAtom,
@@ -37,11 +36,10 @@ function Sidebar() {
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
 
-  const databases = useAtomValue(databasesAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
   const isRelationship = useAtomValue(isRelationshipAtom);
 
-  useGetAllDatabases();
+  const { databases } = useGetAllDatabases();
 
   function clickHandleDelete(targetId) {
     setDeleteTargetDBId(targetId);

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useSetAtom, useAtom } from "jotai";
 
-import { showCreateDBModalAtom, dbFieldsAtom } from "../../../atoms/atoms";
+import {
+  showCreateDBModalAtom,
+  createDBFieldsAtom,
+} from "../../../atoms/atoms";
 import usePostDB from "../../../apis/usePostDB";
 
 import Modal from "../../shared/Modal";
@@ -20,7 +23,7 @@ import CONSTANT from "../../../constants/constant";
 function CreateDBModal() {
   const fetchNewDatabase = usePostDB();
   const [DBName, setDBName] = useState(null);
-  const [fields, setFields] = useAtom(dbFieldsAtom);
+  const [createDBFields, setCreateDBFields] = useAtom(createDBFieldsAtom);
 
   const [isDBNameEmpty, setIsDBNameEmpty] = useState(false);
   const [isFieldNameEmpty, setIsFieldNameEmpty] = useState(false);
@@ -29,19 +32,19 @@ function CreateDBModal() {
   const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
 
   function updateFieldName(index, event) {
-    const newFields = [...fields];
+    const newFields = [...createDBFields];
     newFields[index].fieldName = event.target.value;
 
     setIsDBNameEmpty(false);
     setIsFieldNameEmpty(false);
     setIsFieldNameDuplicate(false);
 
-    setFields(newFields);
+    setCreateDBFields(newFields);
   }
 
   function handleClickAddField() {
-    setFields([
-      ...fields,
+    setCreateDBFields([
+      ...createDBFields,
       {
         id: crypto.randomUUID(),
         fieldName: "",
@@ -61,7 +64,7 @@ function CreateDBModal() {
       return;
     }
 
-    fields.forEach(element => {
+    createDBFields.forEach(element => {
       if (!element.fieldName) {
         setIsFieldNameEmpty(true);
 
@@ -74,7 +77,7 @@ function CreateDBModal() {
     if (allNamesFilled) {
       const fieldsSet = new Set(names);
 
-      if (fields.length !== fieldsSet.size) {
+      if (createDBFields.length !== fieldsSet.size) {
         setIsFieldNameDuplicate(true);
 
         return;
@@ -82,7 +85,7 @@ function CreateDBModal() {
 
       const newDatabase = {
         DBName,
-        fields,
+        fields: createDBFields,
       };
 
       fetchNewDatabase(newDatabase);
