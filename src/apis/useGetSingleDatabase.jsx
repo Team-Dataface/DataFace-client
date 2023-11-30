@@ -10,7 +10,6 @@ import {
   documentsIdsAtom,
   changedDocAtom,
   documentsDataAtom,
-  primaryFieldAtom,
   relationshipsDataAtom,
   addDocfieldsAtom,
 } from "../atoms/atoms";
@@ -24,7 +23,6 @@ function useGetSingleDatabase() {
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
   const setDocumentsData = useSetAtom(documentsDataAtom);
-  const setPrimaryField = useSetAtom(primaryFieldAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
   const setAddDocFields = useSetAtom(addDocfieldsAtom);
 
@@ -66,12 +64,6 @@ function useGetSingleDatabase() {
 
         if (result.relationships?.length) {
           setRelationshipsData(result.relationships);
-
-          const primaryFieldsList = result.relationships.map(element => {
-            return element.primaryFieldName;
-          });
-
-          setPrimaryField(primaryFieldsList);
 
           return;
         }
