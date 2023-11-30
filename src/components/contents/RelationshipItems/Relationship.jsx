@@ -23,31 +23,42 @@ function Relationship() {
   const { foreignDatabases } = useGetForeignDatabases();
 
   // eslint-disable-next-line consistent-return
-  function sortDatabases(array) {
-    const { length } = array;
-    const primaryDbIndex = array.findIndex(item => item._id === currentDBId);
+  function sortDatabases(baseAndTargetDBs) {
+    const { length } = baseAndTargetDBs;
+    const primaryDbIndex = baseAndTargetDBs.findIndex(
+      item => item._id === currentDBId,
+    );
 
     if (length === 1) {
-      return array;
+      return baseAndTargetDBs;
     }
+
     if (length === 2) {
-      const newDatabases = primaryDbIndex === 0 ? [array[0], array[1]] : array;
+      const newBaseAndTargetDBs =
+        primaryDbIndex === 0
+          ? [baseAndTargetDBs[0], baseAndTargetDBs[1]]
+          : baseAndTargetDBs;
 
-      return newDatabases;
+      return newBaseAndTargetDBs;
     }
-    if (length === 3) {
-      const newDatabases = [array[2], array[primaryDbIndex], array[1]];
 
-      return newDatabases;
+    if (length === 3) {
+      const newBaseAndTargetDBs = [
+        baseAndTargetDBs[2],
+        baseAndTargetDBs[primaryDbIndex],
+        baseAndTargetDBs[1],
+      ];
+
+      return newBaseAndTargetDBs;
     }
   }
 
   // eslint-disable-next-line consistent-return
   useMemo(() => {
     if (singleDatabase && foreignDatabases) {
-      const newDb = [singleDatabase, ...foreignDatabases];
+      const baseAndTargetDBs = [singleDatabase, ...foreignDatabases];
 
-      setSortedDatabases(sortDatabases(newDb));
+      setSortedDatabases(sortDatabases(baseAndTargetDBs));
     }
   }, [singleDatabase, foreignDatabases]);
 
