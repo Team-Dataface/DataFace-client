@@ -26,8 +26,8 @@ function DatabaseFields({
   );
   const [fieldNames, setFieldNames] = useState([]);
   const [updatedFields, setUpdatedFields] = useState(() => {
-    if (currentDBId === databaseId) {
-      const primaryFieldNames = singleDatabase?.relationships.map(
+    if (currentDBId === databaseId && singleDatabase?.relationships) {
+      const primaryFieldNames = singleDatabase.relationships.map(
         relation => relation.primaryFieldName,
       );
       const updatedFieldsCopy = fields.filter(
