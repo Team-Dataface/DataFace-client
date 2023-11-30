@@ -4,11 +4,9 @@ import { useSetAtom, useAtomValue } from "jotai";
 import fetchData from "../utils/axios";
 
 import {
-  databasesAtom,
   currentDBIdAtom,
   currentDBNameAtom,
   userAtom,
-  currentDocIndexAtom,
   showDeleteDBModalAtom,
 } from "../atoms/atoms";
 
@@ -18,11 +16,9 @@ function useDeleteDB() {
   const queryClient = useQueryClient();
 
   const { userId } = useAtomValue(userAtom);
-  const databases = useAtomValue(databasesAtom);
 
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
-  const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
   const setShowDeleteDBModal = useSetAtom(showDeleteDBModalAtom);
 
   async function deleteDatabase(databaseId) {
@@ -36,10 +32,7 @@ function useDeleteDB() {
 
   const { mutate: fetchDeleteDB, isLoading } = useMutation(deleteDatabase, {
     onSuccess: result => {
-      if (databases.length === 1) {
-        setCurrentDocIndex(0);
-        setCurrentDBName("");
-      } else {
+      if (result.length) {
         setCurrentDBId(result[0]._id);
         setCurrentDBName(result[0].name);
       }

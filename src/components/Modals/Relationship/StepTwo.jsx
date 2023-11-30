@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import {
-  databasesAtom,
   currentDBIdAtom,
   relationshipStepAtom,
   relationDataAtom,
 } from "../../../atoms/atoms";
+
+import useGetAllDatabases from "../../../apis/useGetAllDatabases";
 
 import Title from "../SharedItems/Title";
 import Button from "../../shared/Button";
@@ -20,9 +21,10 @@ function StepTwo() {
   const [relationData, setRelationData] = useAtom(relationDataAtom);
 
   const currentDBId = useAtomValue(currentDBIdAtom);
-  const databases = useAtomValue(databasesAtom);
 
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
+
+  const { databases } = useGetAllDatabases();
 
   const stepTwoSetUpData = {};
 

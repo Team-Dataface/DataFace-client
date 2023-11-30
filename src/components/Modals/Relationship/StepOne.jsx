@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 
+import useGetAllDatabases from "../../../apis/useGetAllDatabases";
+
 import {
-  databasesAtom,
   currentDBIdAtom,
   relationshipStepAtom,
   relationDataAtom,
@@ -20,10 +21,11 @@ function StepOne() {
 
   const currentDBId = useAtomValue(currentDBIdAtom);
   const relationData = useAtomValue(relationDataAtom);
-  const databases = useAtomValue(databasesAtom);
 
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
   const setTargetDatabases = useSetAtom(targetDatabasesAtom);
+
+  const { databases } = useGetAllDatabases();
 
   const filteredDbs = databases.filter(
     database => database._id !== currentDBId,
