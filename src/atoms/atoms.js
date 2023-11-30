@@ -16,7 +16,7 @@ export const documentsIdsAtom = atom([]);
 export const isInitialAtom = atom(true);
 export const changedDocAtom = atom([]);
 
-export const docDataAtom = atom([]);
+export const documentsDataAtom = atom([]);
 export const primaryFieldAtom = atom(null);
 export const draggingElementAtom = atom(null);
 export const elementScaleAtom = atom([]);

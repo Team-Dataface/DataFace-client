@@ -5,7 +5,7 @@ import {
   currentDocIndexAtom,
   isEditModeAtom,
   relationshipsDataAtom,
-  docDataAtom,
+  documentsDataAtom,
   draggingElementAtom,
   elementScaleAtom,
 } from "../../../atoms/atoms";
@@ -24,7 +24,7 @@ function DetailView() {
 
   const elementScale = useAtomValue(elementScaleAtom);
 
-  const [docData, setDocData] = useAtom(docDataAtom);
+  const [documentsData, setDocumentsData] = useAtom(documentsDataAtom);
   const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
   const [relationshipsData, setRelationshipsData] = useAtom(
     relationshipsDataAtom,
@@ -48,8 +48,8 @@ function DetailView() {
       moveField(
         canvasRect,
         event,
-        docData,
-        setDocData,
+        documentsData,
+        setDocumentsData,
         currentDocIndex,
         draggingElement,
         elementScale,

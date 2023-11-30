@@ -9,7 +9,7 @@ import {
   userAtom,
   documentsIdsAtom,
   changedDocAtom,
-  docDataAtom,
+  documentsDataAtom,
   primaryFieldAtom,
   relationshipsDataAtom,
   addDocfieldsAtom,
@@ -23,7 +23,7 @@ function useGetSingleDatabase() {
 
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
-  const setDocData = useSetAtom(docDataAtom);
+  const setDocumentsData = useSetAtom(documentsDataAtom);
   const setPrimaryField = useSetAtom(primaryFieldAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
   const setAddDocFields = useSetAtom(addDocfieldsAtom);
@@ -60,7 +60,7 @@ function useGetSingleDatabase() {
         });
 
         setAddDocFields(fieldsWithEmptyValue);
-        setDocData(result.documents);
+        setDocumentsData(result.documents);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
 

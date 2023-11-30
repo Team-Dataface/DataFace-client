@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import useGetAllDatabases from "../../../apis/useGetAllDatabases";
-
 import {
   currentDBIdAtom,
   relationshipStepAtom,
   relationDataAtom,
   targetDatabasesAtom,
 } from "../../../atoms/atoms";
+
+import useGetAllDatabases from "../../../apis/useGetAllDatabases";
 
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";

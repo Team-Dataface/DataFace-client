@@ -3,8 +3,8 @@ import CONSTANT from "../constants/constant";
 function moveField(
   canvasRect,
   event,
-  docData,
-  setDocData,
+  documentsData,
+  setDocumentsData,
   currentDocIndex,
   draggingElement,
   elementScale,
@@ -20,7 +20,7 @@ function moveField(
   const elementWidth = 370;
   const elementHeight = elementScale[1] + 40;
 
-  const newDocData = [...docData];
+  const newDocumentsData = [...documentsData];
 
   const isAboveCanvas = currentYBasedOnCanvasArea < 0;
   const isLeftOfCanvas = currentXBasedOnCanvasArea < 0;
@@ -30,9 +30,11 @@ function moveField(
     currentYBasedOnCanvasArea > CONSTANT.CANVAS_H - elementHeight;
 
   function setCoordinates(x, y) {
-    newDocData[currentDocIndex].fields[draggedElementIndex].xCoordinate = x;
-    newDocData[currentDocIndex].fields[draggedElementIndex].yCoordinate = y;
-    setDocData(newDocData);
+    newDocumentsData[currentDocIndex].fields[draggedElementIndex].xCoordinate =
+      x;
+    newDocumentsData[currentDocIndex].fields[draggedElementIndex].yCoordinate =
+      y;
+    setDocumentsData(newDocumentsData);
   }
 
   if (isAboveCanvas && isLeftOfCanvas) {

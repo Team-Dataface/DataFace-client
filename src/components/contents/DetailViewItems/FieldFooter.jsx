@@ -1,19 +1,19 @@
 import { useAtom, useAtomValue } from "jotai";
 
-import { docDataAtom, currentDocIndexAtom } from "../../../atoms/atoms";
+import { documentsDataAtom, currentDocIndexAtom } from "../../../atoms/atoms";
 
 import Button from "../../shared/Button";
 
 function FieldFooter({ index }) {
-  const [docData, setDocData] = useAtom(docDataAtom);
+  const [documentsData, setDocumentsData] = useAtom(documentsDataAtom);
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
 
   function updateFieldRows(fieldIndex, value) {
-    const newDocData = [...docData];
+    const newDocData = [...documentsData];
 
     newDocData[currentDocIndex].fields[fieldIndex].rows = value;
 
-    setDocData(newDocData);
+    setDocumentsData(newDocData);
   }
 
   return (

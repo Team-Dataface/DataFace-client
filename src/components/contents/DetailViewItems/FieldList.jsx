@@ -2,7 +2,7 @@ import { useAtom, useSetAtom, useAtomValue } from "jotai";
 
 import {
   isEditModeAtom,
-  docDataAtom,
+  documentsDataAtom,
   currentDocIndexAtom,
   draggingElementAtom,
   elementScaleAtom,
@@ -16,12 +16,11 @@ import FieldFooter from "./FieldFooter";
 function FieldList() {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
   const [draggingElement, setDraggingElement] = useAtom(draggingElementAtom);
-  const [docData, setDocData] = useAtom(docDataAtom);
+  const [documentsData, setDocumentsData] = useAtom(documentsDataAtom);
 
   const setElementScale = useSetAtom(elementScaleAtom);
 
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const document = docData[currentDocIndex];
 
   function updateDateModified(newDocData, fields) {
     const dateModifiedFieldIndex = fields.findIndex(
@@ -35,15 +34,19 @@ function FieldList() {
   }
 
   function updateFieldValue(index, event) {
-    const newDocData = [...docData];
+    const newDocumentsData = [...documentsData];
 
-    newDocData[currentDocIndex].fields[index].fieldValue = event.target.value;
+    newDocumentsData[currentDocIndex].fields[index].fieldValue =
+      event.target.value;
 
-    updateDateModified(newDocData, newDocData[currentDocIndex].fields);
-    setDocData(newDocData);
+    updateDateModified(
+      newDocumentsData,
+      newDocumentsData[currentDocIndex].fields,
+    );
+    setDocumentsData(newDocumentsData);
   }
 
-  return document?.fields.map((element, index) => {
+  return documentsData[currentDocIndex]?.fields.map((element, index) => {
     return (
       <div
         key={element.fieldName}
