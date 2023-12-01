@@ -48,4 +48,3 @@ export const relationDataAtom = atom({
   foreignFieldsToDisplay: [],
   foreignDb: null,
 });
-export const targetDatabasesAtom = atom([]);
