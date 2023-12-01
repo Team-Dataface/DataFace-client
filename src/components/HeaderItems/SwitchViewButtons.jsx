@@ -21,14 +21,15 @@ function SwitchViewButtons() {
     navigate("/dashboard/detailview");
   }
 
+  console.log(currentView);
+
   return (
     <div className="flex">
       <Button
         className={`flex flex-row items-center w-[120px] h-9 mr-1 p-2 rounded-md
-        ${currentView === "list" && isEditMode && "bg-dark-grey"}
-        ${currentView === "list" && !isEditMode && "bg-yellow"}
-        ${currentView !== "list" && isEditMode && "bg-dark-grey"}
-        ${currentView !== "list" && !isEditMode && "bg-white"}`}
+        ${!isEditMode && currentView === "list" && "bg-yellow"}
+        ${!isEditMode && currentView !== "list" && "bg-white"}
+        ${isEditMode && "bg-dark-grey"}`}
         onClick={switchToListView}
         disabled={isEditMode}
       >
@@ -37,10 +38,9 @@ function SwitchViewButtons() {
       </Button>
       <Button
         className={`flex flex-row items-center w-[130px] h-9 mr-1 p-2 rounded-md
-        ${currentView !== "list" && isEditMode && "bg-dark-grey"}
-        ${currentView !== "list" && !isEditMode && "bg-yellow"}
-        ${currentView === "list" && isEditMode && "bg-dark-grey"}
-        ${currentView === "list" && !isEditMode && "bg-white"}`}
+        ${!isEditMode && currentView === "detail" && "bg-yellow"}
+        ${!isEditMode && currentView !== "detail" && "bg-white"}
+        ${isEditMode && "bg-dark-grey"}`}
         onClick={switchToDetailView}
         disabled={isEditMode}
       >

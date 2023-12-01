@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 
+// user
 export const userAtom = atom("");
 
 export const currentDBIdAtom = atom("");
@@ -29,7 +30,7 @@ export const showDeleteRelationshipModalAtom = atom(false);
 export const deleteTargetRelationshipAtom = atom(null);
 export const isLastDocumentAtom = atom(false);
 
-export const addDocfieldsAtom = atom([]);
+export const addDocumentFieldsAtom = atom([]);
 export const createDBFieldsAtom = atom([
   {
     id: crypto.randomUUID(),
@@ -38,6 +39,7 @@ export const createDBFieldsAtom = atom([
   },
 ]);
 
+// relationshipModal
 export const relationshipStepAtom = atom("start");
 export const relationDataAtom = atom({
   primaryFieldName: "",
