@@ -5,15 +5,23 @@ import { useAtom, useAtomValue } from "jotai";
 
 import {
   relationDataAtom,
-  targetDatabasesAtom,
   currentDBNameAtom,
+  currentDBIdAtom,
 } from "../../../../atoms/atoms";
+
+import useGetAllDatabases from "../../../../apis/useGetAllDatabases";
 
 function DatabasesWizard() {
   const [isSelected, setIsSelected] = useState("");
   const [relationData, setRelationData] = useAtom(relationDataAtom);
-  const targetDatabases = useAtomValue(targetDatabasesAtom);
+  const currentDBId = useAtomValue(currentDBIdAtom);
   const currentDBName = useAtomValue(currentDBNameAtom);
+
+  const { databases } = useGetAllDatabases();
+
+  const otherDatabases = databases?.filter(
+    database => database._id !== currentDBId,
+  );
 
   function handleDatabaseClick(id) {
     setIsSelected(id);
@@ -32,11 +40,11 @@ function DatabasesWizard() {
       <div className="border border-blue border-dashed h-16"></div>
       <div className="flex flex-col items-center w-full max-h-[190px] border-2 rounded-lg overflow-y-scroll">
         <ul className="w-full h-auto text-center">
-          {targetDatabases.map((database, index) => (
+          {otherDatabases.map((database, index) => (
             <li
               className={`w-full py-1 border-b-2 border-grey
               ${isSelected === database._id ? "bg-yellow" : ""}
-              ${index === targetDatabases.length - 1 ? "border-b-0" : ""}`}
+              ${index === otherDatabases.length - 1 ? "border-b-0" : ""}`}
               key={database._id}
               onClick={() => handleDatabaseClick(database._id)}
             >

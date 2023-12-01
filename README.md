@@ -13,7 +13,7 @@
 
 # **🔗 Links**
 
-<p align="center" style="display: flex; justify-content: space-evenly;">
+<p align="center">
   <a href="https://app.dataface.solutions">Deployed website</a>
   <span> | </span>
   <a href="https://github.com/Team-Dataface/DataFace-client">Frontend Repository</a>
@@ -22,23 +22,23 @@
 </p>
 
 # 📖 CONTENTS <!-- omit in toc -->
-- [**💪 Motivation**](#💪-motivation)
-- [**🛠 Tech Stacks**](#🛠-tech-stacks)
-  - [🤔 Why Tanstack-Query?](#🤔-why-tanstack-query)
-  - [🤔 Why MongoDB?](#🤔-why-mongodb)
-- [**🕹️ Features**](#🕹️-features)
-- [**🏔 Challenges**](#🏔-challenges)
-  - [1. MongoDB로 데이터베이스 간 관계 설정 기능을 어떻게 구현할까?](#1-1-관계형-db의-primary-key-foreign-key-개념을-응용)
+- [**💪 Motivation**](#-motivation)
+- [**🛠 Tech Stacks**](#-tech-stacks)
+  - [🤔 Why Tanstack-Query?](#-why-tanstack-query)
+  - [🤔 Why MongoDB?](#-why-mongodb)
+- [**🕹️ Features**](#-features)
+- [**🏔 Challenges**](#-challenges)
+  - [1. MongoDB로 데이터베이스 간 관계 설정 기능을 어떻게 구현할까?](#1-mongodb로-데이터베이스-간-관계-설정-기능을-어떻게-구현할까)
   - [2. 비전문가를 배려한 직관적인 데이터베이스툴 구현](#2-비전문가를-배려한-직관적인-데이터베이스툴-구현)
     - [2-1. 자연스러운 유저플로우를 위한 저장방식 고민](#2-1-자연스러운-유저플로우를-위한-저장방식-고민)
     - [2-2. 각 타입에 어울리는 태그를 다르게 적용하기](#2-2-각-타입에-어울리는-태그를-다르게-적용하기)
     - [2-3. 포탈마다 다른 쿼리결과를 렌더링하도록 구현](#2-3-포탈마다-다른-쿼리결과를-렌더링하도록-구현)
     - [2-4. 배경지식이 없더라도 쉽게 할 수 있는 관계설정](#2-4-배경지식이-없더라도-쉽게-할-수-있는-관계설정)
-- [**🔥 Issues**](#🔥-issues)
+- [**🔥 Issues**](#-issues)
   - [Portal의 값 갱신 이슈](#portal의-값-갱신-이슈)
   - [Header 와 SideBar 컴포넌트 간의 state 변경 이슈](#header-와-sidebar-컴포넌트-간의-state-변경-이슈)
-- [**🗓 Schedule**](#🗓-schedule)
-- [**👨‍👩‍👦 Memoir**](#👨‍👩‍👦-memoir)
+- [**🗓 Schedule**](#-schedule)
+- [**👨‍👩‍👦 Memoir**](#-memoir)
 
 <br>
 

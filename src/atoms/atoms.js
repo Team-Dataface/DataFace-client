@@ -1,25 +1,22 @@
 import { atom } from "jotai";
 
+// user
 export const userAtom = atom("");
-
-export const databasesAtom = atom([]);
 
 export const currentDBIdAtom = atom("");
 export const currentDBNameAtom = atom("");
 export const currentDocIndexAtom = atom(0);
 
-export const isEditModeAtom = atom(false);
-export const isListViewAtom = atom(true);
-export const isRelationshipAtom = atom(false);
-
-export const relationshipsDataAtom = atom(null);
 export const documentsIdsAtom = atom([]);
+export const isEditModeAtom = atom(false);
+export const currentViewAtom = atom("list");
+
+export const documentsDataAtom = atom([]);
+export const relationshipsDataAtom = atom(null);
 
 export const isInitialAtom = atom(true);
 export const changedDocAtom = atom([]);
 
-export const docDataAtom = atom([]);
-export const primaryFieldAtom = atom(null);
 export const draggingElementAtom = atom(null);
 export const elementScaleAtom = atom([]);
 
@@ -33,7 +30,7 @@ export const showDeleteRelationshipModalAtom = atom(false);
 export const deleteTargetRelationshipAtom = atom(null);
 export const isLastDocumentAtom = atom(false);
 
-export const addDocfieldsAtom = atom([]);
+export const addDocumentFieldsAtom = atom([]);
 export const createDBFieldsAtom = atom([
   {
     id: crypto.randomUUID(),
@@ -42,7 +39,7 @@ export const createDBFieldsAtom = atom([
   },
 ]);
 
-export const relationshipsAtom = atom([]);
+// relationshipModal
 export const relationshipStepAtom = atom("start");
 export const relationDataAtom = atom({
   primaryFieldName: "",
@@ -51,4 +48,3 @@ export const relationDataAtom = atom({
   foreignFieldsToDisplay: [],
   foreignDb: null,
 });
-export const targetDatabasesAtom = atom([]);

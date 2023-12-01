@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import {
-  databasesAtom,
-  currentDBIdAtom,
-  relationshipStepAtom,
-  relationDataAtom,
-  targetDatabasesAtom,
-} from "../../../atoms/atoms";
+import { relationshipStepAtom, relationDataAtom } from "../../../atoms/atoms";
 
 import Content from "../SharedItems/Content";
 import Title from "../SharedItems/Title";
@@ -18,18 +12,9 @@ import DatabasesWizard from "./WizardItems/DatabasesWizard";
 function StepOne() {
   const [isNotSelected, setIsNotSelected] = useState(false);
 
-  const currentDBId = useAtomValue(currentDBIdAtom);
   const relationData = useAtomValue(relationDataAtom);
-  const databases = useAtomValue(databasesAtom);
 
   const setRelationshipStep = useSetAtom(relationshipStepAtom);
-  const setTargetDatabases = useSetAtom(targetDatabasesAtom);
-
-  const filteredDbs = databases.filter(
-    database => database._id !== currentDBId,
-  );
-
-  setTargetDatabases(filteredDbs);
 
   function handleNextClick() {
     if (!relationData.foreignDbId) {

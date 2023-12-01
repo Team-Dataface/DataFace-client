@@ -9,10 +9,9 @@ import {
   userAtom,
   documentsIdsAtom,
   changedDocAtom,
-  docDataAtom,
-  primaryFieldAtom,
+  documentsDataAtom,
   relationshipsDataAtom,
-  addDocfieldsAtom,
+  addDocumentFieldsAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -23,10 +22,9 @@ function useGetSingleDatabase() {
 
   const setDocumentsIds = useSetAtom(documentsIdsAtom);
   const setChangedDoc = useSetAtom(changedDocAtom);
-  const setDocData = useSetAtom(docDataAtom);
-  const setPrimaryField = useSetAtom(primaryFieldAtom);
+  const setDocumentsData = useSetAtom(documentsDataAtom);
   const setRelationshipsData = useSetAtom(relationshipsDataAtom);
-  const setAddDocFields = useSetAtom(addDocfieldsAtom);
+  const setAddDocumentFields = useSetAtom(addDocumentFieldsAtom);
 
   async function getSingleDatabase() {
     const response = await fetchData(
@@ -59,19 +57,13 @@ function useGetSingleDatabase() {
           };
         });
 
-        setAddDocFields(fieldsWithEmptyValue);
-        setDocData(result.documents);
+        setAddDocumentFields(fieldsWithEmptyValue);
+        setDocumentsData(result.documents);
         setChangedDoc(docs);
         setDocumentsIds(documentsId);
 
         if (result.relationships?.length) {
           setRelationshipsData(result.relationships);
-
-          const primaryFieldsList = result.relationships.map(element => {
-            return element.primaryFieldName;
-          });
-
-          setPrimaryField(primaryFieldsList);
 
           return;
         }

@@ -6,12 +6,11 @@ import {
   currentDBNameAtom,
   currentDocIndexAtom,
   isEditModeAtom,
-  isRelationshipAtom,
-  relationshipsDataAtom,
   userAtom,
   showCreateDBModalAtom,
   showDeleteDBModalAtom,
   deleteTargetDBIdAtom,
+  currentViewAtom,
 } from "../atoms/atoms";
 
 import useGetAllDatabases from "../apis/useGetAllDatabases";
@@ -23,6 +22,7 @@ import DeleteDBModal from "./Modals/DeleteDatabase/DeleteDBModal";
 function Sidebar() {
   const queryClient = useQueryClient();
   const { username } = useAtomValue(userAtom);
+  const currentView = useAtomValue(currentViewAtom);
   const [currentDBId, setCurrentDBId] = useAtom(currentDBIdAtom);
   const [showDeleteDBModal, setShowDeleteDBModal] = useAtom(
     showDeleteDBModalAtom,
@@ -34,10 +34,8 @@ function Sidebar() {
 
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
-  const setRelationshipsData = useSetAtom(relationshipsDataAtom);
 
   const isEditMode = useAtomValue(isEditModeAtom);
-  const isRelationship = useAtomValue(isRelationshipAtom);
 
   const { databases } = useGetAllDatabases();
 
@@ -59,7 +57,6 @@ function Sidebar() {
       setCurrentDocIndex(0);
       setCurrentDBId(clickedDBId);
       setCurrentDBName(clickedDB);
-      setRelationshipsData(null);
 
       queryClient.refetchQueries(["SingleDatabase", clickedDBId]);
     }
@@ -115,7 +112,7 @@ function Sidebar() {
         <Button
           className={`flex justify-center w-48 text-sm items-center rounded-full text-white
           ${
-            isEditMode || isRelationship
+            isEditMode || currentView === "list"
               ? "hidden"
               : "bg-black-bg hover:bg-dark-grey"
           }`}

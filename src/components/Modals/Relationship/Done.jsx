@@ -32,7 +32,8 @@ function Done() {
         className="w-20 h-8 mt-5 rounded-md bg-black-bg text-white hover:bg-dark-grey"
         onClick={() => {
           queryClient.refetchQueries(["SingleDatase", currentDBId]);
-          queryClient.refetchQueries(["Relationships", currentDBId]);
+          queryClient.refetchQueries(["ForeignDatabases", currentDBId]);
+          queryClient.refetchQueries(["ForeignDocuments", currentDBId]);
           setShowRelationshipModal(false);
           setRelationshipStep("start");
         }}

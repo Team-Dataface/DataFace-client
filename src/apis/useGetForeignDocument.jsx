@@ -4,13 +4,7 @@ import { useAtomValue } from "jotai";
 
 import fetchData from "../utils/axios";
 
-import {
-  currentDocIndexAtom,
-  primaryFieldAtom,
-  userAtom,
-  currentDBIdAtom,
-  relationshipsDataAtom,
-} from "../atoms/atoms";
+import { currentDocIndexAtom, userAtom, currentDBIdAtom } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
 
@@ -19,14 +13,13 @@ function useGetForeignDocument(index, relationship, documents) {
   const currentDBId = useAtomValue(currentDBIdAtom);
 
   const currentDocIndex = useAtomValue(currentDocIndexAtom);
-  const primaryField = useAtomValue(primaryFieldAtom);
-  const relationshipsData = useAtomValue(relationshipsDataAtom);
 
-  async function getForeignDocuments(relationshipsIndex) {
+  async function getForeignDocuments() {
+    const { primaryFieldName } = relationship;
     let queryValue = "";
 
     documents[currentDocIndex]?.fields.forEach(element => {
-      if (primaryField[relationshipsIndex] === element.fieldName) {
+      if (primaryFieldName === element.fieldName) {
         queryValue = element.fieldValue.trim();
       }
     });
@@ -53,7 +46,7 @@ function useGetForeignDocument(index, relationship, documents) {
         !!userId &&
         !!currentDBId &&
         currentDocIndex !== undefined &&
-        !!relationshipsData,
+        !!relationship,
       refetchOnWindowFocus: false,
     },
   );

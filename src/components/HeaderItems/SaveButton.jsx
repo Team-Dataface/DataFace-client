@@ -1,19 +1,19 @@
 import { useAtom, useAtomValue } from "jotai";
 
-import { isEditModeAtom, isRelationshipAtom } from "../../atoms/atoms";
+import { isEditModeAtom, currentViewAtom } from "../../atoms/atoms";
 import usePutSaveChangedData from "../../apis/usePutSaveChangedData";
 
 import Button from "../shared/Button";
 
 function SaveButton() {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
-  const isRelationship = useAtomValue(isRelationshipAtom);
+  const currentView = useAtomValue(currentViewAtom);
   const fetchSaveChangedData = usePutSaveChangedData();
 
   return (
     <div
       className={`flex w-20 justify-center items-center
-    ${isRelationship && "hidden"}`}
+    ${currentView === "relationship" && "hidden"}`}
     >
       <Button
         className={`w-20 h-8 rounded-md bg-white

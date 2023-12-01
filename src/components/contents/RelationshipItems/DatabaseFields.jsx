@@ -4,7 +4,6 @@ import { useAtomValue, useAtom, useSetAtom } from "jotai";
 
 import {
   currentDBIdAtom,
-  relationshipsAtom,
   deleteTargetRelationshipAtom,
   showDeleteRelationshipModalAtom,
 } from "../../../atoms/atoms";
@@ -12,9 +11,14 @@ import {
 import Button from "../../shared/Button";
 import DeleteRelationshipModal from "../../Modals/DeleteRelationship/DeleteRelationshipModal";
 
-function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
+function DatabaseFields({
+  singleDatabase,
+  fields,
+  databaseName,
+  databaseId,
+  dbIndex,
+}) {
   const currentDBId = useAtomValue(currentDBIdAtom);
-  const relationships = useAtomValue(relationshipsAtom);
 
   const setDeleteTargetRelationship = useSetAtom(deleteTargetRelationshipAtom);
   const [showDeleteRelationshipModal, setShowDeleteRelationshipModal] = useAtom(
@@ -22,8 +26,8 @@ function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
   );
   const [fieldNames, setFieldNames] = useState([]);
   const [updatedFields, setUpdatedFields] = useState(() => {
-    if (currentDBId === databaseId) {
-      const primaryFieldNames = relationships.map(
+    if (currentDBId === databaseId && singleDatabase?.relationships) {
+      const primaryFieldNames = singleDatabase.relationships.map(
         relation => relation.primaryFieldName,
       );
       const updatedFieldsCopy = fields.filter(
@@ -33,15 +37,15 @@ function DatabaseFields({ fields, databaseName, databaseId, dbIndex }) {
         primaryFieldNames.includes(field.fieldName),
       );
 
-      primaryField.forEach(fieldNmae => updatedFieldsCopy.unshift(fieldNmae));
+      primaryField.forEach(fieldName => updatedFieldsCopy.unshift(fieldName));
 
       setFieldNames(primaryFieldNames);
 
       return updatedFieldsCopy;
     }
 
-    const relation = relationships.find(
-      item => item.foreignDbId === databaseId,
+    const relation = singleDatabase?.relationships.find(
+      relationship => relationship.foreignDbId === databaseId,
     );
     const foreignFieldName = relation?.foreignFieldName;
     const foreignDbId = relation?.foreignDbId;

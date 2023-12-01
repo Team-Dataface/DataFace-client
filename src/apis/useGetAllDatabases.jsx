@@ -6,11 +6,11 @@ import { useAtom, useSetAtom, useAtomValue } from "jotai";
 import fetchData from "../utils/axios";
 
 import {
-  databasesAtom,
   currentDBIdAtom,
   currentDBNameAtom,
   isInitialAtom,
   userAtom,
+  currentDocIndexAtom,
 } from "../atoms/atoms";
 
 import Loading from "../components/shared/Loading";
@@ -21,9 +21,9 @@ function useGetAllDatabases() {
 
   const [isInitial, setIsInitial] = useAtom(isInitialAtom);
 
-  const setDatabases = useSetAtom(databasesAtom);
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
+  const setCurrentDocIndex = useSetAtom(currentDocIndexAtom);
 
   async function getDatabaseList() {
     const response = await fetchData("GET", `users/${userId}/databases`);
@@ -44,11 +44,12 @@ function useGetAllDatabases() {
         }
 
         if (!result.length) {
+          setCurrentDocIndex(0);
+          setCurrentDBName("");
           navigate("/dashboard/nodatabase");
           return;
         }
 
-        setDatabases(result);
         navigate("/dashboard/listview");
       },
       refetchOnWindowFocus: false,

@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useAtom, useSetAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
-import {
-  isListViewAtom,
-  isEditModeAtom,
-  isRelationshipAtom,
-} from "../../atoms/atoms";
+import { currentViewAtom, isEditModeAtom } from "../../atoms/atoms";
 
 import RelationshipButton from "./RelationshipButton";
 import DocHandlerButtons from "./DocHandlerButtons";
@@ -15,13 +11,11 @@ import Button from "../shared/Button";
 function Toolbar() {
   const navigate = useNavigate();
 
-  const [isRelationship, setIsRelationship] = useAtom(isRelationshipAtom);
-  const setIsListView = useSetAtom(isListViewAtom);
+  const [currentView, setCurrentView] = useAtom(currentViewAtom);
   const isEditMode = useAtomValue(isEditModeAtom);
 
   function clickHandelBackButton() {
-    setIsRelationship(false);
-    setIsListView(true);
+    setCurrentView("list");
     navigate("/dashboard/listview");
   }
 
@@ -29,7 +23,7 @@ function Toolbar() {
     <>
       <Button
         className={`flex flex-row justify-center items-center w-[100px] h-9 p-2 rounded-md bg-white
-        ${!isRelationship && "hidden"}`}
+        ${currentView !== "relationship" && "hidden"}`}
         onClick={clickHandelBackButton}
         disabled={isEditMode}
       >
@@ -37,7 +31,7 @@ function Toolbar() {
       </Button>
       <div
         className={`flex justify-between items-center w-full h-full mr-3 bg-black-bg
-        ${isRelationship && "hidden"}`}
+        ${currentView === "relationship" && "hidden"}`}
       >
         <RelationshipButton />
         <DocHandlerButtons />

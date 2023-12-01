@@ -5,7 +5,7 @@ import fetchData from "../utils/axios";
 
 import {
   currentDBIdAtom,
-  isListViewAtom,
+  currentViewAtom,
   currentDBNameAtom,
   userAtom,
   showCreateDBModalAtom,
@@ -18,7 +18,7 @@ function usePostDB() {
   const navigate = useNavigate();
   const { userId } = useAtomValue(userAtom);
 
-  const setIsListView = useSetAtom(isListViewAtom);
+  const setCurrentView = useSetAtom(currentViewAtom);
   const setCurrentDBId = useSetAtom(currentDBIdAtom);
   const setCurrentDBName = useSetAtom(currentDBNameAtom);
   const setShowCreateDBModal = useSetAtom(showCreateDBModalAtom);
@@ -38,7 +38,7 @@ function usePostDB() {
     onSuccess: result => {
       setCurrentDBId(result.data.newDatabase._id);
       setCurrentDBName(result.data.newDatabase.name);
-      setIsListView(true);
+      setCurrentView("list");
       setCreateDBFields([
         {
           id: crypto.randomUUID(),
